@@ -9,20 +9,16 @@ use LaravelEnso\FileManager\FileManager;
 
 class DocumentsController extends Controller
 {
-
     private $fileManager;
 
     public function __construct()
     {
-
         $this->fileManager = new FileManager(env('FILES_PATH'));
     }
 
     public function upload()
     {
-
         \DB::transaction(function () {
-
             $files = $this->getFilesRequest();
             $this->fileManager->startUpload($files);
             $this->storeDocuments();
@@ -32,9 +28,9 @@ class DocumentsController extends Controller
         return $this->fileManager->getStatus();
     }
 
-    function list() {
-
-        $class        = request('type');
+    public function list()
+    {
+        $class = request('type');
         $documentable = $class::find(request('id'));
 
         return $documentable->documents;
@@ -47,7 +43,6 @@ class DocumentsController extends Controller
      */
     public function show(Document $document)
     {
-
         $fileWrapper = $this->fileManager->getFile($document->saved_name);
 
         $fileWrapper->originalName = $document->original_name;
@@ -62,7 +57,6 @@ class DocumentsController extends Controller
      */
     public function download(Document $document)
     {
-
         $fileWrapper = $this->fileManager->getFile($document->saved_name);
 
         $fileWrapper->originalName = $document->original_name;
@@ -72,9 +66,7 @@ class DocumentsController extends Controller
 
     public function destroy(Document $document)
     {
-
         \DB::transaction(function () use ($document) {
-
             $document->delete();
             $this->fileManager->delete($document->saved_name);
         });
@@ -84,13 +76,11 @@ class DocumentsController extends Controller
 
     private function storeDocuments()
     {
-
-        $class         = request('type');
-        $documentable  = $class::find(request('id'));
+        $class = request('type');
+        $documentable = $class::find(request('id'));
         $documentsList = collect();
 
         $this->fileManager->uploadedFiles->each(function ($file) use (&$documentsList) {
-
             $documentsList->push(new Document($file));
         });
 
@@ -99,7 +89,6 @@ class DocumentsController extends Controller
 
     private function getFilesRequest()
     {
-
         $request = request()->all();
         unset($request['id']);
         unset($request['type']);

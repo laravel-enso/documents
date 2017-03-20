@@ -5,14 +5,14 @@ namespace LaravelEnso\DocumentsManager;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- *
- * @property integer $id
- * @property integer $documentable_id
+ * @property int $id
+ * @property int $documentable_id
  * @property string $documentable_type
  * @property string $name
  * @property string $saved_name
  * @property \Carbon\Carbon $created_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $documentable
+ *
  * @method static \Illuminate\Database\Query\Builder|\App\Document whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Document whereDocumentableId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Document whereDocumentableType($value)
@@ -23,8 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Document extends Model
 {
-
-	protected $fillable = ['original_name', 'saved_name', 'size'];
+    protected $fillable = ['original_name', 'saved_name', 'size'];
 
     public function documentable()
     {
