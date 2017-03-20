@@ -30,30 +30,30 @@ class InsertPermissionsForDocumentsManager extends Migration
 
             $permissions = [
                 [
-                    'name'=> 'core.documents.upload',
+                    'name'        => 'core.documents.upload',
                     'description' => 'Upload Docs',
-                    'type' => 1
+                    'type'        => 1,
                 ],
                 [
-                    'name'=> 'core.documents.list',
+                    'name'        => 'core.documents.list',
                     'description' => 'List Documents for Documentable',
-                    'type' => 0
+                    'type'        => 0,
                 ],
                 [
-                    'name'=> 'core.documents.show',
+                    'name'        => 'core.documents.show',
                     'description' => 'Show Document',
-                    'type' => 0
+                    'type'        => 0,
                 ],
                 [
-                    'name'=> 'core.documents.download',
+                    'name'        => 'core.documents.download',
                     'description' => 'Download Document',
-                    'type' => 0
+                    'type'        => 0,
                 ],
                 [
-                    'name'=> 'core.documents.destroy',
+                    'name'        => 'core.documents.destroy',
                     'description' => 'Delete Document',
-                    'type' => 1
-                ]
+                    'type'        => 1,
+                ],
             ];
 
             $adminRole = Role::whereName('admin')->first();
