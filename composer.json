@@ -1,5 +1,5 @@
 {
-    "name": "laravel-enso/commentsmanager",
+    "name": "laravel-enso/documentsmanager",
     "description": "Library for attaching uploaded documents to documentables",
     "type": "library",
     "license": "MIT",
