@@ -24,7 +24,7 @@ class DocumentsManagerServiceProvider extends ServiceProvider
         ], 'documents-migration');
 
         $this->publishes([
-            __DIR__.'/../resources/assets/js/views' => resource_path('views/vendor/laravel-enso/documentsmanager'),
+            __DIR__.'/../resources/views' => resource_path('views/vendor/laravel-enso/documentsmanager'),
         ], 'documents-partial');
 
         $this->publishes([
