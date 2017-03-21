@@ -17,12 +17,18 @@ class DocumentsManagerServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'documentsmanager');
+
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'documents-migration');
 
         $this->publishes([
-            __DIR__.'/../resources/assets/js/components/core' => base_path('resources/assets/js/components/core'),
+            __DIR__.'/../resources/assets/js/views' => resource_path('views/vendor/laravel-enso/documentsmanager'),
+        ], 'documents-partial');
+
+        $this->publishes([
+            __DIR__.'/../resources/assets/js/components' => resource_path('assets/js/components/laravel-enso'),
         ], 'documents-component');
     }
 
