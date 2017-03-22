@@ -1,2 +1,2 @@
 <span slot="documents-manager-title">{{ __("Documents") }}</span>
-@include('partials.modal')
+@include('core::partials.modal')

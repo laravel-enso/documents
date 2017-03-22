@@ -1,9 +1,9 @@
 <?php
 
-use App\Permission;
-use App\PermissionsGroup;
-use App\Role;
+use LaravelEnso\Core\Models\Role;
 use Illuminate\Database\Migrations\Migration;
+use LaravelEnso\Core\Models\Permission;
+use LaravelEnso\Core\Models\PermissionsGroup;
 
 class InsertPermissionsForDocumentsManager extends Migration
 {
