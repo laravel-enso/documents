@@ -1,11 +1,10 @@
 <?php
 
-namespace LaravelEnso\DocumentsManager\Http\Controllers;
+namespace LaravelEnso\DocumentsManager\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use LaravelEnso\DocumentsManager\Document;
-use LaravelEnso\FileManager\FileManager;
+use LaravelEnso\DocumentsManager\App\Models\Document;
+use LaravelEnso\FileManager\Classes\FileManager;
 
 class DocumentsController extends Controller
 {

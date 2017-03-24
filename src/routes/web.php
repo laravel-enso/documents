@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['namespace' => 'LaravelEnso\DocumentsManager\Http\Controllers', 'middleware' => ['web', 'auth', 'core']], function () {
+Route::group(['namespace' => 'LaravelEnso\DocumentsManager\App\Http\Controllers', 'middleware' => ['web', 'auth', 'core']], function () {
     Route::group(['prefix' => 'core/documents', 'as' => 'core.documents.'], function () {
         Route::post('upload', 'DocumentsController@upload')->name('upload');
         Route::get('list', 'DocumentsController@list')->name('list');
