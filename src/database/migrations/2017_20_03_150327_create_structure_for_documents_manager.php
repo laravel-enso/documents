@@ -18,8 +18,4 @@ class CreateStructureForDocumentsManager extends Migration
         ['name' => 'core.documents.download', 'description' => 'Download Document', 'type' => 0],
         ['name' => 'core.documents.destroy', 'description' => 'Delete Document', 'type' => 1],
     ];
-
-    private $menu;
-    private $parentMenu;
-    private $roles;
 }
