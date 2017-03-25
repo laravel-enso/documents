@@ -1,12 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use LaravelEnso\Core\App\Classes\StructureManager\StructureSupport;
+use LaravelEnso\Core\App\Classes\StructureManager\StructureMigration;
 
-class CreateStructureForDocumentsManager extends Migration
+class CreateStructureForDocumentsManager extends StructureMigration
 {
-    use StructureSupport;
-
     private $permissionsGroup = [
         'name' => 'system.documents', 'description' => 'Documents Permissions Group',
     ];
