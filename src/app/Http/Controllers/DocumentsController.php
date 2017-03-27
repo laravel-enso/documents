@@ -12,7 +12,7 @@ class DocumentsController extends Controller
 
     public function __construct()
     {
-        $this->fileManager = new FileManager(env('FILES_PATH'));
+        $this->fileManager = new FileManager(config('laravel-enso.paths.files'));
     }
 
     public function upload()
