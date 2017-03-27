@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelEnso\DocumentsManager\App\Http\Controllers;
+namespace LaravelEnso\DocumentsManager\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use LaravelEnso\DocumentsManager\App\Models\Document;
+use LaravelEnso\DocumentsManager\app\Models\Document;
 use LaravelEnso\FileManager\Classes\FileManager;
 
 class DocumentsController extends Controller
