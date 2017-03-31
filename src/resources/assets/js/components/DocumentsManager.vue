@@ -210,7 +210,7 @@
 
                     response.data.errors.forEach(function(error) {
 
-                        toastr['error'](error);
+                        toastr.error(error);
                     });
 
                     this.uploadInput.val('');
@@ -238,7 +238,7 @@
 
                 if (file.size > this.maxFileSize) {
 
-                    toastr["warning"]('File Size Limit of ' + this.maxFileSize + ' Kb excedeed by ' + file.name);
+                    toastr.warning('File Size Limit of ' + this.maxFileSize + ' Kb excedeed by ' + file.name);
 
                     return false;
                 }
@@ -249,7 +249,7 @@
 
                 if (this.pictures && this.validImageTypes.indexOf(file.type) === -1) {
 
-                    toastr["warning"]('File ' + file.name + ' is not of picture format');
+                    toastr.warning('File ' + file.name + ' is not of picture format');
 
                     return false;
                 }
