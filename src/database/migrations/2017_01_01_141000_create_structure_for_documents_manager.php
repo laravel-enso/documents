@@ -5,7 +5,7 @@ use LaravelEnso\Core\app\Classes\StructureManager\StructureMigration;
 class CreateStructureForDocumentsManager extends StructureMigration
 {
     protected $permissionsGroup = [
-        'name' => 'system.documents', 'description' => 'Documents Permissions Group',
+        'name' => 'core.documents', 'description' => 'Documents Permissions Group',
     ];
 
     protected $permissions = [
