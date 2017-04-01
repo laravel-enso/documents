@@ -112,9 +112,7 @@
 <script>
 
      export default {
-
         props: {
-
             id: {
                 type: Number,
                 required: true
@@ -141,13 +139,9 @@
             }
         },
         computed: {
-
             filteredDocumentsList: function() {
-
                 if (this.queryString) {
-
                     return this.documentsList.filter((doc) => {
-
                         return doc.original_name.toLowerCase().indexOf(this.queryString.toLowerCase()) > -1;
                     })
                 }
@@ -156,7 +150,6 @@
             },
         },
         data: function() {
-
             return {
                 documentsList: [],
                 itemToBeDeleted: null,
@@ -169,47 +162,36 @@
             }
         },
         watch: {
-
             'id': {
                 handler: 'getData'
             }
         },
         methods: {
-
             getData: function() {
-
                 this.loading = true;
 
                 axios.get('/core/documents/list', { params: { id: this.id, type: this.type }}).then((response) => {
-
                     this.documentsList = response.data;
                     this.loading = false;
                 });
             },
             openFileBrowser: function() {
-
                 this.uploadInput.trigger('click');
             },
             uploadDocuments: function() {
-
                 let formData = this.getFormData();
 
                 if (formData.entries().next().done) {
-
                     return false;
                 }
 
                 formData.append("id", this.id);
                 formData.append("type", this.type);
-
                 this.loading = true;
 
                 axios.post('/core/documents/upload', formData).then((response) => {
-
                     toastr[response.data.level](response.data.message);
-
                     response.data.errors.forEach(function(error) {
-
                         toastr.error(error);
                     });
 
@@ -218,14 +200,11 @@
                 });
             },
             getFormData: function() {
-
                 let formData = new FormData(),
                     files = this.uploadInput[0].files;
 
-                for (var i = 0; i < files.length; i++) {
-
+                for (let i = 0; i < files.length; i++) {
                     if (!this.checkFileSize(files[i]) || !this.checkFileFormat(files[i])) {
-
                         continue;
                     }
 
@@ -235,9 +214,7 @@
                 return formData;
             },
             checkFileSize: function(file) {
-
                 if (file.size > this.maxFileSize) {
-
                     toastr.warning('File Size Limit of ' + this.maxFileSize + ' Kb excedeed by ' + file.name);
 
                     return false;
@@ -246,9 +223,7 @@
                 return true;
             },
             checkFileFormat: function(file) {
-
                 if (this.pictures && this.validImageTypes.indexOf(file.type) === -1) {
-
                     toastr.warning('File ' + file.name + ' is not of picture format');
 
                     return false;
@@ -257,21 +232,17 @@
                 return true;
             },
             openDocument: function(id) {
-
                 window.open('/core/documents/show/' + id, '_blank').focus();
             },
             confirmDelete: function(id) {
-
                 this.itemToBeDeleted = id;
                 this.showModal = true;
             },
             deleteDocument: function() {
-
                 this.showModal = false;
                 this.loading = true;
 
                 axios.delete('/core/documents/destroy/' + this.itemToBeDeleted).then((response) => {
-
                     this.itemToBeDeleted = null;
                     toastr[response.data.level](response.data.message);
                     this.getData();
@@ -279,7 +250,6 @@
             },
         },
         mounted: function() {
-
             this.uploadInput = $('input[id=input-' + this._uid + ']');
             this.getData();
         }
