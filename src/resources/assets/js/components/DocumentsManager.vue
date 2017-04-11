@@ -46,9 +46,7 @@
                 @change="uploadDocuments">
             <div class="col-md-12">
                 <div class="list-group list-group-unbordered">
-                    <button type="button"
-                        class="list-group-item"
-                        style="cursor: default"
+                    <li class="list-group-item"
                         v-for="(document, index) in filteredDocumentsList"
                         :data-featherlight-gallery="pictures"
                         :data-featherlight-filter="pictures ? 'a.gallery' : null">
@@ -82,7 +80,7 @@
                         <span class="pull-right margin-right-md text-primary">
                             {{ document.size | numberFormat}} Kb
                         </span>
-                    </button>
+                    </li>
                 </div>
             </div>
         </div>
