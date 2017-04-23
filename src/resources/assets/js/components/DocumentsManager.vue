@@ -1,5 +1,4 @@
 <template>
-
     <div :class="['box box-' + headerClass, { 'collapsed-box': collapsed }]">
         <div class="box-header with-border">
             <i :class="{ 'fa fa-files-o': !pictures, 'fa fa-picture-o': pictures }">
@@ -17,9 +16,18 @@
                     class="documents-filter"
                     v-model="queryString"
                     v-if="documentsList.length > 1">
-                <i class="fa fa-upload btn"
-                    @click="openFileBrowser">
-                </i>
+                <button class="btn btn-box-tool btn-sm">
+                    <file-uploader
+                        @uploaded="getData()"
+                        url="/core/documents/upload"
+                        :file-size-limit="fileSizeLimit"
+                        :params="{ 'id': id, 'type': type }"
+                        multiple>
+                        <span slot="upload-button">
+                            <i class="btn btn-xs fa fa-upload btn"></i>
+                        </span>
+                    </file-uploader>
+                </button>
                 <span class="badge bg-orange">
                     {{ documentsList.length }}
                 </span>
@@ -38,12 +46,6 @@
         </div>
         <div class="box-body"
             style="overflow-y: scroll; max-height: 300px">
-            <input :id="'input-' + _uid"
-                type="file"
-                name="files[]"
-                class="hidden"
-                multiple="multiple"
-                @change="uploadDocuments">
             <div class="col-md-12">
                 <div class="list-group list-group-unbordered">
                     <li class="list-group-item"
@@ -104,7 +106,6 @@
             </span>
         </modal>
     </div>
-
 </template>
 
 <script>
@@ -151,11 +152,8 @@
             return {
                 documentsList: [],
                 itemToBeDeleted: null,
-                uploadInput: null,
                 showModal: false,
                 queryString: "",
-                validImageTypes: ["image/gif", "image/jpeg", "image/png"],
-                maxFileSize: this.fileSizeLimit <= 8388608 ? this.fileSizeLimit : 8388608,
                 loading: false
             }
         },
@@ -172,62 +170,6 @@
                     this.documentsList = response.data;
                     this.loading = false;
                 });
-            },
-            openFileBrowser: function() {
-                this.uploadInput.trigger('click');
-            },
-            uploadDocuments: function() {
-                let formData = this.getFormData();
-
-                if (formData.entries().next().done) {
-                    return false;
-                }
-
-                formData.append("id", this.id);
-                formData.append("type", this.type);
-                this.loading = true;
-
-                axios.post('/core/documents/upload', formData).then((response) => {
-                    toastr[response.data.level](response.data.message);
-                    response.data.errors.forEach(function(error) {
-                        toastr.error(error);
-                    });
-
-                    this.uploadInput.val('');
-                    this.getData();
-                });
-            },
-            getFormData: function() {
-                let formData = new FormData(),
-                    files = this.uploadInput[0].files;
-
-                for (let i = 0; i < files.length; i++) {
-                    if (!this.checkFileSize(files[i]) || !this.checkFileFormat(files[i])) {
-                        continue;
-                    }
-
-                    formData.append("file_" + i, files[i]);
-                }
-
-                return formData;
-            },
-            checkFileSize: function(file) {
-                if (file.size > this.maxFileSize) {
-                    toastr.warning('File Size Limit of ' + this.maxFileSize + ' Kb excedeed by ' + file.name);
-
-                    return false;
-                }
-
-                return true;
-            },
-            checkFileFormat: function(file) {
-                if (this.pictures && this.validImageTypes.indexOf(file.type) === -1) {
-                    toastr.warning('File ' + file.name + ' is not of picture format');
-
-                    return false;
-                }
-
-                return true;
             },
             openDocument: function(id) {
                 window.open('/core/documents/show/' + id, '_blank').focus();
@@ -248,7 +190,6 @@
             },
         },
         mounted: function() {
-            this.uploadInput = $('input[id=input-' + this._uid + ']');
             this.getData();
         }
     }
