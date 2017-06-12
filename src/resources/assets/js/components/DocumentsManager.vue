@@ -1,8 +1,8 @@
 <template>
-    <div :class="['box box-' + headerClass, { 'collapsed-box': collapsed }]">
+
+    <div :class="'box collapsed-box box-' + headerClass" :id="'box' + _uid">
         <div class="box-header with-border">
-            <i :class="{ 'fa fa-files-o': !pictures, 'fa fa-picture-o': pictures }">
-            </i>
+            <i class="fa fa-files-o"></i>
             <h3 class="box-title">
                 <slot name="documents-manager-title">
                 </slot>
@@ -14,17 +14,17 @@
                 <input type="text"
                     size="15"
                     class="documents-filter"
-                    v-model="queryString"
+                    v-model="query"
                     v-if="documentsList.length > 1">
                 <button class="btn btn-box-tool btn-sm">
                     <file-uploader
-                        @uploaded="getData()"
+                        @uploaded="get()"
                         url="/core/documents/upload"
                         :file-size-limit="fileSizeLimit"
                         :params="{ 'id': id, 'type': type }"
                         multiple>
                         <span slot="upload-button">
-                            <i class="btn btn-xs fa fa-upload btn"></i>
+                            <i class="fa fa-upload"></i>
                         </span>
                     </file-uploader>
                 </button>
@@ -33,53 +33,44 @@
                 </span>
                 <button type="button"
                     class="btn btn-box-tool btn-sm"
-                    @click="getData">
-                    <i class="fa fa-refresh">
-                    </i>
+                    @click="get()">
+                    <i class="fa fa-refresh"></i>
                 </button>
                 <button class="btn btn-box-tool btn-sm"
                     data-widget="collapse">
-                    <i class="fa fa-plus">
-                    </i>
+                    <i class="fa fa-plus"></i>
                 </button>
             </div>
         </div>
-        <div class="box-body"
-            style="overflow-y: scroll; max-height: 300px">
+        <div class="box-body documents">
             <div class="col-md-12">
                 <div class="list-group list-group-unbordered">
                     <li class="list-group-item"
-                        v-for="(document, index) in filteredDocumentsList"
-                        :data-featherlight-gallery="pictures"
-                        :data-featherlight-filter="pictures ? 'a.gallery' : null">
+                        v-for="(document, index) in filteredDocumentsList">
                         <span>
                             {{ index + 1 }}.
                         </span>
-                        <span v-if="!pictures">
+                        <span>
                             <a href="#"
-                                @click="openDocument(document.id)">
+                                v-if="document.is_downloadable"
+                                @click="show(document.id)">
                                 {{ document.original_name }}
                             </a>
+                            <span v-if="!document.is_downloadable">{{ document.original_name }}</span>
                         </span>
-                         <span v-if="pictures">
-                            <a  class="gallery"
-                                :href="'/core/documents/show/' + document.id">
-                                {{ document.original_name }}
-                             </a>
-                            </span>
                         <span class="pull-right">
                             <a class="btn btn-xs btn-info"
+                                v-if="document.is_downloadable"
                                 :href="'/core/documents/download/' + document.id">
-                                <i class="fa fa-cloud-download">
-                                </i>
+                                <i class="fa fa-cloud-download"></i>
                             </a>
                             <a class="btn btn-xs btn-danger"
-                                @click="confirmDelete(document.id)">
-                                <i class="fa fa-trash-o">
-                                </i>
+                                v-if="document.is_deletable"
+                                @click="documentIdToBeDeleted = id; showModal = true;">
+                                <i class="fa fa-trash-o"></i>
                             </a>
                         </span>
-                        <span class="pull-right margin-right-md text-primary">
+                        <span class="pull-right margin-right-md">
                             {{ document.size | numberFormat}} Kb
                         </span>
                     </li>
@@ -91,7 +82,7 @@
         </div>
         <modal :show="showModal"
             @cancel-action="showModal = false"
-            @commit-action="deleteDocument">
+            @commit-action="destroy()">
             <span slot="modal-body">
                 <slot name="modal-body">
                 </slot>
@@ -106,6 +97,7 @@
             </span>
         </modal>
     </div>
+
 </template>
 
 <script>
@@ -124,74 +116,81 @@
                 type: String,
                 default: 'primary'
             },
-            pictures: {
-                type: Boolean,
-                default: false
-            },
             fileSizeLimit: {
                 type: Number,
                 default: 8388608
-            },
-            collapsed: {
-                type: Boolean,
-                default: true
             }
         },
+
         computed: {
-            filteredDocumentsList: function() {
-                if (this.queryString) {
-                    return this.documentsList.filter((doc) => {
-                        return doc.original_name.toLowerCase().indexOf(this.queryString.toLowerCase()) > -1;
+            filteredDocumentsList() {
+                if (this.query) {
+                    return this.documentsList.filter((document) => {
+                        return document.original_name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
                     })
                 }
 
                 return this.documentsList;
             },
         },
-        data: function() {
+
+        data() {
             return {
                 documentsList: [],
-                itemToBeDeleted: null,
+                documentIdToBeDeleted: null,
                 showModal: false,
-                queryString: "",
+                query: "",
                 loading: false
             }
         },
-        watch: {
-            'id': {
-                handler: 'getData'
-            }
-        },
+
         methods: {
-            getData: function() {
+            get() {
                 this.loading = true;
 
-                axios.get('/core/documents/list', { params: { id: this.id, type: this.type }}).then((response) => {
+                axios.get('/core/documents', { params: { id: this.id, type: this.type }}).then(response => {
                     this.documentsList = response.data;
                     this.loading = false;
+                }).catch(error => {
+                    this.loading = false;
+
+                    if (error.response.data.level) {
+                        toastr[error.response.data.level](error.response.data.message);
+                    }
                 });
             },
-            openDocument: function(id) {
+            show(id) {
                 window.open('/core/documents/show/' + id, '_blank').focus();
             },
-            confirmDelete: function(id) {
-                this.itemToBeDeleted = id;
-                this.showModal = true;
-            },
-            deleteDocument: function() {
+            destroy() {
                 this.showModal = false;
                 this.loading = true;
 
-                axios.delete('/core/documents/destroy/' + this.itemToBeDeleted).then((response) => {
-                    this.itemToBeDeleted = null;
-                    toastr[response.data.level](response.data.message);
-                    this.getData();
+                axios.delete('/core/documents/destroy/' + this.documentIdToBeDeleted).then((response) => {
+                    this.documentIdToBeDeleted = null;
+                    this.get();
+                }).catch(error => {
+                    this.loading = false;
+
+                    if (error.response.data.level) {
+                        toastr[error.response.data.level](error.response.data.message);
+                    }
                 });
             },
         },
-        mounted: function() {
-            this.getData();
+
+        mounted() {
+            this.get();
         }
     }
 
 </script>
+
+<style>
+
+    .box-body.documents {
+        overflow-y:scroll;
+        max-height: 300px
+    }
+
+</style>

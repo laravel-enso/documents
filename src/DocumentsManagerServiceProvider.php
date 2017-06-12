@@ -3,6 +3,7 @@
 namespace LaravelEnso\DocumentsManager;
 
 use Illuminate\Support\ServiceProvider;
+use LaravelEnso\DocumentsManager\DocumentsAuthServiceProvider;
 
 class DocumentsManagerServiceProvider extends ServiceProvider
 {
@@ -20,8 +21,8 @@ class DocumentsManagerServiceProvider extends ServiceProvider
     private function publishesAll()
     {
         $this->publishes([
-            __DIR__.'/database/migrations' => database_path('migrations'),
-        ], 'documents-migrations');
+            __DIR__.'/config' => config_path(),
+        ], 'documents-config');
 
         $this->publishes([
             __DIR__.'/resources/assets/js/components' => resource_path('assets/js/vendor/laravel-enso/components'),
@@ -45,6 +46,6 @@ class DocumentsManagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->register(DocumentsAuthServiceProvider::class);
     }
 }

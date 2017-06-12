@@ -1,18 +1,37 @@
 <?php
 
-namespace LaravelEnso\DocumentsManager\app\Http\Controllers;
+namespace LaravelEnso\DocumentsManager\app\Http\Services;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use LaravelEnso\DocumentsManager\app\Models\Document;
 use LaravelEnso\FileManager\Classes\FileManager;
 
-class DocumentsController extends Controller
+class DocumentService extends Controller
 {
+    private $request;
     private $fileManager;
+    private $documentable;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
+        $this->request = $request;
         $this->fileManager = new FileManager(config('laravel-enso.paths.files'));
+    }
+
+    public function index()
+    {
+        $class = request('type');
+
+        return $this->getDocumentable()->documents;
+    }
+
+    public function show(Document $document)
+    {
+        $fileWrapper = $this->fileManager->getFile($document->saved_name);
+        $fileWrapper->originalName = $document->original_name;
+
+        return $fileWrapper->getInlineResponse();
     }
 
     public function upload()
@@ -20,44 +39,16 @@ class DocumentsController extends Controller
         \DB::transaction(function () {
             $files = $this->getFilesRequest();
             $this->fileManager->startUpload($files);
-            $this->storeDocuments();
+            $this->store();
             $this->fileManager->commitUpload();
         });
 
         return $this->fileManager->getStatus();
     }
 
-    public function list()
-    {
-        $class = request('type');
-        $documentable = $class::find(request('id'));
-
-        return $documentable->documents;
-    }
-
-    /** Gives back the document inline
-     * @param Document $document
-     *
-     * @return mixed
-     */
-    public function show(Document $document)
-    {
-        $fileWrapper = $this->fileManager->getFile($document->saved_name);
-
-        $fileWrapper->originalName = $document->original_name;
-
-        return $fileWrapper->getInlineResponse();
-    }
-
-    /** Gives the document as attachment
-     * @param Document $document
-     *
-     * @return mixed
-     */
     public function download(Document $document)
     {
         $fileWrapper = $this->fileManager->getFile($document->saved_name);
-
         $fileWrapper->originalName = $document->original_name;
 
         return $fileWrapper->getDownloadResponse();
@@ -73,17 +64,15 @@ class DocumentsController extends Controller
         return $this->fileManager->getStatus();
     }
 
-    private function storeDocuments()
+    private function store()
     {
-        $class = request('type');
-        $documentable = $class::find(request('id'));
         $documentsList = collect();
 
         $this->fileManager->uploadedFiles->each(function ($file) use (&$documentsList) {
             $documentsList->push(new Document($file));
         });
 
-        $documentable->documents()->saveMany($documentsList);
+        $this->getDocumentable()->documents()->saveMany($documentsList);
     }
 
     private function getFilesRequest()
@@ -93,5 +82,23 @@ class DocumentsController extends Controller
         unset($request['type']);
 
         return $request;
+    }
+
+    private function getDocumentable()
+    {
+        return $this->getDocumentableClass()::find($this->request['id']);
+    }
+
+    private function getDocumentableClass()
+    {
+        $class = config('documents.documentables.'.$this->request['type']);
+
+        if (!$class) {
+            throw new \EnsoException(
+                __('Current entity does not exist in documents.php config file: ').$this->request['type']
+            );
+        }
+
+        return $class;
     }
 }

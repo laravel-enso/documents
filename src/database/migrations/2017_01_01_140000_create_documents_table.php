@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateDocumentsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('documents', function (Blueprint $table) {
@@ -19,15 +14,12 @@ class CreateDocumentsTable extends Migration
             $table->string('original_name');
             $table->string('saved_name');
             $table->integer('size');
+            $table->integer('created_by')->unsigned()->after('size');
+            $table->foreign('created_by')->references('id')->on('users')->onUpdate('restrict')->onDelete('restrict');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('documents');
