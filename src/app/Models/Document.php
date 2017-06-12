@@ -7,7 +7,7 @@ use LaravelEnso\TrackWho\app\Traits\CreatedBy;
 
 class Document extends Model
 {
-	use CreatedBy;
+    use CreatedBy;
 
     protected $fillable = ['original_name', 'saved_name', 'size'];
     protected $appends = ['owner', 'is_downloadable', 'is_deletable'];

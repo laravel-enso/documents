@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'deletableTimeLimitInHours' => 1,
+    'deletableTimeLimitInHours' => 1,
     'documentables'             => [
         'owner' => 'App\Owner',
     ],

@@ -3,7 +3,6 @@
 namespace LaravelEnso\DocumentsManager;
 
 use Illuminate\Support\ServiceProvider;
-use LaravelEnso\DocumentsManager\DocumentsAuthServiceProvider;
 
 class DocumentsManagerServiceProvider extends ServiceProvider
 {
