@@ -11,7 +11,6 @@ class DocumentService extends Controller
 {
     private $request;
     private $fileManager;
-    private $documentable;
 
     public function __construct(Request $request)
     {
