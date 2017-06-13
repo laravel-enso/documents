@@ -11,46 +11,40 @@ class DocumentService extends Controller
 {
     private $request;
     private $fileManager;
+    private $documentable;
 
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->fileManager = new FileManager(config('laravel-enso.paths.files'));
+        $this->fileManager = new FileManager(config('laravel-enso.paths.files'), config('laravel-enso.paths.temp'));
     }
 
     public function index()
     {
-        $class = request('type');
-
         return $this->getDocumentable()->documents;
-    }
-
-    public function show(Document $document)
-    {
-        $fileWrapper = $this->fileManager->getFile($document->saved_name);
-        $fileWrapper->originalName = $document->original_name;
-
-        return $fileWrapper->getInlineResponse();
     }
 
     public function upload()
     {
-        \DB::transaction(function () {
-            $files = $this->getFilesRequest();
-            $this->fileManager->startUpload($files);
-            $this->store();
-            $this->fileManager->commitUpload();
-        });
+        try {
+            \DB::transaction(function () {
+                $this->fileManager->startUpload($this->request->all());
+                $this->store();
+                $this->fileManager->commitUpload();
+            });
+        } catch (\Exception $e) {
+            $this->fileManager->deleteTempFiles();
+        }
+    }
 
-        return $this->fileManager->getStatus();
+    public function show(Document $document)
+    {
+        return $this->fileManager->getInline($document->original_name, $document->saved_name);
     }
 
     public function download(Document $document)
     {
-        $fileWrapper = $this->fileManager->getFile($document->saved_name);
-        $fileWrapper->originalName = $document->original_name;
-
-        return $fileWrapper->getDownloadResponse();
+        return $this->fileManager->download($document->original_name, $document->saved_name);
     }
 
     public function destroy(Document $document)
@@ -59,38 +53,27 @@ class DocumentService extends Controller
             $document->delete();
             $this->fileManager->delete($document->saved_name);
         });
-
-        return $this->fileManager->getStatus();
     }
 
     private function store()
     {
         $documentsList = collect();
 
-        $this->fileManager->uploadedFiles->each(function ($file) use (&$documentsList) {
+        $this->fileManager->getUploadedFiles()->each(function ($file) use (&$documentsList) {
             $documentsList->push(new Document($file));
         });
 
         $this->getDocumentable()->documents()->saveMany($documentsList);
     }
 
-    private function getFilesRequest()
-    {
-        $request = request()->all();
-        unset($request['id']);
-        unset($request['type']);
-
-        return $request;
-    }
-
     private function getDocumentable()
     {
-        return $this->getDocumentableClass()::find($this->request['id']);
+        return $this->documentable = $this->getDocumentableClass()::find($this->request->route()->parameter('id'));
     }
 
     private function getDocumentableClass()
     {
-        $class = config('documents.documentables.'.$this->request['type']);
+        $class = config('documents.documentables.'.$this->request->route()->parameter('type'));
 
         if (!$class) {
             throw new \EnsoException(

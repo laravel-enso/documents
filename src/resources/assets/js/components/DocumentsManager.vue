@@ -12,16 +12,15 @@
                     class="fa fa-search">
                 </i>
                 <input type="text"
-                    size="15"
                     class="documents-filter"
+                    size=15
                     v-model="query"
                     v-if="documentsList.length > 1">
                 <button class="btn btn-box-tool btn-sm">
                     <file-uploader
-                        @uploaded="get()"
-                        url="/core/documents/upload"
+                        @upload-successful="get()"
+                        :url="'/core/documents/upload/' + this.type + '/' + this.id"
                         :file-size-limit="fileSizeLimit"
-                        :params="{ 'id': id, 'type': type }"
                         multiple>
                         <span slot="upload-button">
                             <i class="fa fa-upload"></i>
@@ -66,7 +65,7 @@
                             </a>
                             <a class="btn btn-xs btn-danger"
                                 v-if="document.is_deletable"
-                                @click="documentIdToBeDeleted = id; showModal = true;">
+                                @click="documentIdToBeDeleted = document.id; showModal = true;">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </span>
@@ -148,7 +147,7 @@
             get() {
                 this.loading = true;
 
-                axios.get('/core/documents', { params: { id: this.id, type: this.type }}).then(response => {
+                axios.get('/core/documents/' + this.type + '/' + this.id).then(response => {
                     this.documentsList = response.data;
                     this.loading = false;
                 }).catch(error => {

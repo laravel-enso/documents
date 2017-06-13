@@ -14,12 +14,12 @@ class DocumentController extends Controller
         $this->documents = new DocumentService($request);
     }
 
-    public function index()
+    public function index(string $type, int $id)
     {
         return $this->documents->index();
     }
 
-    public function upload()
+    public function upload(string $type, int $id)
     {
         return $this->documents->upload();
     }
