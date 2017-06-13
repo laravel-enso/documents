@@ -26,7 +26,7 @@ class Document extends Model
     {
         $attribute = [
             'full_name'   => $this->user->full_name,
-            'avatarId' => $this->user->avatar ? $this->user->avatar->id : null,
+            'avatarId'    => $this->user->avatar ? $this->user->avatar->id : null,
         ];
 
         unset($this->user);
