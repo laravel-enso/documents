@@ -72,6 +72,12 @@
                         <span class="pull-right margin-right-md">
                             {{ document.size | numberFormat}} Kb
                         </span>
+                        <span class="pull-right margin-right-md">
+                            <i v-tooltip="$options.filters.timeFromNow(document.created_at)" class="fa fa-calendar"></i>
+                        </span>
+                        <span class="pull-right margin-right-md">
+                            <i v-tooltip="document.owner.full_name" class="fa fa-male"></i>
+                        </span>
                     </li>
                 </div>
             </div>
