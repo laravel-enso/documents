@@ -12,11 +12,13 @@ class DocumentService extends Controller
     private $request;
     private $fileManager;
     private $documentable;
+    private $messages;
 
     public function __construct(Request $request)
     {
         $this->request = $request;
         $this->fileManager = new FileManager(config('laravel-enso.paths.files'), config('laravel-enso.paths.temp'));
+        $this->messages = collect();
     }
 
     public function index()
@@ -34,6 +36,7 @@ class DocumentService extends Controller
             });
         } catch (\Exception $e) {
             $this->fileManager->deleteTempFiles();
+            throw $e;
         }
     }
 
@@ -58,13 +61,21 @@ class DocumentService extends Controller
     private function store()
     {
         $documentsList = collect();
+        $this->getDocumentable();
+        $existingDocuments = $this->documentable->documents->pluck('original_name');
 
-        $this->fileManager->getUploadedFiles()->each(function ($file) use (&$documentsList) {
+        $this->fileManager->getUploadedFiles()->each(function ($file) use (&$documentsList, $existingDocuments) {
+            if ($existingDocuments->contains($file['original_name'])) {
+                throw new \EnsoException($file['original_name'].' '.__('already exists for this Entity'));
+            }
+
             $documentsList->push(new Document($file));
         });
 
-        $this->getDocumentable()->documents()->saveMany($documentsList);
+        $this->documentable->documents()->saveMany($documentsList);
     }
+
+
 
     private function getDocumentable()
     {
