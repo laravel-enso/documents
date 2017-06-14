@@ -75,8 +75,6 @@ class DocumentService extends Controller
         $this->documentable->documents()->saveMany($documentsList);
     }
 
-
-
     private function getDocumentable()
     {
         return $this->documentable = $this->getDocumentableClass()::find($this->request->route()->parameter('id'));
