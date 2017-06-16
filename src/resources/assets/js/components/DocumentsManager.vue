@@ -158,10 +158,7 @@
                     this.loading = false;
                 }).catch(error => {
                     this.loading = false;
-
-                    if (error.response.data.level) {
-                        toastr[error.response.data.level](error.response.data.message);
-                    }
+                    this.reportEnsoException(error);
                 });
             },
             show(id) {
@@ -176,10 +173,7 @@
                     this.get();
                 }).catch(error => {
                     this.loading = false;
-
-                    if (error.response.data.level) {
-                        toastr[error.response.data.level](error.response.data.message);
-                    }
+                    this.reportEnsoException(error);
                 });
             },
         },
