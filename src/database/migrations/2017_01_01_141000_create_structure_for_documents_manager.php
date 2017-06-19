@@ -9,10 +9,10 @@ class CreateStructureForDocumentsManager extends StructureMigration
     ];
 
     protected $permissions = [
-        ['name' => 'core.documents.upload', 'description' => 'Upload Docs', 'type' => 1],
-        ['name' => 'core.documents.index', 'description' => 'List Documents for Documentable', 'type' => 0],
-        ['name' => 'core.documents.show', 'description' => 'Show Document', 'type' => 0],
-        ['name' => 'core.documents.download', 'description' => 'Download Document', 'type' => 0],
-        ['name' => 'core.documents.destroy', 'description' => 'Delete Document', 'type' => 1],
+        ['name' => 'core.documents.upload', 'description' => 'Upload Docs', 'type' => 1, 'default' => false],
+        ['name' => 'core.documents.index', 'description' => 'List Documents for Documentable', 'type' => 0, 'default' => false],
+        ['name' => 'core.documents.show', 'description' => 'Show Document', 'type' => 0, 'default' => false],
+        ['name' => 'core.documents.download', 'description' => 'Download Document', 'type' => 0, 'default' => false],
+        ['name' => 'core.documents.destroy', 'description' => 'Delete Document', 'type' => 1, 'default' => false]
     ];
 }
