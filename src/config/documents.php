@@ -2,7 +2,7 @@
 
 return [
     'deletableTimeLimitInHours' => 1,
-    'documentables' => [
+    'documentables'             => [
         'owner' => 'App\Owner',
     ],
 ];
