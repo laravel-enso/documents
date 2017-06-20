@@ -4,7 +4,7 @@
 [![Total Downloads](https://poser.pugx.org/laravel-enso/documentsmanager/downloads)](https://packagist.org/packages/laravel-enso/documentsmanager)
 [![Latest Stable Version](https://poser.pugx.org/laravel-enso/documentsmanager/version)](https://packagist.org/packages/laravel-enso/documentsmanager)
 
-Documents Manager for Laravel Enso. This package creates a Document model that has a `documentable` morphTo relation.
+Documents Manager for Laravel Enso. This plugin creates a Document model that has a `documentable` morphTo relation.
 
 ### Installation Steps
 

@@ -1,7 +1,7 @@
 {
     "name": "laravel-enso/documentsmanager",
-    "description": "Library for attaching uploaded documents to documentables",
-    "type": "library",
+    "description": "Documentable plugin for Larave Enso",
+    "type": "plugin",
     "license": "MIT",
     "authors": [
         {

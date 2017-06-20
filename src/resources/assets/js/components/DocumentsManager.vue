@@ -57,7 +57,7 @@
                             </a>
                             <span v-if="!document.is_downloadable">{{ document.original_name }}</span>
                         </span>
-                        <span class="pull-right">
+                        <span class="pull-right action-buttons">
                             <a class="btn btn-xs btn-info"
                                 v-if="document.is_downloadable"
                                 :href="'/core/documents/download/' + document.id">
@@ -69,14 +69,16 @@
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </span>
-                        <span class="pull-right margin-right-md">
-                            {{ document.size | numberFormat}} Kb
-                        </span>
-                        <span class="pull-right margin-right-md">
-                            <i v-tooltip="$options.filters.timeFromNow(document.created_at)" class="fa fa-calendar"></i>
-                        </span>
-                        <span class="pull-right margin-right-md">
-                            <i v-tooltip="document.owner.full_name" class="fa fa-male"></i>
+                        <span class="pull-right">
+                            <i class="fa fa-male margin-right-md"
+                                v-tooltip="document.owner.full_name">
+                            </i>
+                            <i class="fa fa-calendar margin-right-md"
+                                v-tooltip="$options.filters.timeFromNow(document.created_at)">
+                            </i>
+                            <i class="fa fa-database margin-right-md"
+                                v-tooltip="$options.filters.numberFormat(document.size) + ' Kb'">
+                            </i>
                         </span>
                     </li>
                 </div>
@@ -190,6 +192,10 @@
     .box-body.documents {
         overflow-y:scroll;
         max-height: 300px
+    }
+
+    span.action-buttons {
+        width: 50px;
     }
 
 </style>

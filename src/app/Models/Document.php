@@ -24,14 +24,14 @@ class Document extends Model
 
     public function getOwnerAttribute()
     {
-        $attribute = [
+        $owner = [
             'full_name'   => $this->user->full_name,
             'avatarId'    => $this->user->avatar ? $this->user->avatar->id : null,
         ];
 
         unset($this->user);
 
-        return $attribute;
+        return $owner;
     }
 
     public function getIsDownloadableAttribute()
