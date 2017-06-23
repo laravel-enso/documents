@@ -5,14 +5,14 @@ use LaravelEnso\Core\app\Classes\StructureManager\StructureMigration;
 class CreateStructureForDocumentsManager extends StructureMigration
 {
     protected $permissionGroup = [
-        'name' => 'core.documents', 'description' => 'Documents Permissions Group',
+        'name' => 'core.documents', 'description' => 'Documents permissions group',
     ];
 
     protected $permissions = [
-        ['name' => 'core.documents.upload', 'description' => 'Upload Docs', 'type' => 1, 'default' => false],
-        ['name' => 'core.documents.index', 'description' => 'List Documents for Documentable', 'type' => 0, 'default' => false],
-        ['name' => 'core.documents.show', 'description' => 'Show Document', 'type' => 0, 'default' => false],
-        ['name' => 'core.documents.download', 'description' => 'Download Document', 'type' => 0, 'default' => false],
-        ['name' => 'core.documents.destroy', 'description' => 'Delete Document', 'type' => 1, 'default' => false],
+        ['name' => 'core.documents.upload', 'description' => 'Upload documents', 'type' => 1, 'default' => false],
+        ['name' => 'core.documents.index', 'description' => 'List documents for cocumentable', 'type' => 0, 'default' => false],
+        ['name' => 'core.documents.show', 'description' => 'Open document in browser', 'type' => 0, 'default' => false],
+        ['name' => 'core.documents.download', 'description' => 'Download document', 'type' => 0, 'default' => false],
+        ['name' => 'core.documents.destroy', 'description' => 'Delete document', 'type' => 1, 'default' => false],
     ];
 }
