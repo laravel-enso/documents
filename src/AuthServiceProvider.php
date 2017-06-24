@@ -6,7 +6,7 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use LaravelEnso\DocumentsManager\app\Models\Document;
 use LaravelEnso\DocumentsManager\app\Policies\DocumentPolicy;
 
-class DocumentsAuthServiceProvider extends ServiceProvider
+class AuthServiceProvider extends ServiceProvider
 {
     protected $policies;
 

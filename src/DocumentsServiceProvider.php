@@ -35,6 +35,6 @@ class DocumentsManagerServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->register(DocumentsAuthServiceProvider::class);
+        $this->app->register(AuthServiceProvider::class);
     }
 }

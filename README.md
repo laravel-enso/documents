@@ -8,7 +8,7 @@ Documents Manager for Laravel Enso. This plugin creates a Document model that ha
 
 ### Installation Steps
 
-1. Add `LaravelEnso\CommentsManager\DocumentsManagerServiceProvider::class` to `config/app.php`. (included if you use LaravelEnso/coreplus)
+1. Add `LaravelEnso\CommentsManager\DocumentsServiceProvider::class` to `config/app.php`. (included if you use LaravelEnso/coreplus)
 
 2. Run migrations.
 

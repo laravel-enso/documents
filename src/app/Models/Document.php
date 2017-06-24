@@ -14,7 +14,7 @@ class Document extends Model
 
     public function user()
     {
-        return $this->belongsTo(config('auth.providers.users.model'), 'created_by', 'id');
+        return $this->belongsTo('LaravelEnso\Core\app\Models\User', 'created_by', 'id');
     }
 
     public function documentable()
