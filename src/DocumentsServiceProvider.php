@@ -4,7 +4,7 @@ namespace LaravelEnso\DocumentsManager;
 
 use Illuminate\Support\ServiceProvider;
 
-class DocumentsManagerServiceProvider extends ServiceProvider
+class DocumentsServiceProvider extends ServiceProvider
 {
     public function boot()
     {
