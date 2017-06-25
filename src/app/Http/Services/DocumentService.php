@@ -41,7 +41,7 @@ class DocumentService
 
     public function show(Document $document)
     {
-        return $this->fileManager->getInline($document->original_name, $document->saved_name);
+        return $this->fileManager->getInline($document->saved_name);
     }
 
     public function download(Document $document)
