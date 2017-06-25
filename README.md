@@ -12,35 +12,17 @@ Documents Manager for Laravel Enso. This plugin creates a Document model that ha
 
 2. Run migrations.
 
-3. Publish the config file with `php artisan vendor:publish --tag=documents-config`.
+3. Publish the config file with `php artisan vendor:publish --tag=documents-config`. Define the 'model' => 'App\Model' mapping in the config/documents.php file.
 
 4. Publish the vue component with `php artisan vendor:publish --tag=documents-component`.
 
-5. Include the vue-component in your app.js.
+4. Include the vue-component in your app.js. Compile.
 
-6. Run gulp.
+5. Add `use Documentable` in the Model that need documents and import the trait. This way you can call the $model->documents relationship.
 
-7. Add the following relationship to the Model that need documents.
+6. Because users upload documents you can add 'use Documents' to the User model. This trait will se the relationship between users and documents that they create.
 
-```php
-public function documents()
-{
-    return $this->morphMany('LaravelEnso\DocumentsManager\app\Models\Document', 'documentable');
-}
-```
-
-8. Define the 'model' => 'App\Model' mapping in the config.
-
-9. Because users upload documents you can add the following relationship to the User model.
-
-```php
-public function documents()
-{
-    return $this->hasMany('LaravelEnso\DocumentsManager\app\Models\Document', 'created_by');
-}
-```
-
-10. Add to you blade
+7. Add to you blade
 
 ```
 <documents-manager :id="ownerId"
