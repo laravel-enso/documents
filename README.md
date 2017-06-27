@@ -4,7 +4,16 @@
 [![Total Downloads](https://poser.pugx.org/laravel-enso/documentsmanager/downloads)](https://packagist.org/packages/laravel-enso/documentsmanager)
 [![Latest Stable Version](https://poser.pugx.org/laravel-enso/documentsmanager/version)](https://packagist.org/packages/laravel-enso/documentsmanager)
 
-Documents Manager for Laravel Enso. This plugin creates a Document model that has a `documentable` morphTo relation.
+Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
+
+### Details
+
+- permits the management (upload, download, delete, show) of documents in the application 
+- can link documents to any other model
+- creates a `Document` model that has a `documentable` morphTo relationship
+- comes with its own VueJS component
+- uses [FileManager](https://github.com/laravel-enso/FileManager) for file operations
+- security policies are used to enforce proper user authorization 
 
 ### Installation Steps
 
@@ -20,18 +29,18 @@ Documents Manager for Laravel Enso. This plugin creates a Document model that ha
 
 5. Add `use Documentable` in the Model that need documents and import the trait. This way you can call the $model->documents relationship.
 
-6. Because users upload documents you can add 'use Documents' to the User model. This trait will se the relationship between users and documents that they create.
+6. Because users upload documents you can add 'use Documents' to the User model. This trait will set the relationship between users and documents that they create.
 
 7. Add to you blade
 
-```
-<documents-manager :id="ownerId"
-    :file-size-limit="5000000"
-    type="owner">
-    <span slot="documents-manager-title">{{ __("Documents") }}</span>
-    @include('laravel-enso/core::partials.modal')
-</documents-manager>
-```
+    ```
+    <documents-manager :id="ownerId"
+        :file-size-limit="5000000"
+        type="owner">
+        <span slot="documents-manager-title">{{ __("Documents") }}</span>
+        @include('laravel-enso/core::partials.modal')
+    </documents-manager>
+    ```
 
 ### Options
 
@@ -39,6 +48,16 @@ Documents Manager for Laravel Enso. This plugin creates a Document model that ha
 	`id` - the id of the commentable model (required)
     `header-class` - header class for the box element: info (default option) / default / primary / warning / danger / default
 
+### Publishes
+
+- `php artisan vendor:publish --tag=documents-config` - configuration file
+- `php artisan vendor:publish --tag=documents-component` - configuration file
+- `php artisan vendor:publish --tag=enso-update` - a common alias for when wanting to update the VueJS component, 
+once a newer version is released
+- `php artisan vendor:publish --tag=enso-config` - a common alias for when wanting to update the config, 
+once a newer version is released
+
+
 ### Contributions
 
-...are welcome
+are welcome
