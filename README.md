@@ -51,7 +51,7 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 ### Publishes
 
 - `php artisan vendor:publish --tag=documents-config` - configuration file
-- `php artisan vendor:publish --tag=documents-component` - configuration file
+- `php artisan vendor:publish --tag=documents-component` - the VueJS component
 - `php artisan vendor:publish --tag=enso-update` - a common alias for when wanting to update the VueJS component, 
 once a newer version is released
 - `php artisan vendor:publish --tag=enso-config` - a common alias for when wanting to update the config, 
