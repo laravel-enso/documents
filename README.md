@@ -17,7 +17,7 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
 ### Installation Steps
 
-1. Add `LaravelEnso\CommentsManager\DocumentsServiceProvider::class` to `config/app.php`. (included if you use LaravelEnso/coreplus)
+1. Add `LaravelEnso\CommentsManager\DocumentsServiceProvider::class` to `config/app.php`
 
 2. Run migrations.
 
