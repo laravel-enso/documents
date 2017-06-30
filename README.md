@@ -6,6 +6,10 @@
 
 Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
+[![Watch the demo](https://laravel-enso.github.io/documentsmanager/screenshots/Selection_019.png)](https://laravel-enso.github.io/documentsmanager/videos/demo_01.webm)
+
+<sup>click on the photo to view a short demo in compatible browsers</sup>
+
 ### Details
 
 - permits the management (upload, download, delete, show) of documents in the application 
