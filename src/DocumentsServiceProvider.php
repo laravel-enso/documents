@@ -15,7 +15,7 @@ class DocumentsServiceProvider extends ServiceProvider
     private function publishesAll()
     {
         $this->publishes([
-            __DIR__.'/config' => config_path(),
+            __DIR__.'/config/documents.php' => config_path('documents.php'),
         ], 'documents-config');
 
         $this->publishes([
@@ -33,6 +33,7 @@ class DocumentsServiceProvider extends ServiceProvider
 
     private function loadDependencies()
     {
+        $this->mergeConfigFrom(__DIR__.'/config/documents.php', 'documents.php');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
     }
