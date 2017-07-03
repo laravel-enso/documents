@@ -5,6 +5,7 @@ namespace LaravelEnso\DocumentsManager\app\Http\Services;
 use Illuminate\Http\Request;
 use LaravelEnso\DocumentsManager\app\Models\Document;
 use LaravelEnso\FileManager\Classes\FileManager;
+use LaravelEnso\ImageTransformer\Classes\ImageTransformer;
 
 class DocumentService
 {
@@ -29,7 +30,9 @@ class DocumentService
     {
         try {
             \DB::transaction(function () {
-                $this->fileManager->startUpload($this->request->all());
+                $files = $this->request->allFiles();
+                $this->optimizeImages($files);
+                $this->fileManager->startUpload($files);
                 $this->store();
                 $this->fileManager->commitUpload();
             });
@@ -72,6 +75,13 @@ class DocumentService
         });
 
         $this->documentable->documents()->saveMany($documentsList);
+    }
+
+    private function optimizeImages($files)
+    {
+        (new ImageTransformer($files))
+            ->resize(config('documents.imageWidth'), config('documents.imageHeight'))
+            ->optimize();
     }
 
     private function getDocumentable()

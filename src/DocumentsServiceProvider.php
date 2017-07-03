@@ -3,6 +3,7 @@
 namespace LaravelEnso\DocumentsManager;
 
 use Illuminate\Support\ServiceProvider;
+use LaravelEnso\ImageTransformer\ImageTransformerServiceProvider;
 
 class DocumentsServiceProvider extends ServiceProvider
 {
@@ -33,7 +34,7 @@ class DocumentsServiceProvider extends ServiceProvider
 
     private function loadDependencies()
     {
-        $this->mergeConfigFrom(__DIR__.'/config/documents.php', 'documents.php');
+        $this->mergeConfigFrom(__DIR__.'/config/documents.php', 'documents');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
     }
@@ -41,5 +42,6 @@ class DocumentsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(AuthServiceProvider::class);
+        $this->app->register(ImageTransformerServiceProvider::class);
     }
 }
