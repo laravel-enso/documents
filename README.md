@@ -17,6 +17,7 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 - creates a `Document` model that has a `documentable` morphTo relationship
 - comes with its own VueJS component
 - uses [FileManager](https://github.com/laravel-enso/FileManager) for file operations
+- uses the [Image Transformer](https://github.com/laravel-enso/ImageTransformer) package for cropping and optimizing the avatar files
 - security policies are used to enforce proper user authorization 
 
 ### Installation Steps
