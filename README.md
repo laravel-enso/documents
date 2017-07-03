@@ -1,6 +1,7 @@
 # Documents Manager
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/3118ebe6bb4647df99675e83a9f56de2)](https://www.codacy.com/app/laravel-enso/DocumentsManager?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=laravel-enso/DocumentsManager&amp;utm_campaign=Badge_Grade)
 [![StyleCI](https://styleci.io/repos/85587885/shield?branch=master)](https://styleci.io/repos/85587885)
+[![License](https://poser.pugx.org/laravel-enso/datatable/license)](https://https://packagist.org/packages/laravel-enso/datatable)
 [![Total Downloads](https://poser.pugx.org/laravel-enso/documentsmanager/downloads)](https://packagist.org/packages/laravel-enso/documentsmanager)
 [![Latest Stable Version](https://poser.pugx.org/laravel-enso/documentsmanager/version)](https://packagist.org/packages/laravel-enso/documentsmanager)
 
@@ -26,11 +27,11 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
 2. Run migrations.
 
-3. Publish the config file with `php artisan vendor:publish --tag=documents-config`. Define the 'model' => 'App\Model' mapping in the config/documents.php file.
+3. Publish the config file with `php artisan vendor:publish --tag=documents-config`. Define the 'model' => 'App\Model' mapping in the `config/documents.php` file.
 
-4. Publish the vue component with `php artisan vendor:publish --tag=documents-component`.
+4. Publish the VueJS component with `php artisan vendor:publish --tag=documents-component`.
 
-4. Include the vue-component in your app.js. Compile.
+4. Include the VueJS component in your `app.js`. Compile.
 
 5. Add `use Documentable` in the Model that need documents and import the trait. This way you can call the $model->documents relationship.
 
