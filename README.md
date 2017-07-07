@@ -1,9 +1,11 @@
+<!--h--> 
 # Documents Manager
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/3118ebe6bb4647df99675e83a9f56de2)](https://www.codacy.com/app/laravel-enso/DocumentsManager?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=laravel-enso/DocumentsManager&amp;utm_campaign=Badge_Grade)
 [![StyleCI](https://styleci.io/repos/85587885/shield?branch=master)](https://styleci.io/repos/85587885)
 [![License](https://poser.pugx.org/laravel-enso/datatable/license)](https://https://packagist.org/packages/laravel-enso/datatable)
 [![Total Downloads](https://poser.pugx.org/laravel-enso/documentsmanager/downloads)](https://packagist.org/packages/laravel-enso/documentsmanager)
 [![Latest Stable Version](https://poser.pugx.org/laravel-enso/documentsmanager/version)](https://packagist.org/packages/laravel-enso/documentsmanager)
+<!--/h-->
 
 Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
@@ -11,15 +13,19 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
 <sup>click on the photo to view a short demo in compatible browsers</sup>
 
-### Details
+### Features
 
 - permits the management (upload, download, delete, show) of documents in the application 
 - can link documents to any other model
-- creates a `Document` model that has a `documentable` morphTo relationship
 - comes with its own VueJS component
 - uses [FileManager](https://github.com/laravel-enso/FileManager) for file operations
 - uses the [Image Transformer](https://github.com/laravel-enso/ImageTransformer) package for cropping and optimizing the avatar files
 - security policies are used to enforce proper user authorization 
+
+### Under the Hood
+- creates a `Document` model that has a `documentable` morphTo relationship
+- polymorphic relationships are used, which makes it possible to attach documents to any other entity
+- within the entity to which we want to attach documents, we must use the `Documentable` trait
 
 ### Installation Steps
 
@@ -50,9 +56,9 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
 ### Options
 
-	`type` - the commentable model (required)
-	`id` - the id of the commentable model (required)
-    `header-class` - header class for the box element: info (default option) / default / primary / warning / danger / default
+- `type` - the commentable model (required)
+- `id` - the id of the commentable model (required)
+- `header-class` - header class for the box element: info (default option) / default / primary / warning / danger / default
 
 ### Publishes
 
@@ -63,7 +69,12 @@ once a newer version is released
 - `php artisan vendor:publish --tag=enso-config` - a common alias for when wanting to update the config, 
 once a newer version is released
 
-
+<!--h-->
 ### Contributions
 
-are welcome
+are welcome. Pull requests are great, but issues are good too.
+
+### License
+
+This package is released under the MIT license.
+<!--/h-->
