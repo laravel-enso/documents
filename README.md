@@ -1,4 +1,4 @@
-<!--h--> 
+<!--h-->
 # Documents Manager
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/3118ebe6bb4647df99675e83a9f56de2)](https://www.codacy.com/app/laravel-enso/DocumentsManager?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=laravel-enso/DocumentsManager&amp;utm_campaign=Badge_Grade)
 [![StyleCI](https://styleci.io/repos/85587885/shield?branch=master)](https://styleci.io/repos/85587885)
@@ -9,18 +9,18 @@
 
 Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
-[![Watch the demo](https://laravel-enso.github.io/documentsmanager/screenshots/Selection_019.png)](https://laravel-enso.github.io/documentsmanager/videos/demo_01.webm)
+[![Watch the demo](https://laravel-enso.github.io/documentsmanager/screenshots/Selection_019_thumb.png)](https://laravel-enso.github.io/documentsmanager/videos/demo_01.webm)
 
 <sup>click on the photo to view a short demo in compatible browsers</sup>
 
 ### Features
 
-- permits the management (upload, download, delete, show) of documents in the application 
+- permits the management (upload, download, delete, show) of documents in the application
 - can link documents to any other model
 - comes with its own VueJS component
 - uses [FileManager](https://github.com/laravel-enso/FileManager) for file operations
 - uses the [Image Transformer](https://github.com/laravel-enso/ImageTransformer) package for cropping and optimizing the avatar files
-- security policies are used to enforce proper user authorization 
+- security policies are used to enforce proper user authorization
 
 ### Under the Hood
 - creates a `Document` model that has a `documentable` morphTo relationship
@@ -64,9 +64,9 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
 - `php artisan vendor:publish --tag=documents-config` - configuration file
 - `php artisan vendor:publish --tag=documents-component` - the VueJS component
-- `php artisan vendor:publish --tag=enso-update` - a common alias for when wanting to update the VueJS component, 
+- `php artisan vendor:publish --tag=enso-update` - a common alias for when wanting to update the VueJS component,
 once a newer version is released
-- `php artisan vendor:publish --tag=enso-config` - a common alias for when wanting to update the config, 
+- `php artisan vendor:publish --tag=enso-config` - a common alias for when wanting to update the config,
 once a newer version is released
 
 <!--h-->
