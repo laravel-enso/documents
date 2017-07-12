@@ -1,12 +1,21 @@
 {
     "name": "laravel-enso/documentsmanager",
     "description": "Documents Manager for Laravel Enso",
+    "keywords": [
+        "laravel-enso",
+        "documentsmanager",
+        "documents-manager",
+        "file-uploader"
+    ],
+    "homepage": "https://github.com/laravel-enso/DocumentsManager",
     "type": "plugin",
     "license": "MIT",
     "authors": [
         {
-            "name": "Mishu",
-            "email": "mishu@xtelecom.ro"
+            "name": "Adrian Ocneanu",
+            "email": "aocneanu@gmail.com",
+            "homepage": "https://laravel-enso.com",
+            "role": "Developer"
         }
     ],
     "require": {
@@ -18,6 +27,14 @@
     "autoload": {
         "psr-4": {
             "LaravelEnso\\DocumentsManager\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LaravelEnso\\DocumentsServiceProvider"
+            ],
+            "aliases": {}
         }
     }
 }
