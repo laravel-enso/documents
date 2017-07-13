@@ -33,7 +33,7 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
 2. Run migrations.
 
-3. Publish the config file with `php artisan vendor:publish --tag=documents-config`. Define the 'model' => 'App\Model' mapping in the `config/documents.php` file.
+3. Publish the config file with `php artisan vendor:publish --tag=documents-config`. Define the `'model_alias' => 'App\Model'` mapping in the `config/documents.php` file.
 
 4. Publish the VueJS component with `php artisan vendor:publish --tag=documents-component`.
 
@@ -48,7 +48,7 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
     ```
     <documents-manager :id="ownerId"
         :file-size-limit="5000000"
-        type="owner">
+        type="model_alias">
         <span slot="documents-manager-title">{{ __("Documents") }}</span>
         @include('laravel-enso/core::partials.modal')
     </documents-manager>
@@ -56,7 +56,7 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
 ### Options
 
-- `type` - the commentable model (required)
+- `type` - the commentable model alias (required) you set at the installation step #3
 - `id` - the id of the commentable model (required)
 - `header-class` - header class for the box element: info (default option) / default / primary / warning / danger / default
 
