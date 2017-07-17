@@ -13,7 +13,9 @@ class DocumentPolicy
 
     public function before($user, $ability)
     {
-        return $user->isAdmin();
+        if ($user->isAdmin()) {
+            return true;
+        }
     }
 
     public function download(User $user, Document $document)
