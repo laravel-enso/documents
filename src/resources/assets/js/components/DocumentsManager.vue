@@ -89,18 +89,6 @@
         <modal :show="showModal"
             @cancel-action="showModal = false"
             @commit-action="destroy()">
-            <span slot="modal-body">
-                <slot name="modal-body">
-                </slot>
-            </span>
-            <span slot="modal-cancel">
-                <slot name="modal-cancel">
-                </slot>
-            </span>
-            <span slot="modal-ok">
-                <slot name="modal-ok">
-                </slot>
-            </span>
         </modal>
     </div>
 
