@@ -4,8 +4,7 @@
         <div class="box-header with-border">
             <i class="fa fa-files-o"></i>
             <h3 class="box-title">
-                <slot name="documents-manager-title">
-                </slot>
+                {{ labels.documents }}
             </h3>
             <div class="box-tools pull-right">
                 <i v-if="documentsList.length > 1"
@@ -143,6 +142,7 @@
 
         data() {
             return {
+                labels: Store.labels,
                 documentsList: [],
                 documentIdToBeDeleted: null,
                 showModal: false,

@@ -49,8 +49,6 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
     <documents-manager :id="ownerId"
         :file-size-limit="5000000"
         type="model_alias">
-        <span slot="documents-manager-title">{{ __("Documents") }}</span>
-        @include('laravel-enso/core::partials.modal')
     </documents-manager>
     ```
 
