@@ -19,7 +19,7 @@ class DocumentController extends Controller
         return $this->documents->index();
     }
 
-    public function upload(string $type, int $id)
+    public function store(string $type, int $id)
     {
         return $this->documents->upload();
     }

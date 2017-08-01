@@ -10,15 +10,18 @@ use LaravelEnso\ImageTransformer\Classes\ImageTransformer;
 class DocumentService
 {
     private $request;
-    private $fileManager;
-    private $documentable;
     private $messages;
+    private $fileManager;
 
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->fileManager = new FileManager(config('laravel-enso.paths.files'), config('laravel-enso.paths.temp'));
         $this->messages = collect();
+
+        $this->fileManager = new FileManager(
+            config('laravel-enso.paths.files'),
+            config('laravel-enso.paths.temp')
+        );
     }
 
     public function index()
@@ -63,8 +66,8 @@ class DocumentService
     private function store()
     {
         $documentsList = collect();
-        $this->getDocumentable();
-        $existingDocuments = $this->documentable->documents->pluck('original_name');
+        $documentable = $this->getDocumentable();
+        $existingDocuments = $documentable->documents->pluck('original_name');
 
         $this->fileManager->getUploadedFiles()->each(function ($file) use (&$documentsList, $existingDocuments) {
             if ($existingDocuments->contains($file['original_name'])) {
@@ -74,7 +77,7 @@ class DocumentService
             $documentsList->push(new Document($file));
         });
 
-        $this->documentable->documents()->saveMany($documentsList);
+        $documentable->documents()->saveMany($documentsList);
     }
 
     private function optimizeImages($files)
@@ -86,7 +89,7 @@ class DocumentService
 
     private function getDocumentable()
     {
-        return $this->documentable = $this->getDocumentableClass()::find($this->request->route()->parameter('id'));
+        return $this->getDocumentableClass()::find($this->request->route()->parameter('id'));
     }
 
     private function getDocumentableClass()

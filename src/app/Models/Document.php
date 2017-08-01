@@ -3,6 +3,7 @@
 namespace LaravelEnso\DocumentsManager\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use LaravelEnso\Core\app\Models\User;
 use LaravelEnso\TrackWho\app\Traits\CreatedBy;
 
 class Document extends Model
@@ -10,11 +11,12 @@ class Document extends Model
     use CreatedBy;
 
     protected $fillable = ['original_name', 'saved_name', 'size'];
-    protected $appends = ['owner', 'is_downloadable', 'is_deletable'];
+
+    protected $appends = ['owner', 'isDownloadable', 'isDeletable'];
 
     public function user()
     {
-        return $this->belongsTo('LaravelEnso\Core\app\Models\User', 'created_by', 'id');
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
     public function documentable()
@@ -25,7 +27,7 @@ class Document extends Model
     public function getOwnerAttribute()
     {
         $owner = [
-            'full_name'   => $this->user->full_name,
+            'fullName'   => $this->user->fullName,
             'avatarId'    => $this->user->avatar ? $this->user->avatar->id : null,
         ];
 

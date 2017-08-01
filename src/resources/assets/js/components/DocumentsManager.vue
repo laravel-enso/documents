@@ -7,14 +7,14 @@
                 {{ labels.documents }}
             </h3>
             <div class="box-tools pull-right">
-                <i v-if="documentsList.length > 1"
+                <i v-if="documents.length > 1"
                     class="fa fa-search">
                 </i>
                 <input type="text"
                     class="documents-filter"
                     size=15
                     v-model="query"
-                    v-if="documentsList.length > 1">
+                    v-if="documents.length > 1">
                 <button class="btn btn-box-tool btn-sm">
                     <file-uploader
                         @upload-successful="get()"
@@ -27,7 +27,7 @@
                     </file-uploader>
                 </button>
                 <span class="badge bg-orange">
-                    {{ documentsList.length }}
+                    {{ documents.length }}
                 </span>
                 <button type="button"
                     class="btn btn-box-tool btn-sm"
@@ -44,33 +44,33 @@
             <div class="col-md-12">
                 <div class="list-group list-group-unbordered">
                     <li class="list-group-item"
-                        v-for="(document, index) in filteredDocumentsList">
+                        v-for="(document, index) in filteredDocuments">
                         <span>
                             {{ index + 1 }}.
                         </span>
                         <span>
                             <a href="#"
-                                v-if="document.is_downloadable"
+                                v-if="document.isDownloadable"
                                 @click="show(document.id)">
                                 {{ document.original_name }}
                             </a>
-                            <span v-if="!document.is_downloadable">{{ document.original_name }}</span>
+                            <span v-if="!document.isDownloadable">{{ document.original_name }}</span>
                         </span>
                         <span class="pull-right action-buttons">
                             <a class="btn btn-xs btn-info"
-                                v-if="document.is_downloadable"
+                                v-if="document.isDownloadable"
                                 :href="'/core/documents/download/' + document.id">
                                 <i class="fa fa-cloud-download"></i>
                             </a>
                             <a class="btn btn-xs btn-danger"
-                                v-if="document.is_deletable"
-                                @click="documentIdToBeDeleted = document.id; showModal = true;">
+                                v-if="document.isDeletable"
+                                @click="idToBeDeleted = document.id; showModal = true;">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </span>
                         <span class="pull-right">
                             <i class="fa fa-male margin-right-md"
-                                v-tooltip="document.owner.full_name">
+                                v-tooltip="document.owner.fullName">
                             </i>
                             <i class="fa fa-calendar margin-right-md"
                                 v-tooltip="$options.filters.timeFromNow(document.created_at)">
@@ -117,22 +117,22 @@
         },
 
         computed: {
-            filteredDocumentsList() {
+            filteredDocuments() {
                 if (this.query) {
-                    return this.documentsList.filter((document) => {
+                    return this.documents.filter((document) => {
                         return document.original_name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
                     })
                 }
 
-                return this.documentsList;
+                return this.documents;
             },
         },
 
         data() {
             return {
                 labels: Store.labels,
-                documentsList: [],
-                documentIdToBeDeleted: null,
+                documents: [],
+                idToBeDeleted: null,
                 showModal: false,
                 query: "",
                 loading: false
@@ -144,7 +144,7 @@
                 this.loading = true;
 
                 axios.get('/core/documents/' + this.type + '/' + this.id).then(response => {
-                    this.documentsList = response.data;
+                    this.documents = response.data;
                     this.loading = false;
                 }).catch(error => {
                     this.loading = false;
@@ -158,8 +158,8 @@
                 this.showModal = false;
                 this.loading = true;
 
-                axios.delete('/core/documents/destroy/' + this.documentIdToBeDeleted).then((response) => {
-                    this.documentIdToBeDeleted = null;
+                axios.delete('/core/documents/destroy/' + this.idToBeDeleted).then((response) => {
+                    this.idToBeDeleted = null;
                     this.get();
                 }).catch(error => {
                     this.loading = false;

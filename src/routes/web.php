@@ -5,7 +5,7 @@ Route::middleware(['web', 'auth', 'core'])
     ->group(function () {
         Route::prefix('core/documents')->as('core.documents.')
             ->group(function () {
-                Route::post('upload/{type}/{id}', 'DocumentController@upload')
+                Route::post('upload/{type}/{id}', 'DocumentController@store')
                     ->name('upload');
                 Route::get('show/{document}', 'DocumentController@show')
                     ->name('show');

@@ -2,10 +2,12 @@
 
 namespace LaravelEnso\DocumentsManager\app\Traits;
 
+use LaravelEnso\DocumentsManager\app\Models\Document;
+
 trait Documents
 {
     public function documents()
     {
-        return $this->hasMany('LaravelEnso\DocumentsManager\app\Models\Document', 'created_by');
+        return $this->hasMany(Document::class, 'created_by');
     }
 }
