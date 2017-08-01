@@ -27,7 +27,7 @@ class Document extends Model
     public function getOwnerAttribute()
     {
         $owner = [
-            'fullName'   => $this->user->fullName,
+            'fullName'    => $this->user->fullName,
             'avatarId'    => $this->user->avatar ? $this->user->avatar->id : null,
         ];
 
