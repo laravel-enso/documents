@@ -4,7 +4,7 @@
         <div class="box-header with-border">
             <i class="fa fa-files-o"></i>
             <h3 class="box-title">
-                {{ labels.documents }}
+                {{ title or labels.documents }}
             </h3>
             <div class="box-tools pull-right">
                 <i v-if="documents.length > 1"
@@ -113,6 +113,10 @@
             fileSizeLimit: {
                 type: Number,
                 default: 8388608
+            },
+            title: {
+                type: String,
+                default: ''
             }
         },
 
