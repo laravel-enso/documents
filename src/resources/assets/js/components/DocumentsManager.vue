@@ -4,7 +4,7 @@
         <div class="box-header with-border">
             <i class="fa fa-files-o"></i>
             <h3 class="box-title">
-                {{ title or labels.documents }}
+                {{ title || labels.documents }}
             </h3>
             <div class="box-tools pull-right">
                 <i v-if="documents.length > 1"
