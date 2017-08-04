@@ -5,10 +5,8 @@ use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use LaravelEnso\Core\app\Exceptions\EnsoException;
 use LaravelEnso\DocumentsManager\app\Models\Document;
 use LaravelEnso\TestHelper\app\Classes\TestHelper;
-use Tests\TestCase;
 
 class DocumentTest extends TestHelper
 {
@@ -29,7 +27,7 @@ class DocumentTest extends TestHelper
     /** @test */
     public function index()
     {
-        $response = $this->get('/core/documents/owner/' . $this->owner->id);
+        $response = $this->get('/core/documents/owner/'.$this->owner->id);
 
         $response->assertStatus(200);
     }
@@ -37,7 +35,7 @@ class DocumentTest extends TestHelper
     /** @test */
     public function upload()
     {
-        $response = $this->json('POST', '/core/documents/upload/owner/' . $this->owner->id, [
+        $response = $this->json('POST', '/core/documents/upload/owner/'.$this->owner->id, [
             'file' => UploadedFile::fake()->create('document.doc'),
         ]);
 
@@ -90,7 +88,7 @@ class DocumentTest extends TestHelper
 
     private function uploadDocument()
     {
-        $this->json('POST', '/core/documents/upload/owner/' . $this->owner->id, [
+        $this->json('POST', '/core/documents/upload/owner/'.$this->owner->id, [
             'file' => UploadedFile::fake()->create('document.doc'),
         ]);
     }
@@ -99,5 +97,4 @@ class DocumentTest extends TestHelper
     {
         Storage::deleteDirectory('testFolder');
     }
-
 }
