@@ -46,7 +46,7 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 7. Add to you blade
 
     ```
-    <documents-manager :id="ownerId"
+    <documents :id="ownerId"
         :file-size-limit="5000000"
         type="model_alias">
     </documents-manager>
