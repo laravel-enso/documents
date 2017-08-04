@@ -27,15 +27,14 @@ class DocumentTest extends TestHelper
     /** @test */
     public function index()
     {
-        $response = $this->get('/core/documents/owner/'.$this->owner->id);
-
-        $response->assertStatus(200);
+        $this->get('/core/documents/owner/'.$this->owner->id)
+            ->assertStatus(200);
     }
 
     /** @test */
     public function upload()
     {
-        $response = $this->json('POST', '/core/documents/upload/owner/'.$this->owner->id, [
+        $this->json('POST', '/core/documents/upload/owner/'.$this->owner->id, [
             'file' => UploadedFile::fake()->create('document.doc'),
         ]);
 
@@ -52,9 +51,8 @@ class DocumentTest extends TestHelper
         $this->uploadDocument();
         $document = $this->owner->documents->first();
 
-        $response = $this->get('/core/documents/show/'.$document->id);
-
-        $response->assertStatus(200);
+        $this->get('/core/documents/show/'.$document->id)
+            ->assertStatus(200);
 
         $this->cleanUp();
     }
@@ -65,9 +63,8 @@ class DocumentTest extends TestHelper
         $this->uploadDocument();
         $document = $this->owner->documents->first();
 
-        $response = $this->get('/core/documents/download/'.$document->id);
-
-        $response->assertStatus(200);
+        $this->get('/core/documents/download/'.$document->id)
+            ->assertStatus(200);
 
         $this->cleanUp();
     }
@@ -78,7 +75,7 @@ class DocumentTest extends TestHelper
         $this->uploadDocument();
         $document = $this->owner->documents->first();
 
-        $response = $this->delete('/core/documents/destroy/'.$document->id);
+        $this->delete('/core/documents/destroy/'.$document->id);
 
         $this->assertNull($document->fresh());
         Storage::assertMissing('testFolder/'.$document->saved_name);
