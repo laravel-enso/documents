@@ -2,9 +2,10 @@
 
     <box :theme="theme"
         collapsible refresh search removable
+        :border="!solid"
         :solid="solid"
         :open="open"
-        max-height="300px"
+        :body-style="bodyStyle"
         @refresh="get()"
         icon="fa fa-files-o"
         :title="title || labels.documents"
@@ -92,7 +93,8 @@
                 labels: Store.labels,
                 documents: [],
                 query: "",
-                loading: false
+                loading: false,
+                bodyStyle: {'max-height': '370px', 'overflow-y': 'auto'}
             }
         },
 

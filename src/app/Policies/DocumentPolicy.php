@@ -36,6 +36,6 @@ class DocumentPolicy
 
     private function documentIsRecent(Document $document)
     {
-        return $document->created_at->diffInHours(Carbon::now()) <= config('documents.editableTimeLimitInHours');
+        return $document->created_at->diffInHours(Carbon::now()) <= config('documents.deletableTimeLimitInHours');
     }
 }

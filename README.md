@@ -49,7 +49,7 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
     <documents :id="ownerId"
         :file-size-limit="5000000"
         type="model_alias">
-    </documents-manager>
+    </documents>
     ```
 
 ### Options
