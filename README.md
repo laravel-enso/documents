@@ -35,11 +35,16 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
 3. Publish the config file with `php artisan vendor:publish --tag=documents-config`. Define the `'model_alias' => 'App\Model'` mapping in the `config/documents.php` file.
 
-4. Publish the VueJS component with `php artisan vendor:publish --tag=documents-component`.
+4. Publish the VueJS components with `php artisan vendor:publish --tag=documents-component`.
 
-4. Include the VueJS component in your `app.js`. Compile.
+4. Include the VueJS components in your `app.js` and then compile with `gulp` / `npm run dev`
 
-5. Add `use Documentable` in the Model that need documents and import the trait. This way you can call the $model->documents relationship.
+````js
+Vue.component('documents', require('./vendor/laravel-enso/components/documents/Documents.vue'));
+Vue.component('document', require('./vendor/laravel-enso/components/documents/Document.vue'));
+````
+
+5. Add `use Documentable` in the Model that need documents and import the trait. This way you can call the `$model->documents` relationship.
 
 6. Because users upload documents you can add 'use Documents' to the User model. This trait will set the relationship between users and documents that they create.
 
@@ -61,8 +66,8 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 ### Publishes
 
 - `php artisan vendor:publish --tag=documents-config` - configuration file
-- `php artisan vendor:publish --tag=documents-component` - the VueJS component
-- `php artisan vendor:publish --tag=enso-update` - a common alias for when wanting to update the VueJS component,
+- `php artisan vendor:publish --tag=documents-component` - the VueJS components
+- `php artisan vendor:publish --tag=enso-update` - a common alias for when wanting to update the VueJS components,
 once a newer version is released
 - `php artisan vendor:publish --tag=enso-config` - a common alias for when wanting to update the config,
 once a newer version is released
