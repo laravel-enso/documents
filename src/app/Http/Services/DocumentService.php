@@ -41,6 +41,7 @@ class DocumentService
             });
         } catch (\Exception $e) {
             $this->fileManager->deleteTempFiles();
+
             throw $e;
         }
     }
