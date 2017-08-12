@@ -34,11 +34,7 @@ class DocumentTest extends TestHelper
     /** @test */
     public function upload()
     {
-        $this->json('POST', '/core/documents/upload/owner/'.$this->owner->id, [
-            'file' => UploadedFile::fake()->create('document.doc'),
-        ]);
-
-        $document = $this->owner->documents->first();
+        $document = $this->uploadDocument();
         $this->assertNotNull($document);
         Storage::assertExists('testFolder/'.$document->saved_name);
 
@@ -48,8 +44,7 @@ class DocumentTest extends TestHelper
     /** @test */
     public function show()
     {
-        $this->uploadDocument();
-        $document = $this->owner->documents->first();
+        $document = $this->uploadDocument();
 
         $this->get('/core/documents/show/'.$document->id)
             ->assertStatus(200);
@@ -60,8 +55,7 @@ class DocumentTest extends TestHelper
     /** @test */
     public function download()
     {
-        $this->uploadDocument();
-        $document = $this->owner->documents->first();
+        $document = $this->uploadDocument();
 
         $this->get('/core/documents/download/'.$document->id)
             ->assertStatus(200);
@@ -72,22 +66,24 @@ class DocumentTest extends TestHelper
     /** @test */
     public function destroy()
     {
-        $this->uploadDocument();
-        $document = $this->owner->documents->first();
+        $document = $this->uploadDocument();
 
-        $this->delete('/core/documents/destroy/'.$document->id);
+        $this->delete('/core/documents/destroy/'.$document->id)
+            ->assertStatus(200);
 
-        $this->assertNull($document->fresh());
         Storage::assertMissing('testFolder/'.$document->saved_name);
+        $this->assertNull($document->fresh());
 
         $this->cleanUp();
     }
 
     private function uploadDocument()
     {
-        $this->json('POST', '/core/documents/upload/owner/'.$this->owner->id, [
+        $this->post('/core/documents/upload/owner/'.$this->owner->id, [
             'file' => UploadedFile::fake()->create('document.doc'),
         ]);
+
+        return $this->owner->documents->first();
     }
 
     private function cleanUp()
