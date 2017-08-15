@@ -10,6 +10,7 @@
         icon="fa fa-files-o"
         :title="title || labels.documents"
         :overlay="loading"
+        ref="box"
         @query-update="query = $event"
         :badge="documents.length">
         <span slot="btn-box-tool">
