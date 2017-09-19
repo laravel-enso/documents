@@ -21,14 +21,6 @@ class DocumentsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/config' => config_path(),
         ], 'enso-config');
-
-        $this->publishes([
-            __DIR__.'/resources/assets/js/components' => resource_path('assets/js/vendor/laravel-enso/components'),
-        ], 'documents-component');
-
-        $this->publishes([
-            __DIR__.'/resources/assets/js/components' => resource_path('assets/js/vendor/laravel-enso/components'),
-        ], 'enso-update');
     }
 
     private function loadDependencies()
