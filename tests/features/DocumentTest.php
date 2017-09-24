@@ -18,7 +18,7 @@ class DocumentTest extends TestHelper
     {
         parent::setUp();
 
-        $this->disableExceptionHandling();
+        // $this->disableExceptionHandling();
         config()->set('enso.config.paths.files', 'testFolder');
         $this->owner = Owner::first();
         $this->signIn(User::first());
