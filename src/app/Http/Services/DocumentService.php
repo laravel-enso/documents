@@ -9,34 +9,29 @@ use LaravelEnso\ImageTransformer\Classes\ImageTransformer;
 
 class DocumentService
 {
-    private $request;
-    private $messages;
     private $fileManager;
 
     public function __construct(Request $request)
     {
-        $this->request = $request;
-        $this->messages = collect();
-
         $this->fileManager = new FileManager(
-            config('laravel-enso.paths.files'),
-            config('laravel-enso.paths.temp')
+            config('enso.config.paths.files'),
+            config('enso.config.paths.temp')
         );
     }
 
-    public function index()
+    public function index(string $type, int $id)
     {
-        return $this->getDocumentable()->documents;
+        return $this->getDocumentable($type, $id)->documents;
     }
 
-    public function upload()
+    public function upload(Request $request, string $type, int $id)
     {
         try {
-            \DB::transaction(function () {
-                $files = $this->request->allFiles();
+            \DB::transaction(function () use ($request, $type, $id) {
+                $files = $request->allFiles();
                 $this->optimizeImages($files);
                 $this->fileManager->startUpload($files);
-                $this->store();
+                $this->store($type, $id);
                 $this->fileManager->commitUpload();
             });
         } catch (\Exception $e) {
@@ -64,10 +59,10 @@ class DocumentService
         });
     }
 
-    private function store()
+    private function store(string $type, int $id)
     {
         $documentsList = collect();
-        $documentable = $this->getDocumentable();
+        $documentable = $this->getDocumentable($type, $id);
         $existingDocuments = $documentable->documents->pluck('original_name');
 
         $this->fileManager->getUploadedFiles()->each(function ($file) use (&$documentsList, $existingDocuments) {
@@ -84,22 +79,22 @@ class DocumentService
     private function optimizeImages($files)
     {
         (new ImageTransformer($files))
-            ->resize(config('documents.imageWidth'), config('documents.imageHeight'))
+            ->resize(config('enso.documents.imageWidth'), config('enso.documents.imageHeight'))
             ->optimize();
     }
 
-    private function getDocumentable()
+    private function getDocumentable(string $type, int $id)
     {
-        return $this->getDocumentableClass()::find($this->request->route()->parameter('id'));
+        return $this->getDocumentableClass($type)::find($id);
     }
 
-    private function getDocumentableClass()
+    private function getDocumentableClass(string $type)
     {
-        $class = config('documents.documentables.'.$this->request->route()->parameter('type'));
+        $class = config('enso.documents.documentables.'.$type);
 
         if (!$class) {
             throw new \EnsoException(
-                __('Current entity does not exist in documents.php config file: ').$this->request['type']
+                __('Current entity does not exist in documents.php config file').': '.$type
             );
         }
 

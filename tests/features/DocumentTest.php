@@ -18,8 +18,8 @@ class DocumentTest extends TestHelper
     {
         parent::setUp();
 
-        // $this->disableExceptionHandling();
-        config()->set('laravel-enso.paths.files', 'testFolder');
+        $this->disableExceptionHandling();
+        config()->set('enso.config.paths.files', 'testFolder');
         $this->owner = Owner::first();
         $this->signIn(User::first());
     }

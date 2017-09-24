@@ -108,7 +108,7 @@
                     this.loading = false;
                 }).catch(error => {
                     this.loading = false;
-                    this.reportEnsoException(error);
+                    this.handleError(error);
                 });
             },
             destroy(index) {

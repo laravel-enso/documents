@@ -9,39 +9,41 @@ use LaravelEnso\DocumentsManager\app\Models\Document;
 
 class DocumentController extends Controller
 {
-    public function __construct(Request $request)
+    private $service;
+
+    public function __construct(DocumentService $service)
     {
-        $this->documents = new DocumentService($request);
+        $this->service = $service;
     }
 
     public function index(string $type, int $id)
     {
-        return $this->documents->index();
+        return $this->service->index($type, $id);
     }
 
-    public function store(string $type, int $id) //fixme. Find a cleaner way.
+    public function store(Request $request, string $type, int $id)
     {
-        return $this->documents->upload();
+        return $this->service->upload($request, $type, $id);
     }
 
     public function show(Document $document)
     {
         $this->authorize('download', $document);
 
-        return $this->documents->show($document);
+        return $this->service->show($document);
     }
 
     public function download(Document $document)
     {
         $this->authorize('download', $document);
 
-        return $this->documents->download($document);
+        return $this->service->download($document);
     }
 
     public function destroy(Document $document)
     {
         $this->authorize('destroy', $document);
 
-        return $this->documents->destroy($document);
+        return $this->service->destroy($document);
     }
 }
