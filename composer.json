@@ -39,7 +39,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "LaravelEnso\\DocumentsServiceProvider"
+                "LaravelEnso\\DocumentsManager\\DocumentsServiceProvider",
+                "LaravelEnso\\DocumentsManager\\AuthServiceProvider"
             ],
             "aliases": {}
         }
