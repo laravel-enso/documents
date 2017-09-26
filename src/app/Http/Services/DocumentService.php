@@ -11,7 +11,7 @@ class DocumentService
 {
     private $fileManager;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
         $this->fileManager = new FileManager(
             config('enso.config.paths.files'),
