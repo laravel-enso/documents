@@ -2,15 +2,15 @@
 
 use App\Owner;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use LaravelEnso\DocumentsManager\app\Models\Document;
-use LaravelEnso\TestHelper\app\Classes\TestHelper;
+use LaravelEnso\TestHelper\app\Traits\SignIn;
+use Tests\TestCase;
 
-class DocumentTest extends TestHelper
+class DocumentTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase, SignIn;
 
     private $owner;
 
@@ -18,7 +18,7 @@ class DocumentTest extends TestHelper
     {
         parent::setUp();
 
-        // $this->disableExceptionHandling();
+        // $this->withoutExceptionHandling();
         config()->set('enso.config.paths.files', 'testFolder');
         $this->owner = Owner::first();
         $this->signIn(User::first());
@@ -27,7 +27,7 @@ class DocumentTest extends TestHelper
     /** @test */
     public function index()
     {
-        $this->get('/core/documents/owner/'.$this->owner->id)
+        $this->get('/core/documents/owner/' . $this->owner->id)
             ->assertStatus(200);
     }
 
@@ -36,7 +36,7 @@ class DocumentTest extends TestHelper
     {
         $document = $this->uploadDocument();
         $this->assertNotNull($document);
-        Storage::assertExists('testFolder/'.$document->saved_name);
+        Storage::assertExists('testFolder/' . $document->saved_name);
 
         $this->cleanUp();
     }
@@ -46,7 +46,7 @@ class DocumentTest extends TestHelper
     {
         $document = $this->uploadDocument();
 
-        $this->get('/core/documents/show/'.$document->id)
+        $this->get('/core/documents/show/' . $document->id)
             ->assertStatus(200);
 
         $this->cleanUp();
@@ -57,7 +57,7 @@ class DocumentTest extends TestHelper
     {
         $document = $this->uploadDocument();
 
-        $this->get('/core/documents/download/'.$document->id)
+        $this->get('/core/documents/download/' . $document->id)
             ->assertStatus(200);
 
         $this->cleanUp();
@@ -68,10 +68,10 @@ class DocumentTest extends TestHelper
     {
         $document = $this->uploadDocument();
 
-        $this->delete('/core/documents/destroy/'.$document->id)
+        $this->delete('/core/documents/destroy/' . $document->id)
             ->assertStatus(200);
 
-        Storage::assertMissing('testFolder/'.$document->saved_name);
+        Storage::assertMissing('testFolder/' . $document->saved_name);
         $this->assertNull($document->fresh());
 
         $this->cleanUp();
@@ -79,7 +79,7 @@ class DocumentTest extends TestHelper
 
     private function uploadDocument()
     {
-        $this->post('/core/documents/upload/owner/'.$this->owner->id, [
+        $this->post('/core/documents/upload/owner/' . $this->owner->id, [
             'file' => UploadedFile::fake()->create('document.doc'),
         ]);
 
