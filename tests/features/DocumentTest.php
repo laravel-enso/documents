@@ -27,7 +27,7 @@ class DocumentTest extends TestCase
     /** @test */
     public function index()
     {
-        $this->get('/core/documents/owner/' . $this->owner->id)
+        $this->get('/core/documents/owner/'.$this->owner->id)
             ->assertStatus(200);
     }
 
@@ -36,7 +36,7 @@ class DocumentTest extends TestCase
     {
         $document = $this->uploadDocument();
         $this->assertNotNull($document);
-        Storage::assertExists('testFolder/' . $document->saved_name);
+        Storage::assertExists('testFolder/'.$document->saved_name);
 
         $this->cleanUp();
     }
@@ -46,7 +46,7 @@ class DocumentTest extends TestCase
     {
         $document = $this->uploadDocument();
 
-        $this->get('/core/documents/show/' . $document->id)
+        $this->get('/core/documents/show/'.$document->id)
             ->assertStatus(200);
 
         $this->cleanUp();
@@ -57,7 +57,7 @@ class DocumentTest extends TestCase
     {
         $document = $this->uploadDocument();
 
-        $this->get('/core/documents/download/' . $document->id)
+        $this->get('/core/documents/download/'.$document->id)
             ->assertStatus(200);
 
         $this->cleanUp();
@@ -68,10 +68,10 @@ class DocumentTest extends TestCase
     {
         $document = $this->uploadDocument();
 
-        $this->delete('/core/documents/destroy/' . $document->id)
+        $this->delete('/core/documents/destroy/'.$document->id)
             ->assertStatus(200);
 
-        Storage::assertMissing('testFolder/' . $document->saved_name);
+        Storage::assertMissing('testFolder/'.$document->saved_name);
         $this->assertNull($document->fresh());
 
         $this->cleanUp();
@@ -79,7 +79,7 @@ class DocumentTest extends TestCase
 
     private function uploadDocument()
     {
-        $this->post('/core/documents/upload/owner/' . $this->owner->id, [
+        $this->post('/core/documents/upload/owner/'.$this->owner->id, [
             'file' => UploadedFile::fake()->create('document.doc'),
         ]);
 
