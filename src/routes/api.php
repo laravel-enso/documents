@@ -1,6 +1,6 @@
 <?php
 
-Route::middleware(['auth:api', 'api', 'core'])
+Route::middleware('api')
     ->prefix('api')
     ->namespace('LaravelEnso\DocumentsManager\app\Http\Controllers')
     ->group(function () {
