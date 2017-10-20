@@ -45,15 +45,14 @@ Vue.component('document', require('./vendor/laravel-enso/components/documents/Do
 
 5. Add `use Documentable` in the Model that need documents and import the trait. Then you'll have access to the `$model->documents` relationship
 
-6. Because users upload documents you can add `use Documents` to the User model. This trait will set the relationship between users and documents that they create
+6. Because users upload documents you can add `use Documents` to the User model. This trait will set the relationship between users and the documents that they create
 
 7. Add the component inside your page/component
 
     ```
     <documents 
         id="modelId"
-        type="model_alias"
-        :file-size-limit="5000000">
+        type="model_alias">
     </documents>
     ```
 
