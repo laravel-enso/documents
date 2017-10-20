@@ -19,23 +19,22 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 - can link documents to any other model
 - comes with its own VueJS component
 - uses [FileManager](https://github.com/laravel-enso/FileManager) for file operations
-- uses the [Image Transformer](https://github.com/laravel-enso/ImageTransformer) package for cropping and optimizing the avatar files
+- uses the [ImageTransformer](https://github.com/laravel-enso/ImageTransformer) package for optimizing the uploaded image files
 - security policies are used to enforce proper user authorization
 
 ### Under the Hood
+
 - creates a `Document` model that has a `documentable` morphTo relationship
 - polymorphic relationships are used, which makes it possible to attach documents to any other entity
 - within the entity to which we want to attach documents, we must use the `Documentable` trait
 
 ### Installation Steps
 
-1. Add `LaravelEnso\CommentsManager\DocumentsServiceProvider::class` to `config/app.php`
+1. Run the migrations
 
-2. Run migrations.
+2. Publish the config file with `php artisan vendor:publish --tag=documents-config`. Define the `'model_alias' => 'App\Model'` mapping in the `config/documents.php` file
 
-3. Publish the config file with `php artisan vendor:publish --tag=documents-config`. Define the `'model_alias' => 'App\Model'` mapping in the `config/documents.php` file.
-
-4. Publish the VueJS components with `php artisan vendor:publish --tag=documents-component`.
+3. Publish the VueJS components with `php artisan vendor:publish --tag=vue-components`
 
 4. Include the VueJS components in your `app.js` and then compile with `gulp` / `npm run dev`
 
@@ -44,34 +43,48 @@ Vue.component('documents', require('./vendor/laravel-enso/components/documents/D
 Vue.component('document', require('./vendor/laravel-enso/components/documents/Document.vue'));
 ````
 
-5. Add `use Documentable` in the Model that need documents and import the trait. This way you can call the `$model->documents` relationship.
+5. Add `use Documentable` in the Model that need documents and import the trait. Then you'll have access to the `$model->documents` relationship
 
-6. Because users upload documents you can add 'use Documents' to the User model. This trait will set the relationship between users and documents that they create.
+6. Because users upload documents you can add `use Documents` to the User model. This trait will set the relationship between users and documents that they create
 
-7. Add to you blade
+7. Add the component inside your page/component
 
     ```
-    <documents :id="ownerId"
-        :file-size-limit="5000000"
-        type="model_alias">
+    <documents 
+        id="modelId"
+        type="model_alias"
+        :file-size-limit="5000000">
     </documents>
     ```
 
 ### Options
 
-- `type` - the commentable model alias (required) you set at the installation step #3
-- `id` - the id of the commentable model (required)
-- `header-class` - header class for the box element: info (default option) / default / primary / warning / danger / default
+- `id` - the id of the commentable model | required
+- `type` - the commentable model alias you set at the installation step #3 | required
+- `open` - boolean flag, makes the component start collapsed (default) or open | optional
+- `title` - title for the component, if nothing is given 'Comments' is used | optional
 
 ### Publishes
 
+- `php artisan vendor:publish --tag=vue-components` - the VueJS components
 - `php artisan vendor:publish --tag=documents-config` - configuration file
-- `php artisan vendor:publish --tag=documents-component` - the VueJS components
-- `php artisan vendor:publish --tag=enso-update` - a common alias for when wanting to update the VueJS components,
-once a newer version is released
+- `php artisan vendor:publish --tag=enso-assets` - a common alias for when wanting to update the VueJS components,
+once a newer version is released, can be used with the `--force` flag
 - `php artisan vendor:publish --tag=enso-config` - a common alias for when wanting to update the config,
-once a newer version is released
+once a newer version is released, can be used with the `--force` flag
 
+### Notes
+
+The [Laravel Enso](https://github.com/laravel-enso/Enso) package comes with this package included.
+
+Depends on:
+ - [Core](https://github.com/laravel-enso/Core) for middleware and user model
+ - [ImageTransformer](https://github.com/laravel-enso/ImageTransformer) for optimizing image files
+ - [FileManager](https://github.com/laravel-enso/FileManager) for working with the uploaded files
+ - [Structure manager](https://github.com/laravel-enso/StructureManager) for the migrations
+ - [TrackWho](https://github.com/laravel-enso/TrackWho) for keeping track of the users making the changes to each contact
+ - [VueComponents](https://github.com/laravel-enso/VueComponents) for the accompanying VueJS components
+  
 <!--h-->
 ### Contributions
 
