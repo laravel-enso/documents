@@ -9,7 +9,7 @@
 
 Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
-[![Watch the demo](https://laravel-enso.github.io/documentsmanager/screenshots/Selection_019_thumb.png)](https://laravel-enso.github.io/documentsmanager/videos/demo_01.webm)
+[![Watch the demo](https://laravel-enso.github.io/documentsmanager/screenshots/bulma_019_thumb.png)](https://laravel-enso.github.io/documentsmanager/videos/bulma_demo_01.webm)
 
 <sup>click on the photo to view a short demo in compatible browsers</sup>
 
