@@ -27,7 +27,7 @@
         "laravel-enso/structuremanager": "2.1.*",
         "laravel-enso/trackwho": "1.5.*",
         "laravel-enso/vuecomponents": "2.1.*",
-        "laravel-enso/testhelper": "1.5.*"
+        "laravel-enso/testhelper": "1.4.*"
     },
     "autoload": {
         "psr-4": {
