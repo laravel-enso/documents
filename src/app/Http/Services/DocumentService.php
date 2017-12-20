@@ -3,8 +3,8 @@
 namespace LaravelEnso\DocumentsManager\app\Http\Services;
 
 use Illuminate\Http\Request;
-use LaravelEnso\DocumentsManager\app\Models\Document;
 use LaravelEnso\FileManager\Classes\FileManager;
+use LaravelEnso\DocumentsManager\app\Models\Document;
 use LaravelEnso\ImageTransformer\Classes\ImageTransformer;
 
 class DocumentService

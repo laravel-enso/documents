@@ -2,8 +2,8 @@
 
 namespace LaravelEnso\DocumentsManager\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\Core\app\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\TrackWho\app\Traits\CreatedBy;
 
 class Document extends Model
@@ -27,8 +27,8 @@ class Document extends Model
     public function getOwnerAttribute()
     {
         $owner = [
-            'fullName'    => $this->user->fullName,
-            'avatarId'    => $this->user->avatar ? $this->user->avatar->id : null,
+            'fullName' => $this->user->fullName,
+            'avatarId' => $this->user->avatar ? $this->user->avatar->id : null,
         ];
 
         unset($this->user);

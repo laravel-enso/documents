@@ -2,10 +2,10 @@
 
 namespace LaravelEnso\DocumentsManager\app\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use LaravelEnso\DocumentsManager\app\Http\Services\DocumentService;
+use App\Http\Controllers\Controller;
 use LaravelEnso\DocumentsManager\app\Models\Document;
+use LaravelEnso\DocumentsManager\app\Http\Services\DocumentService;
 
 class DocumentController extends Controller
 {
