@@ -31,7 +31,7 @@ class DocumentPolicy
 
     private function userOwnsDocument(User $user, Document $document)
     {
-        return $user->id == $document->created_by;
+        return $user->id === $document->created_by;
     }
 
     private function documentIsRecent(Document $document)
