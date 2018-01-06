@@ -26,7 +26,7 @@
         "laravel-enso/imagetransformer": "1.3.*",
         "laravel-enso/structuremanager": "2.1.*",
         "laravel-enso/trackwho": "1.5.*",
-        "laravel-enso/vuecomponents": "2.1.*"
+        "laravel-enso/vuecomponents": "2.0.*"
     },
     "require-dev": {
         "laravel-enso/testhelper": "1.4.*"
