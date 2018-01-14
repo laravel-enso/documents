@@ -3,9 +3,10 @@
 namespace LaravelEnso\DocumentsManager\app\Http\Services;
 
 use Illuminate\Http\Request;
-use LaravelEnso\FileManager\Classes\FileManager;
+use LaravelEnso\FileManager\app\Classes\FileManager;
 use LaravelEnso\DocumentsManager\app\Models\Document;
 use LaravelEnso\ImageTransformer\Classes\ImageTransformer;
+use LaravelEnso\DocumentsManager\app\Exceptions\DocumentException;
 
 class DocumentService
 {
@@ -13,10 +14,7 @@ class DocumentService
 
     public function __construct()
     {
-        $this->fileManager = new FileManager(
-            config('enso.config.paths.files'),
-            config('enso.config.paths.temp')
-        );
+        $this->fileManager = (new FileManager(config('enso.config.paths.files')));
     }
 
     public function index(string $type, int $id)
@@ -26,6 +24,8 @@ class DocumentService
 
     public function upload(Request $request, string $type, int $id)
     {
+        $this->fileManager->tempPath(config('enso.config.paths.temp'));
+
         try {
             \DB::transaction(function () use ($request, $type, $id) {
                 $files = $request->allFiles();
@@ -65,9 +65,12 @@ class DocumentService
         $documentable = $this->getDocumentable($type, $id);
         $existingDocuments = $documentable->documents->pluck('original_name');
 
-        $this->fileManager->getUploadedFiles()->each(function ($file) use (&$documentsList, $existingDocuments) {
+        $this->fileManager->uploadedFiles()->each(function ($file) use (&$documentsList, $existingDocuments) {
             if ($existingDocuments->contains($file['original_name'])) {
-                throw new \EnsoException($file['original_name'].' '.__('already exists for this Entity'));
+                throw new DocumentException(__(
+                    'File :file already exists for this Entity',
+                    ['file' => $file['original_name']]
+                ));
             }
 
             $documentsList->push(new Document($file));
@@ -93,9 +96,10 @@ class DocumentService
         $class = config('enso.documents.documentables.'.$type);
 
         if (!$class) {
-            throw new \EnsoException(
-                __('Current entity does not exist in documents.php config file').': '.$type
-            );
+            throw new DocumentException(__(
+                'Entity :entity does not exist in documents.php config file',
+                ['entity' => $type]
+            ));
         }
 
         return $class;
