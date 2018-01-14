@@ -48,7 +48,8 @@ class DocumentService
 
     public function download(Document $document)
     {
-        return $this->fileManager->download($document->original_name, $document->saved_name);
+        return $this->fileManager
+            ->download($document->original_name, $document->saved_name);
     }
 
     public function destroy(Document $document)
@@ -61,22 +62,23 @@ class DocumentService
 
     private function store(string $type, int $id)
     {
-        $documentsList = collect();
+        $documents = collect();
         $documentable = $this->getDocumentable($type, $id);
         $existingDocuments = $documentable->documents->pluck('original_name');
 
-        $this->fileManager->uploadedFiles()->each(function ($file) use (&$documentsList, $existingDocuments) {
-            if ($existingDocuments->contains($file['original_name'])) {
-                throw new DocumentException(__(
-                    'File :file already exists for this Entity',
-                    ['file' => $file['original_name']]
-                ));
-            }
+        $this->fileManager->uploadedFiles()
+            ->each(function ($file) use ($documents, $existingDocuments) {
+                if ($existingDocuments->contains($file['original_name'])) {
+                    throw new DocumentException(__(
+                        'File :file already exists for this entity',
+                        ['file' => $file['original_name']]
+                    ));
+                }
 
-            $documentsList->push(new Document($file));
-        });
+                $documents->push(new Document($file));
+            });
 
-        $documentable->documents()->saveMany($documentsList);
+        $documentable->documents()->saveMany($documents);
     }
 
     private function optimizeImages($files)
@@ -88,10 +90,10 @@ class DocumentService
 
     private function getDocumentable(string $type, int $id)
     {
-        return $this->getDocumentableClass($type)::find($id);
+        return $this->getDocumentableType($type)::find($id);
     }
 
-    private function getDocumentableClass(string $type)
+    private function getDocumentableType(string $type)
     {
         $class = config('enso.documents.documentables.'.$type);
 

@@ -15,7 +15,8 @@ class CreateDocumentsTable extends Migration
             $table->string('saved_name');
             $table->integer('size');
             $table->integer('created_by')->unsigned();
-            $table->foreign('created_by')->references('id')->on('users')->onUpdate('restrict')->onDelete('restrict');
+            $table->foreign('created_by')->references('id')->on('users')
+                ->onUpdate('restrict')->onDelete('restrict');
             $table->timestamps();
         });
     }
