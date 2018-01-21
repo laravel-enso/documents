@@ -5,38 +5,41 @@ namespace LaravelEnso\DocumentsManager\app\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use LaravelEnso\DocumentsManager\app\Models\Document;
-use LaravelEnso\DocumentsManager\app\Http\Services\DocumentService;
+use LaravelEnso\DocumentsManager\app\Handlers\Storer;
+use LaravelEnso\DocumentsManager\app\Handlers\Presenter;
+use LaravelEnso\DocumentsManager\app\Handlers\Destroyer;
+use LaravelEnso\DocumentsManager\app\Handlers\Collection;
 
 class DocumentController extends Controller
 {
-    public function index(string $type, int $id, DocumentService $service)
+    public function index(string $type, int $id)
     {
-        return $service->index($type, $id);
+        return (new Collection($type, $id))->data();
     }
 
-    public function store(Request $request, string $type, int $id, DocumentService $service)
+    public function store(Request $request, string $type, int $id)
     {
-        return $service->upload($request, $type, $id);
+        (new Storer($request->allFiles(), $type, $id))->run();
     }
 
-    public function show(Document $document, DocumentService $service)
-    {
-        $this->authorize('download', $document);
-
-        return $service->show($document);
-    }
-
-    public function download(Document $document, DocumentService $service)
+    public function show(Document $document)
     {
         $this->authorize('download', $document);
 
-        return $service->download($document);
+        return (new Presenter($document))->inline();
     }
 
-    public function destroy(Document $document, DocumentService $service)
+    public function download(Document $document)
+    {
+        $this->authorize('download', $document);
+
+        return (new Presenter($document))->download();
+    }
+
+    public function destroy(Document $document)
     {
         $this->authorize('destroy', $document);
 
-        return $service->destroy($document);
+        (new Destroyer($document))->run();
     }
 }
