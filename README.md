@@ -16,7 +16,7 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 ### Features
 
 - permits the management (upload, download, delete, show) of documents in the application
-- can link documents to any other model
+- can attach documents to any other model
 - comes with its own VueJS component
 - uses [FileManager](https://github.com/laravel-enso/FileManager) for file operations
 - uses the [ImageTransformer](https://github.com/laravel-enso/ImageTransformer) package for optimizing the uploaded image files
@@ -30,24 +30,17 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
 ### Installation Steps
 
-1. Run the migrations
+This package is already included in [Laravel Enso](https://github.com/laravel-enso/Enso), so no further steps are necessary.
 
-2. Publish the config file with `php artisan vendor:publish --tag=documents-config`. Define the `'model_alias' => 'App\Model'` mapping in the `config/documents.php` file
+### Usage
 
-3. Publish the VueJS components with `php artisan vendor:publish --tag=vue-components`
-
-4. Include the VueJS components in your `app.js` and then compile with `gulp` / `npm run dev`
+1. Import the VueJS component in your page/component and then compile
 
 ````js
-Vue.component('documents', require('./vendor/laravel-enso/components/documents/Documents.vue'));
-Vue.component('document', require('./vendor/laravel-enso/components/documents/Document.vue'));
+import Documents from '../../../components/enso/documents/Documents.vue';
 ````
 
-5. Add `use Documentable` in the Model that need documents and import the trait. Then you'll have access to the `$model->documents` relationship
-
-6. Because users upload documents you can add `use Documents` to the User model. This trait will set the relationship between users and the documents that they create
-
-7. Add the component inside your page/component
+2. Add the component inside your page/component
 
     ```
     <documents 
@@ -56,21 +49,32 @@ Vue.component('document', require('./vendor/laravel-enso/components/documents/Do
     </documents>
     ```
 
+3. Add the desired model class mapping inside the `config/enso/documents.php` documentables section.
+
+4. Add `use Documentable` in the Model that need documents and import the trait. Then you'll have access to the `$model->documents` relationship
+
+5. Because users upload documents you can add `use Documents` to the User model. This trait will set the relationship between users and the documents that they create
+
 ### Options
 
-- `id` - the id of the commentable model | required
-- `type` - the commentable model alias you set at the installation step #3 | required
-- `open` - boolean flag, makes the component start collapsed (default) or open | optional
-- `title` - title for the component, if nothing is given 'Comments' is used | optional
+- `id` - number, the id of the commentable model | required
+- `type` - string, the commentable model alias you set at the installation step #3 | required
+- `open` - boolean flag, makes the component start collapsed or open | default is `false` | (optional)
+- `title` - string, title for the component, if nothing is given 'Comments' is used | (optional)
+
+### Configuration
+The `config/enso/documents.php` configuration file, lets you customize the following:
+- `documentables`, the Model - type mapping list
+- `deletableTimeLimitInHours` - the time limit for deleting an uploaded document
 
 ### Publishes
 
-- `php artisan vendor:publish --tag=vue-components` - the VueJS components
+- `php artisan vendor:publish --tag=documents-assets` - the VueJS components
 - `php artisan vendor:publish --tag=documents-config` - configuration file
 - `php artisan vendor:publish --tag=enso-assets` - a common alias for when wanting to update the VueJS components,
-once a newer version is released, can be used with the `--force` flag
+once a newer version is released, usually used with the `--force` flag
 - `php artisan vendor:publish --tag=enso-config` - a common alias for when wanting to update the config,
-once a newer version is released, can be used with the `--force` flag
+once a newer version is released, usually used with the `--force` flag
 
 ### Notes
 
