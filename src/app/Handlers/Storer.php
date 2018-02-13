@@ -3,12 +3,13 @@
 namespace LaravelEnso\DocumentsManager\app\Handlers;
 
 use LaravelEnso\DocumentsManager\app\Models\Document;
+use LaravelEnso\ImageTransformer\app\Classes\ImageTransformer;
 use LaravelEnso\DocumentsManager\app\Exceptions\DocumentException;
 
 class Storer extends Handler
 {
     private $files;
-    private $document;
+    private $documents;
     private $documentable;
 
     public function __construct(array $files, $type, $id)
@@ -25,15 +26,16 @@ class Storer extends Handler
     {
         $this->upload();
 
-        return $this->document;
+        return $this->documents;
     }
 
     private function upload()
     {
         try {
             \DB::transaction(function () {
+                $this->processImages();
                 $this->fileManager->startUpload($this->files);
-                $this->document = $this->store();
+                $this->documents = $this->store();
                 $this->fileManager->commitUpload();
             });
         } catch (\Exception $exception) {
@@ -42,11 +44,22 @@ class Storer extends Handler
         }
     }
 
+    private function processImages()
+    {
+        collect($this->files)->each(function ($file) {
+            $validator = \Validator::make(['file' => $file], ['file' => 'image']);
+            if (!$validator->fails()) {
+                (new ImageTransformer($file))
+                    ->optimize();
+            }
+        });
+    }
+
     private function store()
     {
         $existing = $this->existing();
 
-        $documents = $this->fileManager->uploadedFiles()
+        $this->documents = $this->fileManager->uploadedFiles()
             ->map(function ($file) use ($existing) {
                 if ($existing->contains($file['original_name'])) {
                     throw new DocumentException(__(
@@ -58,7 +71,7 @@ class Storer extends Handler
                 return new Document($file);
             });
 
-        $this->documentable->documents()->saveMany($documents);
+        $this->documentable->documents()->saveMany($this->documents);
     }
 
     private function documentable($type, $id)
