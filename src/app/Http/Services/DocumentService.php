@@ -83,9 +83,13 @@ class DocumentService
 
     private function optimizeImages($files)
     {
-        (new ImageTransformer($files))
-            ->resize(config('documents.imageWidth'), config('documents.imageHeight'))
-            ->optimize();
+        collect($files)->each(function ($file) {
+            $validator = \Validator::make(['file' => $file], ['file' => 'image']);
+            if (!$validator->fails()) {
+                (new ImageTransformer($file))
+                    ->optimize();
+            }
+        });
     }
 
     private function getDocumentable()
