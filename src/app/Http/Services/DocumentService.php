@@ -5,7 +5,7 @@ namespace LaravelEnso\DocumentsManager\app\Http\Services;
 use Illuminate\Http\Request;
 use LaravelEnso\DocumentsManager\app\Models\Document;
 use LaravelEnso\FileManager\Classes\FileManager;
-use LaravelEnso\ImageTransformer\Classes\ImageTransformer;
+use LaravelEnso\ImageTransformer\app\Classes\ImageTransformer;
 
 class DocumentService
 {

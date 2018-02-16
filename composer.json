@@ -22,7 +22,7 @@
         "php": ">=7.1.0",
         "laravel-enso/core": "1.3.*",
         "laravel-enso/filemanager": "1.3.*",
-        "laravel-enso/imagetransformer": "1.3.*",
+        "laravel-enso/imagetransformer": "1.4.*",
         "laravel-enso/structuremanager": "1.3.*",
         "laravel-enso/trackwho": "1.3.*",
         "laravel-enso/vueadminlte": "1.3.*"
