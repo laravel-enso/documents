@@ -19,7 +19,8 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 - can attach documents to any other model
 - comes with its own VueJS component
 - uses [FileManager](https://github.com/laravel-enso/FileManager) for file operations
-- uses the [ImageTransformer](https://github.com/laravel-enso/ImageTransformer) package for optimizing the uploaded image files
+- uses the [ImageTransformer](https://github.com/laravel-enso/ImageTransformer) package for optimizing 
+the uploaded image files
 - security policies are used to enforce proper user authorization
 
 ### Under the Hood
@@ -54,6 +55,14 @@ import Documents from '../../../components/enso/documents/Documents.vue';
 4. Add `use Documentable` in the Model that need documents and import the trait. Then you'll have access to the `$model->documents` relationship
 
 5. Because users upload documents you can add `use Documents` to the User model. This trait will set the relationship between users and the documents that they create
+
+**IMPORTANT NOTE:** 
+
+Since this package is using image processing libraries and these underlying libraries may use a lot of memory, 
+especially if the processed files are large (for example, for an 8MB image file, more than 128MB of memory might be used ),
+make sure to configure php accordingly and/or do `ini_set(‘memory_limit’, ‘256M’);`   
+
+Failure to do so may result in silent errors if alloted memory is insufficient.
 
 ### Options
 
