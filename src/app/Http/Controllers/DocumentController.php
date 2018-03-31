@@ -8,18 +8,22 @@ use LaravelEnso\DocumentsManager\app\Handlers\Storer;
 use LaravelEnso\DocumentsManager\app\Models\Document;
 use LaravelEnso\DocumentsManager\app\Handlers\Destroyer;
 use LaravelEnso\DocumentsManager\app\Handlers\Presenter;
-use LaravelEnso\DocumentsManager\app\Handlers\Collection;
+use LaravelEnso\DocumentsManager\app\Handlers\ConfigMapper;
 
 class DocumentController extends Controller
 {
-    public function index(string $type, int $id)
+    public function index(Request $request)
     {
-        return (new Collection($type, $id))->data();
+        return Document::whereDocumentableId($request->get('id'))
+            ->whereDocumentableType((new ConfigMapper($request->get('type')))->class())
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
-    public function store(Request $request, string $type, int $id)
+    public function store(Request $request, string $type, string $id)
     {
-        (new Storer($request->allFiles(), $type, $id))->run();
+        (new Storer($request->allFiles(), $type, $id))
+            ->run();
     }
 
     public function show(Document $document)
