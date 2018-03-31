@@ -57,7 +57,7 @@
                                         <span class="icon is-small">
                                             <fa icon="calendar-alt"></fa>
                                         </span>
-                                        {{ $options.filters.timeFromNow(doc.created_at) }}
+                                        {{ timeFromNow(doc.created_at) }}
                                     </p>
                                     <p>
                                         <span class="icon is-small">
@@ -85,6 +85,7 @@ import {
     faInfoCircle, faUser, faCalendarAlt, faDatabase,
 } from '@fortawesome/fontawesome-free-solid/shakable.es';
 import Popover from '../bulma/Popover.vue';
+import formatDistance from '../../../modules/enso/plugins/date-fns/formatDistance';
 
 fontawesome.library.add([
     faFile, faEye, faCloudDownloadAlt, faTrashAlt,
@@ -115,6 +116,9 @@ export default {
     methods: {
         show() {
             window.open(this.openLink, '_blank').focus();
+        },
+        timeFromNow(date) {
+            return formatDistance(date);
         },
     },
 };
