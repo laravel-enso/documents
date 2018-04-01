@@ -67,6 +67,10 @@ export default {
             type: String,
             default: '',
         },
+        icon: {
+            type: [String, Array, Object],
+            default: () => faCopy,
+        },
     },
 
     data() {
@@ -82,9 +86,6 @@ export default {
         },
         uploadLink() {
             return route('core.documents.store', [this.type, this.id]);
-        },
-        icon() {
-            return faCopy;
         },
     },
 
