@@ -17,7 +17,7 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
 - permits the management (upload, download, delete, show) of documents in the application
 - can attach documents to any other model
-- comes with its own VueJS component
+- comes with its own VueJS components
 - uses [FileManager](https://github.com/laravel-enso/FileManager) for file operations
 - uses the [ImageTransformer](https://github.com/laravel-enso/ImageTransformer) package for optimizing 
 the uploaded image files
@@ -49,6 +49,9 @@ import Documents from '../../../components/enso/documents/Documents.vue';
         type="model_alias">
     </documents>
     ```
+    
+    Note: you may substitute the documents component with the documents-card component as the two share the main properties
+       and the documents-card is a card wrapper for the bare documents component.
 
 3. Add the desired model class mapping inside the `config/enso/documents.php` documentables section.
 
@@ -66,10 +69,16 @@ Failure to do so may result in silent errors if alloted memory is insufficient.
 
 ### Options
 
+#### DocumentsCard.vue
 - `id` - number, the id of the commentable model | required
 - `type` - string, the commentable model alias you set at the installation step #3 | required
 - `open` - boolean flag, makes the component start collapsed or open | default is `false` | (optional)
-- `title` - string, title for the component, if nothing is given 'Comments' is used | (optional)
+- `title` - string, title for the component | default `'Comments'` | (optional)
+
+#### Documents.vue
+- `id` - number, the id of the commentable model | required
+- `type` - string, the commentable model alias you set at the installation step #3 | required
+- `query` - string, text used for filtering the documents| default `null` | (optional)
 
 ### Configuration
 The `config/enso/documents.php` configuration file, lets you customize the following:
