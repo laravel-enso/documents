@@ -42,6 +42,8 @@ class Storer extends Handler
             $this->fileManager->deleteTempFiles();
             throw $exception;
         }
+
+        return $this->documents;
     }
 
     private function processImages()
@@ -59,7 +61,7 @@ class Storer extends Handler
     {
         $existing = $this->existing();
 
-        $this->documents = $this->fileManager->uploadedFiles()
+        $documents = $this->fileManager->uploadedFiles()
             ->map(function ($file) use ($existing) {
                 if ($existing->contains($file['original_name'])) {
                     throw new DocumentException(__(
@@ -71,7 +73,10 @@ class Storer extends Handler
                 return new Document($file);
             });
 
-        $this->documentable->documents()->saveMany($this->documents);
+        $this->documentable->documents()
+            ->saveMany($documents);
+
+        return $documents;
     }
 
     private function documentable($type, $id)

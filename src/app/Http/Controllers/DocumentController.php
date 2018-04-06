@@ -19,7 +19,7 @@ class DocumentController extends Controller
 
     public function store(Request $request, string $type, int $id)
     {
-        Document::create($request->allFiles(), $type, $id);
+        return Document::create($request->allFiles(), $type, $id);
     }
 
     public function show(Document $document)
