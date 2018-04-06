@@ -5,6 +5,9 @@ namespace LaravelEnso\DocumentsManager\app\Models;
 use LaravelEnso\Core\app\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\TrackWho\app\Traits\CreatedBy;
+use LaravelEnso\DocumentsManager\app\Handlers\Storer;
+use LaravelEnso\DocumentsManager\app\Handlers\Destroyer;
+use LaravelEnso\DocumentsManager\app\Handlers\Presenter;
 
 class Document extends Model
 {
@@ -44,5 +47,28 @@ class Document extends Model
     public function getIsDeletableAttribute()
     {
         return request()->user()->can('destroy', $this);
+    }
+
+    public function create(array $files, string $type, int $id)
+    {
+        (new Storer($array, $type, $id))
+            ->run();
+    }
+
+    public function inline()
+    {
+        return (new Presenter($this))->inline();
+    }
+
+    public function download()
+    {
+        return (new Presenter($this))->download();
+    }
+
+    public function delete()
+    {
+        (new Destroyer($this))->run();
+
+        parent::delete();
     }
 }
