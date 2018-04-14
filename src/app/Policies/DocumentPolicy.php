@@ -13,7 +13,7 @@ class DocumentPolicy
 
     public function before($user, $ability)
     {
-        if ($user->isAdmin()) {
+        if ($user->isAdmin() || $user->isSupervisor()) {
             return true;
         }
     }
