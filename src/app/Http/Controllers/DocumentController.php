@@ -5,14 +5,12 @@ namespace LaravelEnso\DocumentsManager\app\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use LaravelEnso\DocumentsManager\app\Models\Document;
-use LaravelEnso\DocumentsManager\app\Handlers\ConfigMapper;
 
 class DocumentController extends Controller
 {
     public function index(Request $request)
     {
-        return Document::whereDocumentableId($request->get('id'))
-            ->whereDocumentableType((new ConfigMapper($request->get('type')))->class())
+        return Document::for($request->only(['id', 'type']))
             ->orderBy('created_at', 'desc')
             ->get();
     }

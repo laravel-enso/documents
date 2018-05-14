@@ -10,12 +10,16 @@ class CreateDocumentsTable extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->increments('id');
+
             $table->morphs('documentable');
+
             $table->string('original_name');
             $table->string('saved_name');
             $table->integer('size');
             $table->integer('created_by')->unsigned();
-            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('created_by')->references('id')
+                ->on('users');
+
             $table->timestamps();
         });
     }

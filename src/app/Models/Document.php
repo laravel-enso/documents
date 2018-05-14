@@ -5,9 +5,9 @@ namespace LaravelEnso\DocumentsManager\app\Models;
 use LaravelEnso\Core\app\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\TrackWho\app\Traits\CreatedBy;
-use LaravelEnso\DocumentsManager\app\Handlers\Storer;
-use LaravelEnso\DocumentsManager\app\Handlers\Destroyer;
-use LaravelEnso\DocumentsManager\app\Handlers\Presenter;
+use LaravelEnso\DocumentsManager\app\Classes\Storer;
+use LaravelEnso\DocumentsManager\app\Classes\Presenter;
+use LaravelEnso\DocumentsManager\app\Classes\ConfigMapper;
 
 class Document extends Model
 {
@@ -65,10 +65,11 @@ class Document extends Model
         return (new Presenter($this))->download();
     }
 
-    public function delete()
+    public function scopeFor($query, array $request)
     {
-        (new Destroyer($this))->run();
-
-        parent::delete();
+        $query->whereDocumentableId($request['id'])
+            ->whereDocumentableType(
+                (new ConfigMapper($request['type']))->class()
+            );
     }
 }

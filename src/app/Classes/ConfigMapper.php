@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelEnso\DocumentsManager\app\Handlers;
+namespace LaravelEnso\DocumentsManager\app\Classes;
 
 use LaravelEnso\DocumentsManager\app\Exceptions\DocumentConfigException;
 
