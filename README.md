@@ -83,7 +83,8 @@ Failure to do so may result in silent errors if alloted memory is insufficient.
 ### Configuration
 The `config/enso/documents.php` configuration file, lets you customize the following:
 - `documentables`, the Model - type mapping list
-- `deletableTimeLimitInHours` - the time limit for deleting an uploaded document
+- `deletableTimeLimit` - the time limit for deleting an uploaded document, in seconds. 
+Default is `60 * 60`  (1 hour)
 
 ### Publishes
 
