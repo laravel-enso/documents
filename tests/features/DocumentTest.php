@@ -1,6 +1,5 @@
 <?php
 
-use App\Owner;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -20,7 +19,7 @@ class DocumentTest extends TestCase
 
         // $this->withoutExceptionHandling();
         config()->set('enso.config.paths.files', 'testFolder');
-        $this->owner = Owner::first();
+        $this->owner = config('enso.config.ownerModel')::first();
         $this->signIn(User::first());
     }
 
