@@ -59,7 +59,7 @@ class Document extends Model
     {
         return \URL::temporarySignedRoute(
             'core.documents.share',
-            now()->addSeconds(config('enso.documents.emailLinkExpiration')),
+            now()->addSeconds(config('enso.documents.linkExpiration')),
             ['document' => $this->id]
         );
     }
