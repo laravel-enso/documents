@@ -18,7 +18,7 @@ class DocumentPolicy
         }
     }
 
-    public function download(User $user, Document $document)
+    public function access(User $user, Document $document)
     {
         return $this->userOwnsDocument($user, $document);
     }

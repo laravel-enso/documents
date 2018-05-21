@@ -5,6 +5,7 @@ namespace LaravelEnso\DocumentsManager;
 use Illuminate\Support\ServiceProvider;
 use LaravelEnso\DocumentsManager\app\Models\Document;
 use LaravelEnso\DocumentsManager\app\Observers\DocumentObserver;
+use LaravelEnso\DocumentsManager\app\Commands\UpdateDocumentsPermissions;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,6 +13,12 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->publishesAll();
         $this->loadDependencies();
+
+        Document::observe(DocumentObserver::class);
+
+        $this->commands([
+            UpdateDocumentsPermissions::class,
+        ]);
     }
 
     private function publishesAll()
@@ -31,8 +38,6 @@ class AppServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/resources/assets/js' => resource_path('assets/js'),
         ], 'enso-assets');
-
-        Document::observe(DocumentObserver::class);
     }
 
     private function loadDependencies()

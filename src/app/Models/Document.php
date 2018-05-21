@@ -15,7 +15,7 @@ class Document extends Model
 
     protected $fillable = ['original_name', 'saved_name', 'size'];
 
-    protected $appends = ['owner', 'isDownloadable', 'isDeletable'];
+    protected $appends = ['owner', 'isAccessible', 'isDeletable'];
 
     public function user()
     {
@@ -39,9 +39,9 @@ class Document extends Model
         return $owner;
     }
 
-    public function getIsDownloadableAttribute()
+    public function getIsAccessibleAttribute()
     {
-        return request()->user()->can('download', $this);
+        return request()->user()->can('access', $this);
     }
 
     public function getIsDeletableAttribute()
@@ -55,21 +55,33 @@ class Document extends Model
             ->run();
     }
 
+    public function temporaryLink()
+    {
+        return \URL::temporarySignedRoute(
+            'core.documents.share',
+            now()->addSeconds(config('enso.documents.emailLinkExpiration')),
+            ['document' => $this->id]
+        );
+    }
+
     public function inline()
     {
-        return (new Presenter($this))->inline();
+        return (new Presenter($this))
+            ->inline();
     }
 
     public function download()
     {
-        return (new Presenter($this))->download();
+        return (new Presenter($this))
+            ->download();
     }
 
     public function scopeFor($query, array $request)
     {
         $query->whereDocumentableId($request['id'])
             ->whereDocumentableType(
-                (new ConfigMapper($request['type']))->class()
+                (new ConfigMapper($request['type']))
+                    ->class()
             );
     }
 }
