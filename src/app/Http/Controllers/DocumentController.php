@@ -43,7 +43,7 @@ class DocumentController extends Controller
 
     public function share(Document $document)
     {
-        return $document->inline();
+        return $document->download();
     }
 
     public function destroy(Document $document)
