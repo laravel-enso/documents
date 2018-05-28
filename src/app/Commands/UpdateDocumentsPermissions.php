@@ -33,7 +33,7 @@ class UpdateDocumentsPermissions extends Command
             'name' => 'core.documents.link',
             'description' => 'Get document download temporary link',
             'type' => 0,
-            'default' => false,
+            'is_default' => false,
         ]))->roles()
             ->attach(
                 Role::whereName(config('enso.config.defaultRole'))
