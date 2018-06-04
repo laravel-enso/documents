@@ -6,7 +6,7 @@ use LaravelEnso\DocumentsManager\app\Models\Document;
 
 class Presenter extends Handler
 {
-    protected $document;
+    private $document;
 
     public function __construct(Document $document)
     {
