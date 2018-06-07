@@ -17,6 +17,8 @@ class Destroyer extends Handler
 
     public function run()
     {
-        $this->fileManager->delete($this->document->saved_name);
+        $this->fileManager->delete(
+            $this->document->saved_name
+        );
     }
 }

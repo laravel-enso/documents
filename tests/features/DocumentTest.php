@@ -27,7 +27,7 @@ class DocumentTest extends TestCase
     public function index()
     {
         $this->get(route('core.documents.index', [
-            'type' => 'owner', 'id' => $this->owner->id
+            'documentable_type' => 'owner', 'documentable_id' => $this->owner->id
         ], false))
             ->assertStatus(200);
     }
@@ -80,7 +80,9 @@ class DocumentTest extends TestCase
 
     private function uploadDocument()
     {
-        $this->post(route('core.documents.store', ['owner', $this->owner->id], false), [
+        $this->post(route('core.documents.store'), [
+            'documentable_type' => 'owner',
+            'documentable_id' => $this->owner->id,
             'file' => UploadedFile::fake()->create('document.doc'),
         ]);
 

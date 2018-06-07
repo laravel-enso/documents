@@ -16,6 +16,7 @@ class CreateDocumentsTable extends Migration
             $table->string('original_name');
             $table->string('saved_name');
             $table->integer('size');
+
             $table->integer('created_by')->unsigned();
             $table->foreign('created_by')->references('id')
                 ->on('users');

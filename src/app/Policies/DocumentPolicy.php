@@ -11,7 +11,7 @@ class DocumentPolicy
 {
     use HandlesAuthorization;
 
-    public function before($user, $ability)
+    public function before($user)
     {
         if ($user->isAdmin() || $user->isSupervisor()) {
             return true;
@@ -20,21 +20,21 @@ class DocumentPolicy
 
     public function access(User $user, Document $document)
     {
-        return $this->userOwnsDocument($user, $document);
+        return $this->ownsDocument($user, $document);
     }
 
     public function destroy(User $user, Document $document)
     {
-        return $this->userOwnsDocument($user, $document)
-            && $this->documentIsRecent($document);
+        return $this->ownsDocument($user, $document)
+            && $this->isRecent($document);
     }
 
-    private function userOwnsDocument(User $user, Document $document)
+    private function ownsDocument(User $user, Document $document)
     {
         return $user->id === intval($document->created_by);
     }
 
-    private function documentIsRecent(Document $document)
+    private function isRecent(Document $document)
     {
         return $document->created_at
             ->diffInSeconds(Carbon::now()) <= config('enso.documents.deletableTimeLimitInHours');

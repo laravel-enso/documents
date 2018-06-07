@@ -14,13 +14,11 @@ Route::middleware(['web', 'auth', 'core'])
     ->group(function () {
         Route::prefix('documents')->as('documents.')
             ->group(function () {
-                Route::post('store/{type}/{id}', 'DocumentController@store')
-                    ->name('store');
                 Route::get('link/{document}', 'DocumentController@link')
                     ->name('link');
                 Route::get('download/{document}', 'DocumentController@download')
                     ->name('download');
             });
 
-        Route::resource('documents', 'DocumentController', ['only' => ['index', 'show', 'destroy']]);
+        Route::resource('documents', 'DocumentController', ['except' => ['create', 'edit', 'update']]);
     });

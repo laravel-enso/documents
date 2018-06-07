@@ -12,12 +12,15 @@ class Storer extends Handler
     private $documents;
     private $documentable;
 
-    public function __construct(array $files, $type, $id)
+    public function __construct(array $files, $attributes)
     {
         parent::__construct();
 
         $this->files = $files;
-        $this->documentable = $this->documentable($type, $id);
+        $this->documentable = $this->documentable(
+            $attributes['documentable_type'],
+            $attributes['documentable_id']
+        );
 
         $this->fileManager->tempPath(config('enso.config.paths.temp'));
     }

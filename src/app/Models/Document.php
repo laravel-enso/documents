@@ -49,9 +49,9 @@ class Document extends Model
         return request()->user()->can('destroy', $this);
     }
 
-    public static function create(array $files, string $type, int $id)
+    public static function create(array $files, $attributes)
     {
-        return (new Storer($files, $type, $id))
+        return (new Storer($files, $attributes))
             ->run();
     }
 
@@ -78,9 +78,9 @@ class Document extends Model
 
     public function scopeFor($query, array $request)
     {
-        $query->whereDocumentableId($request['id'])
+        $query->whereDocumentableId($request['documentable_id'])
             ->whereDocumentableType(
-                (new ConfigMapper($request['type']))
+                (new ConfigMapper($request['documentable_type']))
                     ->class()
             );
     }
