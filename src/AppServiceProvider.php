@@ -5,7 +5,6 @@ namespace LaravelEnso\DocumentsManager;
 use Illuminate\Support\ServiceProvider;
 use LaravelEnso\DocumentsManager\app\Models\Document;
 use LaravelEnso\DocumentsManager\app\Observers\DocumentObserver;
-use LaravelEnso\DocumentsManager\app\Commands\UpdateDocumentsPermissions;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,10 +14,6 @@ class AppServiceProvider extends ServiceProvider
         $this->loadDependencies();
 
         Document::observe(DocumentObserver::class);
-
-        $this->commands([
-            UpdateDocumentsPermissions::class,
-        ]);
     }
 
     private function publishesAll()
