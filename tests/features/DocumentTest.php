@@ -1,17 +1,19 @@
 <?php
 
 use App\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use LaravelEnso\TestHelper\app\Traits\SignIn;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use LaravelEnso\DocumentsManager\app\Traits\Documentable;
 
 class DocumentTest extends TestCase
 {
     use RefreshDatabase, SignIn;
 
-    private $owner;
+    private $documentTestModel;
 
     protected function setUp()
     {
@@ -19,15 +21,19 @@ class DocumentTest extends TestCase
 
         // $this->withoutExceptionHandling();
         config()->set('enso.config.paths.files', 'testFolder');
-        $this->owner = config('enso.config.ownerModel')::first();
         $this->signIn(User::first());
+
+        $this->createDocumentTestModelsTable();
+        $this->documentTestModel = $this->createDocumentTestModel();
+
+        config(['enso.documents.documentables' => ['documentTestModel' => 'DocumentTestModel']]);
     }
 
     /** @test */
     public function index()
     {
         $this->get(route('core.documents.index', [
-            'documentable_type' => 'owner', 'documentable_id' => $this->owner->id
+            'documentable_type' => 'documentTestModel', 'documentable_id' => $this->documentTestModel->id
         ], false))
             ->assertStatus(200);
     }
@@ -81,16 +87,37 @@ class DocumentTest extends TestCase
     private function uploadDocument()
     {
         $this->post(route('core.documents.store'), [
-            'documentable_type' => 'owner',
-            'documentable_id' => $this->owner->id,
+            'documentable_type' => 'documentTestModel',
+            'documentable_id' => $this->documentTestModel->id,
             'file' => UploadedFile::fake()->create('document.doc'),
         ]);
 
-        return $this->owner->documents->first();
+        return $this->documentTestModel->documents->first();
     }
 
     private function cleanUp()
     {
         Storage::deleteDirectory('testFolder');
     }
+
+    private function createDocumentTestModelsTable()
+    {
+        Schema::create('document_test_models', function ($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamps();
+        });
+    }
+
+    private function createDocumentTestModel()
+    {
+        return DocumentTestModel::create(['name' => 'documentable']);
+    }
+}
+
+class DocumentTestModel extends Model
+{
+    use Documentable;
+
+    protected $fillable = ['name'];
 }
