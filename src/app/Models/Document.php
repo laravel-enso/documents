@@ -5,17 +5,20 @@ namespace LaravelEnso\DocumentsManager\app\Models;
 use LaravelEnso\Core\app\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\TrackWho\app\Traits\CreatedBy;
+use LaravelEnso\ActivityLog\app\Traits\LogActivity;
 use LaravelEnso\DocumentsManager\app\Classes\Storer;
 use LaravelEnso\DocumentsManager\app\Classes\Presenter;
 use LaravelEnso\DocumentsManager\app\Classes\ConfigMapper;
 
 class Document extends Model
 {
-    use CreatedBy;
+    use CreatedBy, LogActivity;
 
     protected $fillable = ['original_name', 'saved_name', 'size'];
 
     protected $appends = ['owner', 'isAccessible', 'isDeletable'];
+
+    protected $loggableLabel = 'original_name';
 
     public function user()
     {
@@ -83,5 +86,10 @@ class Document extends Model
                 (new ConfigMapper($request['documentable_type']))
                     ->class()
             );
+    }
+
+    public function getLoggableMorph()
+    {
+        return config('enso.documents.loggableMorph');
     }
 }
