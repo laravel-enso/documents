@@ -84,7 +84,7 @@ class Document extends Model
         $query->whereDocumentableId($request['documentable_id'])
             ->whereDocumentableType(
                 (new ConfigMapper($request['documentable_type']))
-                    ->class()
+                    ->model()
             );
     }
 

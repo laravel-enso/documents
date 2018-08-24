@@ -84,9 +84,10 @@ class Storer extends Handler
 
     private function documentable($type, $id)
     {
-        $class = (new ConfigMapper($type))->class();
+        $model = (new ConfigMapper($type))
+            ->model();
 
-        return $class::find($id);
+        return $model::find($id);
     }
 
     private function existing()
