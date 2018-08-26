@@ -58,7 +58,7 @@ class Document extends Model implements Attachable
                 }
 
                 $owner->documents()->create([
-                        'name' => $file->getClientOriginalName()
+                        'name' => $file->getClientOriginalName(),
                     ])->upload($file);
             });
         });
@@ -97,7 +97,7 @@ class Document extends Model implements Attachable
     {
         return [
             config('enso.documents.imageWidth'),
-            config('enso.documents.imageHeight')
+            config('enso.documents.imageHeight'),
         ];
     }
 
