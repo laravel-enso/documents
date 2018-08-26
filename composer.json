@@ -20,9 +20,9 @@
     ],
     "require": {
         "php": ">=7.1.0",
-        "laravel-enso/core": "2.12.*",
-        "laravel-enso/helpers": "1.7.*",
-        "laravel-enso/filemanager": "2.4.*",
+        "laravel-enso/core": "2.13.*",
+        "laravel-enso/helpers": "1.8.*",
+        "laravel-enso/filemanager": "2.5.*",
         "laravel-enso/imagetransformer": "1.4.*",
         "laravel-enso/structuremanager": "2.2.*",
         "laravel-enso/trackwho": "1.5.*",

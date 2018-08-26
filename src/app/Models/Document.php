@@ -2,44 +2,30 @@
 
 namespace LaravelEnso\DocumentsManager\app\Models;
 
-use LaravelEnso\Core\app\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\TrackWho\app\Traits\CreatedBy;
+use LaravelEnso\FileManager\app\Traits\HasFile;
 use LaravelEnso\ActivityLog\app\Traits\LogActivity;
 use LaravelEnso\DocumentsManager\app\Classes\Storer;
-use LaravelEnso\DocumentsManager\app\Classes\Presenter;
+use LaravelEnso\FileManager\app\Contracts\Attachable;
 use LaravelEnso\DocumentsManager\app\Classes\ConfigMapper;
+use LaravelEnso\DocumentsManager\app\Exceptions\DocumentException;
 
-class Document extends Model
+class Document extends Model implements Attachable
 {
-    use CreatedBy, LogActivity;
+    use HasFile, LogActivity, CreatedBy;
 
-    protected $fillable = ['original_name', 'saved_name', 'size'];
+    protected $optimizeImages = true;
 
-    protected $appends = ['owner', 'isAccessible', 'isDeletable'];
+    protected $fillable = ['name'];
 
-    protected $loggableLabel = 'original_name';
+    protected $appends = ['isAccessible', 'isDeletable'];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'created_by', 'id');
-    }
+    protected $loggableLabel = 'name';
 
     public function documentable()
     {
         return $this->morphTo();
-    }
-
-    public function getOwnerAttribute()
-    {
-        $owner = [
-            'fullName' => $this->user->fullName,
-            'avatarId' => $this->user->avatar ? $this->user->avatar->id : null,
-        ];
-
-        unset($this->user);
-
-        return $owner;
     }
 
     public function getIsAccessibleAttribute()
@@ -52,10 +38,36 @@ class Document extends Model
         return request()->user()->can('destroy', $this);
     }
 
+    public function store(array $files, $request)
+    {
+        $owner = (new ConfigMapper($request['documentable_type']))
+                    ->model($request['documentable_id']);
+
+        $existing = $owner->load('documents.file')
+            ->documents->map(function ($document) {
+                return $document->file->original_name;
+            });
+
+        \DB::transaction(function () use ($owner, $files, $existing) {
+            collect($files)->each(function ($file) use ($owner, $existing) {
+                if ($existing->contains($file->getClientOriginalName())) {
+                    throw new DocumentException(__(
+                        'File :file already exists for this entity',
+                        ['file' => $file->getClientOriginalName()]
+                    ));
+                }
+
+                $owner->documents()->create([
+                        'name' => $file->getClientOriginalName()
+                    ])->upload($file);
+            });
+        });
+    }
+
     public static function create(array $files, $attributes)
     {
         return (new Storer($files, $attributes))
-            ->run();
+            ->upload();
     }
 
     public function temporaryLink()
@@ -67,29 +79,30 @@ class Document extends Model
         );
     }
 
-    public function inline()
-    {
-        return (new Presenter($this))
-            ->inline();
-    }
-
-    public function download()
-    {
-        return (new Presenter($this))
-            ->download();
-    }
-
     public function scopeFor($query, array $request)
     {
         $query->whereDocumentableId($request['documentable_id'])
             ->whereDocumentableType(
                 (new ConfigMapper($request['documentable_type']))
-                    ->model()
+                    ->class()
             );
     }
 
     public function getLoggableMorph()
     {
         return config('enso.documents.loggableMorph');
+    }
+
+    public function resizeImages()
+    {
+        return [
+            config('enso.documents.imageWidth'),
+            config('enso.documents.imageHeight')
+        ];
+    }
+
+    public function folder()
+    {
+        return config('enso.paths.files');
     }
 }

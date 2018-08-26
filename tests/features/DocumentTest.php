@@ -6,6 +6,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use LaravelEnso\TestHelper\app\Traits\SignIn;
+use LaravelEnso\FileManager\app\Classes\FileManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use LaravelEnso\DocumentsManager\app\Traits\Documentable;
 
@@ -19,31 +20,38 @@ class DocumentTest extends TestCase
     {
         parent::setUp();
 
-        // $this->withoutExceptionHandling();
-        config()->set('enso.config.paths.files', 'testFolder');
-        $this->signIn(User::first());
+        $this->withoutExceptionHandling();
 
-        $this->createDocumentTestModelsTable();
+        $this->seed()
+            ->createDocumentTestModelsTable()
+            ->signIn(User::first());
+
         $this->documentTestModel = $this->createDocumentTestModel();
 
-        config(['enso.documents.documentables' => ['documentTestModel' => 'DocumentTestModel']]);
+        config([
+            'enso.documents.documentables' => ['documentTestModel' => 'DocumentTestModel']
+        ]);
     }
 
     /** @test */
     public function index()
     {
         $this->get(route('core.documents.index', [
-            'documentable_type' => 'documentTestModel', 'documentable_id' => $this->documentTestModel->id
-        ], false))
-            ->assertStatus(200);
+            'documentable_type' => 'documentTestModel',
+            'documentable_id' => $this->documentTestModel->id
+        ], false))->assertStatus(200);
     }
 
     /** @test */
     public function upload()
     {
         $document = $this->uploadDocument();
+
         $this->assertNotNull($document);
-        Storage::assertExists('testFolder/'.$document->saved_name);
+
+        Storage::assertExists(
+            FileManager::TestingFolder.DIRECTORY_SEPARATOR.$document->file->saved_name
+        );
 
         $this->cleanUp();
     }
@@ -75,10 +83,15 @@ class DocumentTest extends TestCase
     {
         $document = $this->uploadDocument();
 
+        $filename = $document->file->saved_name;
+
         $this->delete(route('core.documents.destroy', $document->id, false))
             ->assertStatus(200);
 
-        Storage::assertMissing('testFolder/'.$document->saved_name);
+        Storage::assertMissing(
+            FileManager::TestingFolder.DIRECTORY_SEPARATOR.$filename
+        );
+
         $this->assertNull($document->fresh());
 
         $this->cleanUp();
@@ -97,7 +110,7 @@ class DocumentTest extends TestCase
 
     private function cleanUp()
     {
-        Storage::deleteDirectory('testFolder');
+        \Storage::deleteDirectory(FileManager::TestingFolder);
     }
 
     private function createDocumentTestModelsTable()
@@ -107,6 +120,8 @@ class DocumentTest extends TestCase
             $table->string('name');
             $table->timestamps();
         });
+
+        return $this;
     }
 
     private function createDocumentTestModel()

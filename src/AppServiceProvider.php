@@ -3,8 +3,6 @@
 namespace LaravelEnso\DocumentsManager;
 
 use Illuminate\Support\ServiceProvider;
-use LaravelEnso\DocumentsManager\app\Models\Document;
-use LaravelEnso\DocumentsManager\app\Observers\DocumentObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,8 +10,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->publishesAll();
         $this->loadDependencies();
-
-        Document::observe(DocumentObserver::class);
     }
 
     private function publishesAll()

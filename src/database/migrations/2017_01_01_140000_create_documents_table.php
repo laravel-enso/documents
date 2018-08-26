@@ -13,9 +13,7 @@ class CreateDocumentsTable extends Migration
 
             $table->morphs('documentable');
 
-            $table->string('original_name');
-            $table->string('saved_name');
-            $table->integer('size');
+            $table->string('name');
 
             $table->integer('created_by')->unsigned();
             $table->foreign('created_by')->references('id')

@@ -10,14 +10,15 @@ class DocumentController extends Controller
 {
     public function index(Request $request)
     {
-        return Document::for($request->only(['documentable_id', 'documentable_type']))
+        return Document::with('file')
+            ->for($request->only(['documentable_id', 'documentable_type']))
             ->orderBy('created_at', 'desc')
             ->get();
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Document $document)
     {
-        return Document::create(
+        return $document->store(
             $request->allFiles(),
             $request->only(['documentable_type', 'documentable_id'])
         );
