@@ -103,6 +103,6 @@ class Document extends Model implements Attachable
 
     public function folder()
     {
-        return config('enso.paths.files');
+        return config('enso.config.paths.files');
     }
 }
