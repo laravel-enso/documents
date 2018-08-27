@@ -2,25 +2,29 @@
 
 namespace LaravelEnso\DocumentsManager\app\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use LaravelEnso\DocumentsManager\app\Models\Document;
+use LaravelEnso\DocumentsManager\app\Http\Resources\Document as Resource;
+use LaravelEnso\DocumentsManager\app\Http\Requests\ValidateDocumentRequest;
 
 class DocumentController extends Controller
 {
-    public function index(Request $request)
+    public function index(ValidateDocumentRequest $request)
     {
-        return Document::with('file')
-            ->for($request->only(['documentable_id', 'documentable_type']))
-            ->orderBy('created_at', 'desc')
-            ->get();
+        return Resource::collection(
+            Document::query()
+                ->with('file.createdBy.avatar')
+                ->for($request->validated())
+                ->ordered()
+                ->get()
+        );
     }
 
-    public function store(Request $request, Document $document)
+    public function store(ValidateDocumentRequest $request, Document $document)
     {
         return $document->store(
             $request->allFiles(),
-            $request->only(['documentable_type', 'documentable_id'])
+            $request->validated()
         );
     }
 

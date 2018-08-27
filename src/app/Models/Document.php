@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\TrackWho\app\Traits\CreatedBy;
 use LaravelEnso\FileManager\app\Traits\HasFile;
 use LaravelEnso\ActivityLog\app\Traits\LogActivity;
-use LaravelEnso\DocumentsManager\app\Classes\Storer;
 use LaravelEnso\FileManager\app\Contracts\Attachable;
 use LaravelEnso\DocumentsManager\app\Classes\ConfigMapper;
 use LaravelEnso\DocumentsManager\app\Exceptions\DocumentException;
@@ -19,8 +18,6 @@ class Document extends Model implements Attachable
 
     protected $fillable = ['name'];
 
-    protected $appends = ['isAccessible', 'isDeletable'];
-
     protected $loggableLabel = 'name';
 
     public function documentable()
@@ -28,12 +25,12 @@ class Document extends Model implements Attachable
         return $this->morphTo();
     }
 
-    public function getIsAccessibleAttribute()
+    public function isAccessible()
     {
         return request()->user()->can('access', $this);
     }
 
-    public function getIsDeletableAttribute()
+    public function isDeletable()
     {
         return request()->user()->can('destroy', $this);
     }
@@ -57,17 +54,10 @@ class Document extends Model implements Attachable
                     ));
                 }
 
-                $owner->documents()->create([
-                        'name' => $file->getClientOriginalName(),
-                    ])->upload($file);
+                $owner->documents()->create()
+                    ->upload($file);
             });
         });
-    }
-
-    public static function create(array $files, $attributes)
-    {
-        return (new Storer($files, $attributes))
-            ->upload();
     }
 
     public function temporaryLink()
@@ -86,6 +76,11 @@ class Document extends Model implements Attachable
                 (new ConfigMapper($request['documentable_type']))
                     ->class()
             );
+    }
+
+    public function scopeOrdered($query)
+    {
+        $query->orderBy('created_at', 'desc');
     }
 
     public function getLoggableMorph()
