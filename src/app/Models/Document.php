@@ -62,7 +62,7 @@ class Document extends Model implements Attachable
 
     public function temporaryLink()
     {
-        return \URL::temporarySignedRoute(
+        return url()->temporarySignedRoute(
             'core.documents.share',
             now()->addSeconds(config('enso.documents.linkExpiration')),
             ['document' => $this->id]
