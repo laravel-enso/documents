@@ -7,10 +7,11 @@ use LaravelEnso\TrackWho\app\Traits\CreatedBy;
 use LaravelEnso\FileManager\app\Traits\HasFile;
 use LaravelEnso\ActivityLog\app\Traits\LogActivity;
 use LaravelEnso\FileManager\app\Contracts\Attachable;
+use LaravelEnso\FileManager\app\Contracts\VisibleFile;
 use LaravelEnso\DocumentsManager\app\Classes\ConfigMapper;
 use LaravelEnso\DocumentsManager\app\Exceptions\DocumentException;
 
-class Document extends Model implements Attachable
+class Document extends Model implements Attachable, VisibleFile
 {
     use HasFile, LogActivity, CreatedBy;
 
@@ -58,15 +59,6 @@ class Document extends Model implements Attachable
                     ->upload($file);
             });
         });
-    }
-
-    public function temporaryLink()
-    {
-        return url()->temporarySignedRoute(
-            'core.documents.share',
-            now()->addSeconds(config('enso.documents.linkExpiration')),
-            ['document' => $this->id]
-        );
     }
 
     public function scopeFor($query, array $request)
