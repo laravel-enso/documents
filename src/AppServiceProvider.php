@@ -3,6 +3,7 @@
 namespace LaravelEnso\DocumentsManager;
 
 use Illuminate\Support\ServiceProvider;
+use LaravelEnso\DocumentsManager\app\Commands\RemovesDeprecatedPermissions;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,6 +12,10 @@ class AppServiceProvider extends ServiceProvider
         $this->load();
 
         $this->publish();
+
+        $this->commands([
+            RemovesDeprecatedPermissions::class,
+        ]);
     }
 
     private function load()
