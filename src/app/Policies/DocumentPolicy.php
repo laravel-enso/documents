@@ -18,11 +18,6 @@ class DocumentPolicy
         }
     }
 
-    public function access(User $user, Document $document)
-    {
-        return $this->ownsDocument($user, $document);
-    }
-
     public function destroy(User $user, Document $document)
     {
         return $this->ownsDocument($user, $document)

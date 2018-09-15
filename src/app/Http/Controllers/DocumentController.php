@@ -28,27 +28,6 @@ class DocumentController extends Controller
         );
     }
 
-    public function show(Document $document)
-    {
-        $this->authorize('access', $document);
-
-        return $document->inline();
-    }
-
-    public function download(Document $document)
-    {
-        $this->authorize('access', $document);
-
-        return $document->download();
-    }
-
-    public function link(Document $document)
-    {
-        $this->authorize('access', $document);
-
-        return ['link' => $document->temporaryLink()];
-    }
-
     public function share(Document $document)
     {
         return $document->download();

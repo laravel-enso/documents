@@ -12,7 +12,6 @@ class Document extends JsonResource
         return [
             'id' => $this->id,
             'file' => new File($this->whenLoaded('file')),
-            'isAccessible' => $this->isAccessible(),
             'isDeletable' => $this->isDeletable(),
             'createdAt' => $this->created_at->toDatetimeString(),
         ];

@@ -26,11 +26,6 @@ class Document extends Model implements Attachable, VisibleFile
         return $this->morphTo();
     }
 
-    public function isAccessible()
-    {
-        return request()->user()->can('access', $this);
-    }
-
     public function isDeletable()
     {
         return request()->user()->can('destroy', $this);
