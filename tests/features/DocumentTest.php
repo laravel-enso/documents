@@ -20,7 +20,7 @@ class DocumentTest extends TestCase
     {
         parent::setUp();
 
-        $this->withoutExceptionHandling();
+        // $this->withoutExceptionHandling();
 
         $this->seed()
             ->createDocumentTestModelsTable()
