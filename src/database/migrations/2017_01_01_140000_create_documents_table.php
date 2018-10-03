@@ -13,9 +13,8 @@ class CreateDocumentsTable extends Migration
 
             $table->morphs('documentable');
 
-            $table->integer('created_by')->unsigned();
-            $table->foreign('created_by')->references('id')
-                ->on('users');
+            $table->integer('created_by')->unsigned()->nullable();
+            $table->foreign('created_by')->references('id')->on('users');
 
             $table->timestamps();
         });
