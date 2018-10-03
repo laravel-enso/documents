@@ -20,7 +20,7 @@ class DocumentTest extends TestCase
     {
         parent::setUp();
 
-        // $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $this->seed()
             ->createDocumentTestModelsTable()
@@ -61,7 +61,7 @@ class DocumentTest extends TestCase
     {
         $document = $this->uploadDocument();
 
-        $this->get(route('core.files.show', $document->id, false))
+        $this->get(route('core.files.show', $document->file->id, false))
             ->assertStatus(200);
 
         $this->cleanUp();
@@ -72,7 +72,7 @@ class DocumentTest extends TestCase
     {
         $document = $this->uploadDocument();
 
-        $this->get(route('core.files.download', $document->id, false))
+        $this->get(route('core.files.download', $document->file->id, false))
             ->assertStatus(200);
 
         $this->cleanUp();
