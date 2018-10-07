@@ -1,91 +1,100 @@
 <?php
 
-use LaravelEnso\Core\app\Models\User;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
+use LaravelEnso\Core\app\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use LaravelEnso\TestHelper\app\Traits\SignIn;
-use LaravelEnso\FileManager\app\Classes\FileManager;
+use LaravelEnso\FileManager\app\Traits\HasFile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use LaravelEnso\FileManager\app\Classes\FileManager;
+use LaravelEnso\FileManager\app\Contracts\Attachable;
 use LaravelEnso\DocumentsManager\app\Traits\Documentable;
 
 class DocumentTest extends TestCase
 {
-    use RefreshDatabase, SignIn;
+    use RefreshDatabase;
 
-    private $documentTestModel;
+    private $testModel;
 
     protected function setUp()
     {
         parent::setUp();
 
-        // $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $this->seed()
-            ->createDocumentTestModelsTable()
-            ->signIn(User::first());
+            ->actingAs(User::first());
 
-        $this->documentTestModel = $this->createDocumentTestModel();
+        $this->testModel = $this->model();
+    }
 
-        config([
-            'enso.documents.documentables' => ['documentTestModel' => 'DocumentTestModel']
-        ]);
+    public function tearDown()
+    {
+        $this->cleanUp();
+        parent::tearDown();
     }
 
     /** @test */
-    public function index()
+    public function can_get_documents_index()
     {
         $this->get(route('core.documents.index', [
-            'documentable_type' => 'documentTestModel',
-            'documentable_id' => $this->documentTestModel->id
+            'documentable_type' => get_class($this->testModel),
+            'documentable_id' => $this->testModel->id
         ], false))->assertStatus(200);
     }
 
     /** @test */
-    public function upload()
+    public function can_upload_document()
     {
-        $document = $this->uploadDocument();
+        $this->post(route('core.documents.store'), [
+            'documentable_type' => get_class($this->testModel),
+            'documentable_id' => $this->testModel->id,
+            'file' => UploadedFile::fake()->create('document.doc'),
+        ]);
 
-        $this->assertNotNull($document);
+        $filename = $this->testModel->documents()->first()->file->saved_name;
 
         Storage::assertExists(
-            FileManager::TestingFolder.DIRECTORY_SEPARATOR.$document->file->saved_name
+            FileManager::TestingFolder.DIRECTORY_SEPARATOR.$filename
         );
-
-        $this->cleanUp();
     }
 
     /** @test */
-    public function show()
+    public function can_display_document()
     {
-        $document = $this->uploadDocument();
+        $this->testModel->upload(UploadedFile::fake()->create('document.doc'));
 
-        $this->get(route('core.files.show', $document->file->id, false))
+        $this->get(route('core.files.show', $this->testModel->file->id, false))
             ->assertStatus(200);
-
-        $this->cleanUp();
     }
 
     /** @test */
-    public function download()
+    public function can_download_document()
     {
-        $document = $this->uploadDocument();
+        $this->testModel->upload(UploadedFile::fake()->create('document.doc'));
 
-        $this->get(route('core.files.download', $document->file->id, false))
-            ->assertStatus(200);
-
-        $this->cleanUp();
+        $this->get(route('core.files.download', $this->testModel->file->id, false))
+            ->assertStatus(200)
+            ->assertHeader(
+                'content-disposition',
+                'attachment; filename='.$this->testModel->file->original_name
+            );
     }
 
     /** @test */
-    public function destroy()
+    public function can_destroy_document()
     {
-        $document = $this->uploadDocument();
+        $this->testModel->documents()
+            ->create()
+            ->upload(UploadedFile::fake()->create('document.doc'));
+
+        $document = $this->testModel->documents()
+            ->first();
 
         $filename = $document->file->saved_name;
 
-        $this->delete(route('core.documents.destroy', $document->id, false))
+        $this->delete(route('core.documents.destroy', [$this->testModel->id], false))
             ->assertStatus(200);
 
         Storage::assertMissing(
@@ -93,19 +102,6 @@ class DocumentTest extends TestCase
         );
 
         $this->assertNull($document->fresh());
-
-        $this->cleanUp();
-    }
-
-    private function uploadDocument()
-    {
-        $this->post(route('core.documents.store'), [
-            'documentable_type' => 'documentTestModel',
-            'documentable_id' => $this->documentTestModel->id,
-            'file' => UploadedFile::fake()->create('document.doc'),
-        ]);
-
-        return $this->documentTestModel->documents->first();
     }
 
     private function cleanUp()
@@ -113,7 +109,14 @@ class DocumentTest extends TestCase
         \Storage::deleteDirectory(FileManager::TestingFolder);
     }
 
-    private function createDocumentTestModelsTable()
+    private function model()
+    {
+        $this->createTestTable();
+
+        return DocumentTestModel::create(['name' => 'documentable']);
+    }
+
+    private function createTestTable()
     {
         Schema::create('document_test_models', function ($table) {
             $table->increments('id');
@@ -123,16 +126,11 @@ class DocumentTest extends TestCase
 
         return $this;
     }
-
-    private function createDocumentTestModel()
-    {
-        return DocumentTestModel::create(['name' => 'documentable']);
-    }
 }
 
-class DocumentTestModel extends Model
+class DocumentTestModel extends Model implements Attachable
 {
-    use Documentable;
+    use HasFile, Documentable;
 
     protected $fillable = ['name'];
 }

@@ -5,15 +5,14 @@ namespace LaravelEnso\DocumentsManager\app\Models;
 use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\TrackWho\app\Traits\CreatedBy;
 use LaravelEnso\FileManager\app\Traits\HasFile;
-use LaravelEnso\ActivityLog\app\Traits\LogActivity;
+use LaravelEnso\ActivityLog\app\Traits\LogsActivity;
 use LaravelEnso\FileManager\app\Contracts\Attachable;
 use LaravelEnso\FileManager\app\Contracts\VisibleFile;
-use LaravelEnso\DocumentsManager\app\Classes\ConfigMapper;
 use LaravelEnso\DocumentsManager\app\Exceptions\DocumentException;
 
 class Document extends Model implements Attachable, VisibleFile
 {
-    use HasFile, LogActivity, CreatedBy;
+    use HasFile, LogsActivity, CreatedBy;
 
     protected $optimizeImages = true;
 
@@ -33,8 +32,8 @@ class Document extends Model implements Attachable, VisibleFile
 
     public function store(array $files, $request)
     {
-        $owner = (new ConfigMapper($request['documentable_type']))
-                    ->model($request['documentable_id']);
+        $owner = $request['documentable_type']
+            ::find($request['documentable_id']);
 
         $existing = $owner->load('documents.file')
             ->documents->map(function ($document) {
@@ -56,13 +55,10 @@ class Document extends Model implements Attachable, VisibleFile
         });
     }
 
-    public function scopeFor($query, array $request)
+    public function scopeFor($query, array $params)
     {
-        $query->whereDocumentableId($request['documentable_id'])
-            ->whereDocumentableType(
-                (new ConfigMapper($request['documentable_type']))
-                    ->class()
-            );
+        $query->whereDocumentableId($params['documentable_id'])
+            ->whereDocumentableType($params['documentable_type']);
     }
 
     public function scopeOrdered($query)

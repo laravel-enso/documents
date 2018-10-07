@@ -4,14 +4,13 @@ namespace LaravelEnso\DocumentsManager\app\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use LaravelEnso\DocumentsManager\app\Models\Document;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use LaravelEnso\DocumentsManager\app\Http\Resources\Document as Resource;
 use LaravelEnso\DocumentsManager\app\Http\Requests\ValidateDocumentRequest;
 
 class DocumentController extends Controller
 {
-    use AuthorizesRequests, ValidatesRequests;
+    use AuthorizesRequests;
 
     public function index(ValidateDocumentRequest $request)
     {
