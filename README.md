@@ -20,6 +20,9 @@ Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 - uses the [ImageTransformer](https://github.com/laravel-enso/ImageTransformer) package for optimizing 
 the uploaded image files
 - security policies are used to enforce proper user authorization
+- comes with a `Documentable` trait that can be quickly added to the model you want to give this functionality to
+- offers various configuration options, including the option to delete all attached documents 
+to a Documentable entity, when it gets deleted 
 
 ### Configuration & Usage
 
