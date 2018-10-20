@@ -26,8 +26,7 @@ class DocumentController extends Controller
     public function store(ValidateDocumentRequest $request, Document $document)
     {
         return $document->store(
-            $request->allFiles(),
-            $request->validated()
+            $request->validated(), $request->allFiles()
         );
     }
 

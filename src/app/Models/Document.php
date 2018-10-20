@@ -18,8 +18,6 @@ class Document extends Model implements Attachable, VisibleFile
 
     protected $fillable = ['name'];
 
-    protected $loggableLabel = 'name';
-
     public function documentable()
     {
         return $this->morphTo();
@@ -27,13 +25,14 @@ class Document extends Model implements Attachable, VisibleFile
 
     public function isDeletable()
     {
-        return request()->user()->can('destroy', $this);
+        return request()->user()
+            ->can('destroy', $this);
     }
 
-    public function store(array $files, $request)
+    public function store(array $request, array $files)
     {
-        $owner = $request['documentable_type']
-            ::find($request['documentable_id']);
+        $owner = $request['documentable_type']::query()
+            ->find($request['documentable_id']);
 
         $existing = $owner->load('documents.file')
             ->documents->map(function ($document) {

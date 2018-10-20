@@ -1,6 +1,5 @@
 <?php
 
-use LaravelEnso\Core\app\Models\UserGroup;
 
 return [
     'deletableTimeLimit' => 60 * 60,
@@ -9,8 +8,6 @@ return [
     'imageHeight' => 2048,
     'onDelete' => 'restrict',
     'loggableMorph' => [
-        'documentable' => [
-            UserGroup::class => 'name',
-        ],
+        'documentable' => [],
     ],
 ];

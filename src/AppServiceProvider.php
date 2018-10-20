@@ -3,29 +3,27 @@
 namespace LaravelEnso\DocumentsManager;
 
 use Illuminate\Support\ServiceProvider;
-use LaravelEnso\DocumentsManager\app\Commands\RemovesDeprecatedPermissions;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->load();
-
-        $this->publish();
-
-        $this->commands([
-            RemovesDeprecatedPermissions::class,
-        ]);
+        $this->loadDependencies()
+            ->publishDependencies();
     }
 
-    private function load()
+    private function loadDependencies()
     {
         $this->mergeConfigFrom(__DIR__.'/config/documents.php', 'enso.documents');
+
         $this->loadRoutesFrom(__DIR__.'/routes/api.php');
+
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+
+        return $this;
     }
 
-    private function publish()
+    private function publishDependencies()
     {
         $this->publishes([
             __DIR__.'/config' => config_path('enso'),
