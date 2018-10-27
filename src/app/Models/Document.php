@@ -18,6 +18,10 @@ class Document extends Model implements Attachable, VisibleFile
 
     protected $fillable = ['name'];
 
+    protected $loggableLabel = 'file.original_name';
+
+    protected $loggedEvents = ['deleted'];
+
     public function documentable()
     {
         return $this->morphTo();
@@ -48,8 +52,9 @@ class Document extends Model implements Attachable, VisibleFile
                     ));
                 }
 
-                $owner->documents()->create()
-                    ->upload($file);
+                $document = $owner->documents()->create();
+                $document->upload($file);
+                $document->logEvent('uploaded a new document', 'upload');
             });
         });
     }
