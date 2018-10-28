@@ -3,7 +3,6 @@
 namespace LaravelEnso\DocumentsManager\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use LaravelEnso\TrackWho\app\Traits\CreatedBy;
 use LaravelEnso\FileManager\app\Traits\HasFile;
 use LaravelEnso\ActivityLog\app\Traits\LogsActivity;
 use LaravelEnso\FileManager\app\Contracts\Attachable;
@@ -12,7 +11,7 @@ use LaravelEnso\DocumentsManager\app\Exceptions\DocumentException;
 
 class Document extends Model implements Attachable, VisibleFile
 {
-    use HasFile, LogsActivity, CreatedBy;
+    use HasFile, LogsActivity;
 
     protected $optimizeImages = true;
 

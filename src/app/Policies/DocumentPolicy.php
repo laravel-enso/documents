@@ -26,7 +26,7 @@ class DocumentPolicy
 
     private function ownsDocument(User $user, Document $document)
     {
-        return $user->id === intval($document->created_by);
+        return $user->id === intval($document->file->created_by);
     }
 
     private function isRecent(Document $document)
