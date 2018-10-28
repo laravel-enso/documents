@@ -43,14 +43,18 @@ class Document extends Model implements Attachable, VisibleFile
             });
 
         \DB::transaction(function () use ($owner, $files, $existing) {
-            collect($files)->each(function ($file) use ($owner, $existing) {
-                if ($existing->contains($file->getClientOriginalName())) {
-                    throw new DocumentException(__(
-                        'File :file already exists for this entity',
-                        ['file' => $file->getClientOriginalName()]
-                    ));
-                }
+            $conflictingFiles = collect($files)->map(function ($file) use ($existing) {
+                return $file->getClientOriginalName();
+            })->intersect($existing);
 
+            if ($conflictingFiles->isNotEmpty()) {
+                throw new DocumentException(__(
+                    'File(s) :files already uploaded for this entity',
+                    ['files' => $conflictingFiles->implode(', ')]
+                ));
+            }
+
+            collect($files)->each(function ($file) use ($owner) {
                 $document = $owner->documents()->create();
                 $document->upload($file);
                 $document->logEvent('uploaded a new document', 'upload');
