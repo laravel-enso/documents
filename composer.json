@@ -25,7 +25,7 @@
         "laravel-enso/helpers": "1.10.*",
         "laravel-enso/filemanager": "2.5.*",
         "laravel-enso/imagetransformer": "1.4.*",
-        "laravel-enso/structuremanager": "2.4.*",
+        "laravel-enso/structuremanager": "2.5.*",
         "laravel-enso/trackwho": "1.7.*",
         "laravel-enso/vuecomponents": "2.6.*"
     },
