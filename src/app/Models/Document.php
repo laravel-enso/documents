@@ -7,11 +7,12 @@ use LaravelEnso\FileManager\app\Traits\HasFile;
 use LaravelEnso\ActivityLog\app\Traits\LogsActivity;
 use LaravelEnso\FileManager\app\Contracts\Attachable;
 use LaravelEnso\FileManager\app\Contracts\VisibleFile;
+use LaravelEnso\Multitenancy\app\Traits\SystemConnection;
 use LaravelEnso\DocumentsManager\app\Exceptions\DocumentException;
 
 class Document extends Model implements Attachable, VisibleFile
 {
-    use HasFile, LogsActivity;
+    use HasFile, LogsActivity, SystemConnection;
 
     protected $optimizeImages = true;
 
