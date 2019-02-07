@@ -15,8 +15,7 @@ class DocumentController extends Controller
     public function index(ValidateDocumentRequest $request)
     {
         return Resource::collection(
-            Document::query()
-                ->with('file.createdBy.avatar')
+            Document::with('file.createdBy.avatar')
                 ->for($request->validated())
                 ->ordered()
                 ->get()

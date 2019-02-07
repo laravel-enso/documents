@@ -7,13 +7,11 @@ use LaravelEnso\FileManager\app\Traits\HasFile;
 use LaravelEnso\ActivityLog\app\Traits\LogsActivity;
 use LaravelEnso\FileManager\app\Contracts\Attachable;
 use LaravelEnso\FileManager\app\Contracts\VisibleFile;
-use LaravelEnso\Multitenancy\app\Traits\MixedConnection;
-use LaravelEnso\Multitenancy\app\Traits\ConnectionStoragePath;
 use LaravelEnso\DocumentsManager\app\Exceptions\DocumentException;
 
 class Document extends Model implements Attachable, VisibleFile
 {
-    use ConnectionStoragePath, HasFile, LogsActivity, MixedConnection;
+    use HasFile, LogsActivity;
 
     protected $optimizeImages = true;
 
@@ -90,6 +88,6 @@ class Document extends Model implements Attachable, VisibleFile
 
     public function folder()
     {
-        return $this->storagePath('files');
+        return config('enso.config.paths.files');
     }
 }
