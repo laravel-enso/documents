@@ -17,7 +17,7 @@ class DocumentTest extends TestCase
 
     private $testModel;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -29,7 +29,7 @@ class DocumentTest extends TestCase
         $this->testModel = $this->model();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->cleanUp();
         parent::tearDown();
