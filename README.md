@@ -26,7 +26,7 @@ to a Documentable entity, when it gets deleted
 
 ### Configuration & Usage
 
-Be sure to check out the full documentation for this package available at [docs.laravel-enso.com](https://docs.laravel-enso.com/packages/documents-manager.html)
+Be sure to check out the full documentation for this package available at [docs.laravel-enso.com](https://docs.laravel-enso.com/backend/documents-manager.html)
 
 ### Contributions
 
