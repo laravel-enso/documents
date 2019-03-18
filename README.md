@@ -1,4 +1,5 @@
 # Documents Manager
+
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/3118ebe6bb4647df99675e83a9f56de2)](https://www.codacy.com/app/laravel-enso/DocumentsManager?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=laravel-enso/DocumentsManager&amp;utm_campaign=Badge_Grade)
 [![StyleCI](https://styleci.io/repos/85587885/shield?branch=master)](https://styleci.io/repos/85587885)
 [![License](https://poser.pugx.org/laravel-enso/datatable/license)](https://packagist.org/packages/laravel-enso/datatable)
@@ -7,15 +8,24 @@
 
 Documents Manager for [Laravel Enso](https://github.com/laravel-enso/Enso).
 
+This package works exclusively within the [Enso](https://github.com/laravel-enso/Enso) ecosystem.
+
+There is a front end implementation for this this api in the [accessories](https://github.com/enso-ui/accessories) package.
+
+For live examples and demos, you may visit [laravel-enso.com](https://www.laravel-enso.com)
+
 [![Watch the demo](https://laravel-enso.github.io/documentsmanager/screenshots/bulma_019_thumb.png)](https://laravel-enso.github.io/documentsmanager/videos/bulma_demo_01.webm)
 
 <sup>click on the photo to view a short demo in compatible browsers</sup>
 
-### Features
+## Installation
+
+Comes pre-installed in Enso.
+
+## Features
 
 - permits the management (upload, download, delete, show) of documents in the application
 - can attach documents to any other model
-- comes with its own VueJS components
 - uses [FileManager](https://github.com/laravel-enso/FileManager) for file operations
 - uses the [ImageTransformer](https://github.com/laravel-enso/ImageTransformer) package for optimizing 
 the uploaded image files
@@ -23,6 +33,10 @@ the uploaded image files
 - comes with a `Documentable` trait that can be quickly added to the model you want to give this functionality to
 - offers various configuration options, including the option to delete all attached documents 
 to a Documentable entity, when it gets deleted 
+- creates a `Document` model that has a `documentable` morphTo relationship
+- polymorphic relationships are used, which makes it possible to attach documents to any other entity
+- once documents are attached to an entity, you should not be able to delete the entity without deciding what
+you want to do with the associated documents. This is configurable in the options, see below
 
 ### Configuration & Usage
 
