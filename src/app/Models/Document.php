@@ -34,15 +34,15 @@ class Document extends Model implements Attachable, VisibleFile
 
     public function store(array $request, array $files)
     {
-        $owner = $request['documentable_type']::query()
+        $documentable = $request['documentable_type']::query()
             ->find($request['documentable_id']);
 
-        $existing = $owner->load('documents.file')
+        $existing = $documentable->load('documents.file')
             ->documents->map(function ($document) {
                 return $document->file->original_name;
             });
 
-        \DB::transaction(function () use ($owner, $files, $existing) {
+        \DB::transaction(function () use ($documentable, $files, $existing) {
             $conflictingFiles = collect($files)->map(function ($file) use ($existing) {
                 return $file->getClientOriginalName();
             })->intersect($existing);
@@ -54,8 +54,8 @@ class Document extends Model implements Attachable, VisibleFile
                 ));
             }
 
-            collect($files)->each(function ($file) use ($owner) {
-                $document = $owner->documents()->create();
+            collect($files)->each(function ($file) use ($documentable) {
+                $document = $documentable->documents()->create();
                 $document->upload($file);
                 $document->logEvent('uploaded a new document', 'upload');
             });
@@ -70,7 +70,7 @@ class Document extends Model implements Attachable, VisibleFile
 
     public function scopeOrdered($query)
     {
-        $query->orderBy('created_at', 'desc');
+        $query->orderByDesc('created_at');
     }
 
     public function getLoggableMorph()

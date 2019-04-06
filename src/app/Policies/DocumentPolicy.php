@@ -31,7 +31,7 @@ class DocumentPolicy
 
     private function isRecent(Document $document)
     {
-        return $document->created_at
-            ->diffInSeconds(Carbon::now()) <= config('enso.documents.deletableTimeLimit');
+        return $document->created_at->diffInSeconds(Carbon::now())
+            <= config('enso.documents.deletableTimeLimit');
     }
 }
