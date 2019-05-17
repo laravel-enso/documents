@@ -2,7 +2,7 @@
 
 use LaravelEnso\Migrator\app\Database\Migration;
 
-class CreateStructureForDocumentsManager extends Migration
+class CreateStructureForDocuments extends Migration
 {
     protected $permissions = [
         ['name' => 'core.documents.store', 'description' => 'Upload documents', 'type' => 1, 'is_default' => false],

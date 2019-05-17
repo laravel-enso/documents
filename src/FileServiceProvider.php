@@ -11,6 +11,6 @@ class FileServiceProvider extends ServiceProvider
         'documents' => [
             'model' => Document::class,
             'order' => 60,
-        ]
+        ],
     ];
 }
