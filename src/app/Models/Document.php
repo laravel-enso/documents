@@ -1,32 +1,30 @@
 <?php
 
-namespace LaravelEnso\DocumentsManager\app\Models;
+namespace LaravelEnso\Documents\app\Models;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use LaravelEnso\FileManager\app\Traits\HasFile;
-use LaravelEnso\ActivityLog\app\Traits\LogsActivity;
-use LaravelEnso\FileManager\app\Contracts\Attachable;
-use LaravelEnso\FileManager\app\Contracts\VisibleFile;
-use LaravelEnso\DocumentsManager\app\Exceptions\DocumentException;
+use LaravelEnso\Files\app\Traits\HasFile;
+use LaravelEnso\Files\app\Contracts\Attachable;
+use LaravelEnso\Files\app\Contracts\VisibleFile;
+use LaravelEnso\Documents\app\Exceptions\DocumentException;
 
 class Document extends Model implements Attachable, VisibleFile
 {
-    use HasFile, LogsActivity;
+    use HasFile;
 
     protected $optimizeImages = true;
 
     protected $fillable = ['name'];
 
-    protected $loggableLabel = 'file.original_name';
-
-    protected $loggedEvents = ['deleted'];
+    protected $touches = ['documentable'];
 
     public function documentable()
     {
         return $this->morphTo();
     }
 
-    public function isDeletable()
+    public function isDeletable(): bool
     {
         return request()->user()
             ->can('destroy', $this);
@@ -42,7 +40,7 @@ class Document extends Model implements Attachable, VisibleFile
                 return $document->file->original_name;
             });
 
-        \DB::transaction(function () use ($documentable, $files, $existing) {
+        DB::transaction(function () use ($documentable, $files, $existing) {
             $conflictingFiles = collect($files)->map(function ($file) use ($existing) {
                 return $file->getClientOriginalName();
             })->intersect($existing);
@@ -57,7 +55,6 @@ class Document extends Model implements Attachable, VisibleFile
             collect($files)->each(function ($file) use ($documentable) {
                 $document = $documentable->documents()->create();
                 $document->upload($file);
-                $document->logEvent('uploaded a new document', 'upload');
             });
         });
     }
@@ -78,16 +75,11 @@ class Document extends Model implements Attachable, VisibleFile
         return config('enso.documents.loggableMorph');
     }
 
-    public function resizeImages()
+    public function resizeImages(): array
     {
         return [
             config('enso.documents.imageWidth'),
             config('enso.documents.imageHeight'),
         ];
-    }
-
-    public function folder()
-    {
-        return config('enso.config.paths.files');
     }
 }

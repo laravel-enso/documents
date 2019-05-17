@@ -1,11 +1,11 @@
 <?php
 
-namespace LaravelEnso\DocumentsManager\app\Policies;
+namespace LaravelEnso\Documents\app\Policies;
 
 use Carbon\Carbon;
 use LaravelEnso\Core\app\Models\User;
+use LaravelEnso\Documents\app\Models\Document;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use LaravelEnso\DocumentsManager\app\Models\Document;
 
 class DocumentPolicy
 {

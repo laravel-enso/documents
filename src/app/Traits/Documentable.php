@@ -1,8 +1,8 @@
 <?php
 
-namespace LaravelEnso\DocumentsManager\app\Traits;
+namespace LaravelEnso\Documents\app\Traits;
 
-use LaravelEnso\DocumentsManager\app\Models\Document;
+use LaravelEnso\Documents\app\Models\Document;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
 trait Documentable

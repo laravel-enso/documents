@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelEnso\DocumentsManager;
+namespace LaravelEnso\Documents;
 
 use Illuminate\Support\ServiceProvider;
 

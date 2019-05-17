@@ -5,11 +5,10 @@ use Illuminate\Http\UploadedFile;
 use LaravelEnso\Core\app\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use LaravelEnso\FileManager\app\Traits\HasFile;
+use LaravelEnso\Files\app\Traits\HasFile;
+use LaravelEnso\Files\app\Contracts\Attachable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use LaravelEnso\FileManager\app\Classes\FileManager;
-use LaravelEnso\FileManager\app\Contracts\Attachable;
-use LaravelEnso\DocumentsManager\app\Traits\Documentable;
+use LaravelEnso\Documents\app\Traits\Documentable;
 
 class DocumentTest extends TestCase
 {
@@ -21,7 +20,7 @@ class DocumentTest extends TestCase
     {
         parent::setUp();
 
-        // $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $this->seed()
             ->actingAs(User::first());
@@ -53,10 +52,10 @@ class DocumentTest extends TestCase
             'file' => UploadedFile::fake()->create('document.doc'),
         ]);
 
-        $filename = $this->testModel->documents()->first()->file->saved_name;
+        $document = $this->testModel->documents()->first();
 
         Storage::assertExists(
-            FileManager::TestingFolder.DIRECTORY_SEPARATOR.$filename
+            $document->folder().DIRECTORY_SEPARATOR.$document->file->saved_name
         );
     }
 
@@ -98,7 +97,7 @@ class DocumentTest extends TestCase
             ->assertStatus(200);
 
         Storage::assertMissing(
-            FileManager::TestingFolder.DIRECTORY_SEPARATOR.$filename
+            $document->folder().DIRECTORY_SEPARATOR.$filename
         );
 
         $this->assertNull($document->fresh());
@@ -106,7 +105,7 @@ class DocumentTest extends TestCase
 
     private function cleanUp()
     {
-        \Storage::deleteDirectory(FileManager::TestingFolder);
+        Storage::deleteDirectory(config('enso.files.paths.testing'));
     }
 
     private function model()

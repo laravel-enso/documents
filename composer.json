@@ -1,13 +1,13 @@
 {
-    "name": "laravel-enso/documentsmanager",
+    "name": "laravel-enso/documents",
     "description": "Documents Manager for Laravel Enso",
     "keywords": [
         "laravel-enso",
-        "documentsmanager",
+        "documents",
         "documents-manager",
         "file-uploader"
     ],
-    "homepage": "https://github.com/laravel-enso/DocumentsManager",
+    "homepage": "https://github.com/laravel-enso/documents",
     "type": "plugin",
     "license": "MIT",
     "authors": [
@@ -20,24 +20,24 @@
     ],
     "require": {
         "php": ">=7.1.0",
-        "laravel-enso/activitylog": "2.0.*",
-        "laravel-enso/core": "4.2.*",
-        "laravel-enso/helpers": "1.10.*",
-        "laravel-enso/filemanager": "3.0.*",
-        "laravel-enso/imagetransformer": "1.4.*",
-        "laravel-enso/structuremanager": "3.0.*",
-        "laravel-enso/trackwho": "1.7.*"
+        "laravel-enso/core": "4.3.*",
+        "laravel-enso/helpers": "1.11.*",
+        "laravel-enso/files": "3.1.*",
+        "laravel-enso/image-transformer": "1.5.*",
+        "laravel-enso/migrator": "1.0.*",
+        "laravel-enso/track-who": "1.8.*"
     },
     "autoload": {
         "psr-4": {
-            "LaravelEnso\\DocumentsManager\\": "src/"
+            "LaravelEnso\\Documents\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "LaravelEnso\\DocumentsManager\\AppServiceProvider",
-                "LaravelEnso\\DocumentsManager\\AuthServiceProvider"
+                "LaravelEnso\\Documents\\AppServiceProvider",
+                "LaravelEnso\\Documents\\AuthServiceProvider",
+                "LaravelEnso\\Documents\\FileServiceProvider"
             ],
             "aliases": {}
         }

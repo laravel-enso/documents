@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelEnso\DocumentsManager\app\Exceptions;
+namespace LaravelEnso\Documents\app\Exceptions;
 
 use LaravelEnso\Helpers\app\Exceptions\EnsoException;
 

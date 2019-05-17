@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelEnso\DocumentsManager\app\Http\Requests;
+namespace LaravelEnso\Documents\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use LaravelEnso\DocumentsManager\app\Exceptions\DocumentException;
+use LaravelEnso\Documents\app\Exceptions\DocumentException;
 
 class ValidateDocumentRequest extends FormRequest
 {

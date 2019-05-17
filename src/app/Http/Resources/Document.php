@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelEnso\DocumentsManager\app\Http\Resources;
+namespace LaravelEnso\Documents\app\Http\Resources;
 
+use LaravelEnso\Files\app\Http\Resources\File;
 use Illuminate\Http\Resources\Json\JsonResource;
-use LaravelEnso\FileManager\app\Http\Resources\File;
 
 class Document extends JsonResource
 {
