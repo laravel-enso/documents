@@ -29,7 +29,7 @@ trait Documentable
     {
         return $this->morphOne(Document::class, 'documentable');
     }
-    
+
     public function documents()
     {
         return $this->morphMany(Document::class, 'documentable');
