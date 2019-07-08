@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\Files\app\Traits\HasFile;
 use LaravelEnso\Files\app\Contracts\Attachable;
 use LaravelEnso\Files\app\Contracts\VisibleFile;
+use LaravelEnso\Helpers\app\Traits\UpdateOnTouch;
 use LaravelEnso\Documents\app\Exceptions\DocumentException;
 
 class Document extends Model implements Attachable, VisibleFile
 {
-    use HasFile;
+    use UpdateOnTouch, HasFile;
 
     protected $optimizeImages = true;
 
