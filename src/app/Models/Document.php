@@ -79,8 +79,8 @@ class Document extends Model implements Attachable, VisibleFile
     public function resizeImages(): array
     {
         return [
-            config('enso.documents.imageWidth'),
-            config('enso.documents.imageHeight'),
+            'width' => config('enso.documents.imageWidth'),
+            'height' => config('enso.documents.imageHeight'),
         ];
     }
 }
