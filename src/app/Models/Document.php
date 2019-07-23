@@ -33,6 +33,8 @@ class Document extends Model implements Attachable, VisibleFile
 
     public function store(array $request, array $files)
     {
+        $documents = collect();
+
         $documentable = $request['documentable_type']::query()
             ->find($request['documentable_id']);
 
@@ -41,7 +43,7 @@ class Document extends Model implements Attachable, VisibleFile
                 return $document->file->original_name;
             });
 
-        DB::transaction(function () use ($documentable, $files, $existing) {
+        DB::transaction(function () use ($documents, $documentable, $files, $existing) {
             $conflictingFiles = collect($files)->map(function ($file) use ($existing) {
                 return $file->getClientOriginalName();
             })->intersect($existing);
@@ -53,11 +55,14 @@ class Document extends Model implements Attachable, VisibleFile
                 ));
             }
 
-            collect($files)->each(function ($file) use ($documentable) {
+            collect($files)->each(function ($file) use ($documents, $documentable) {
                 $document = $documentable->documents()->create();
                 $document->upload($file);
+                $documents->push($document);
             });
         });
+
+        return $documents;
     }
 
     public function scopeFor($query, array $params)
