@@ -9,8 +9,6 @@ class ValidateDocumentRequest extends FormRequest
 {
     public function authorize()
     {
-        $this->checkParams();
-
         return true;
     }
 
@@ -20,14 +18,5 @@ class ValidateDocumentRequest extends FormRequest
             'documentable_id' => 'required',
             'documentable_type' => 'required',
         ];
-    }
-
-    public function checkParams()
-    {
-        if (! class_exists($this->get('documentable_type'))) {
-            throw new DocumentException(
-                'The "documentable_type" property must be a valid model class'
-            );
-        }
     }
 }
