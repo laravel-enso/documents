@@ -3,7 +3,6 @@
 namespace LaravelEnso\Documents\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use LaravelEnso\Documents\app\Exceptions\DocumentException;
 
 class ValidateDocumentRequest extends FormRequest
 {
