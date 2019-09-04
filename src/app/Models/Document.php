@@ -2,6 +2,7 @@
 
 namespace LaravelEnso\Documents\app\Models;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\Files\app\Traits\HasFile;
@@ -35,7 +36,10 @@ class Document extends Model implements Attachable, VisibleFile
     {
         $documents = collect();
 
-        $documentable = $request['documentable_type']::query()
+        $class = Relation::getMorphedModel($request['documentable_type'])
+            ?? $request['documentable_type'];
+
+        $documentable = $class::query()
             ->find($request['documentable_id']);
 
         $existing = $documentable->load('documents.file')
