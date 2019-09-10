@@ -7,7 +7,7 @@ use LaravelEnso\Core\app\Models\User;
 use LaravelEnso\Documents\app\Models\Document;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class DocumentPolicy
+class Policy
 {
     use HandlesAuthorization;
 
@@ -18,6 +18,16 @@ class DocumentPolicy
         }
     }
 
+    public function view(User $user, Document $document)
+    {
+        return $this->ownsDocument($user, $document);
+    }
+    
+    public function share(User $user, Document $document)
+    {
+        return $this->ownsDocument($user, $document);
+    }
+
     public function destroy(User $user, Document $document)
     {
         return $this->ownsDocument($user, $document)
@@ -26,7 +36,7 @@ class DocumentPolicy
 
     private function ownsDocument(User $user, Document $document)
     {
-        return $user->id === intval($document->file->created_by);
+        return $user->id === (int) $document->file->created_by;
     }
 
     private function isRecent(Document $document)

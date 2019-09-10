@@ -11,7 +11,10 @@ class Store extends Controller
 {
     public function __invoke(ValidateDocumentRequest $request, Document $document)
     {
-        $documents = $document->store($request->validated(), $request->allFiles());
+        $documents = $document->store(
+            $request->validated(), $request->allFiles()
+        );
+
         $documents->each->load('file');
 
         return Resource::collection($documents);

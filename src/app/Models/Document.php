@@ -5,15 +5,16 @@ namespace LaravelEnso\Documents\app\Models;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\Files\app\Traits\HasFile;
+use LaravelEnso\Files\app\Traits\FilePolicies;
 use LaravelEnso\Files\app\Contracts\Attachable;
-use LaravelEnso\Files\app\Contracts\VisibleFile;
 use LaravelEnso\Helpers\app\Traits\UpdatesOnTouch;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use LaravelEnso\Files\app\Contracts\AuthorizesFileAcces;
 use LaravelEnso\Documents\app\Exceptions\DocumentException;
 
-class Document extends Model implements Attachable, VisibleFile
+class Document extends Model implements Attachable, AuthorizesFileAcces
 {
-    use UpdatesOnTouch, HasFile;
+    use UpdatesOnTouch, HasFile, FilePolicies;
 
     protected $optimizeImages = true;
 
@@ -26,12 +27,6 @@ class Document extends Model implements Attachable, VisibleFile
         return $this->morphTo();
     }
 
-    public function isDeletable(): bool
-    {
-        return request()->user()
-            ->can('destroy', $this);
-    }
-
     public function store(array $request, array $files)
     {
         $documents = collect();
@@ -39,8 +34,7 @@ class Document extends Model implements Attachable, VisibleFile
         $class = Relation::getMorphedModel($request['documentable_type'])
             ?? $request['documentable_type'];
 
-        $documentable = $class::query()
-            ->find($request['documentable_id']);
+        $documentable = $class::query()->find($request['documentable_id']);
 
         $existing = $documentable->load('documents.file')
             ->documents->map(function ($document) {
@@ -72,7 +66,10 @@ class Document extends Model implements Attachable, VisibleFile
     public function scopeFor($query, array $params)
     {
         $query->whereDocumentableId($params['documentable_id'])
-            ->whereDocumentableType($params['documentable_type']);
+            ->whereDocumentableType(
+                Relation::getMorphedModel($params['documentable_type'])
+                    ?? $params['documentable_type']
+            );
     }
 
     public function scopeOrdered($query)
