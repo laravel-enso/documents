@@ -22,7 +22,7 @@ class Policy
     {
         return $this->ownsDocument($user, $document);
     }
-    
+
     public function share(User $user, Document $document)
     {
         return $this->ownsDocument($user, $document);
