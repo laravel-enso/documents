@@ -9,10 +9,10 @@ use LaravelEnso\Files\app\Traits\FilePolicies;
 use LaravelEnso\Files\app\Contracts\Attachable;
 use LaravelEnso\Helpers\app\Traits\UpdatesOnTouch;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use LaravelEnso\Files\app\Contracts\AuthorizesFileAcces;
+use LaravelEnso\Files\app\Contracts\AuthorizesFileAccess;
 use LaravelEnso\Documents\app\Exceptions\DocumentException;
 
-class Document extends Model implements Attachable, AuthorizesFileAcces
+class Document extends Model implements Attachable, AuthorizesFileAccess
 {
     use UpdatesOnTouch, HasFile, FilePolicies;
 
