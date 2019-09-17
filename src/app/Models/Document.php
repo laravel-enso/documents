@@ -66,10 +66,7 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
     public function scopeFor($query, array $params)
     {
         $query->whereDocumentableId($params['documentable_id'])
-            ->whereDocumentableType(
-                Relation::getMorphedModel($params['documentable_type'])
-                    ?? $params['documentable_type']
-            );
+            ->whereDocumentableType($params['documentable_type']);
     }
 
     public function scopeOrdered($query)
