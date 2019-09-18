@@ -8,9 +8,9 @@ use LaravelEnso\Files\app\Traits\HasFile;
 use LaravelEnso\Files\app\Traits\FilePolicies;
 use LaravelEnso\Files\app\Contracts\Attachable;
 use LaravelEnso\Helpers\app\Traits\UpdatesOnTouch;
+use LaravelEnso\Files\app\Exceptions\FileException;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use LaravelEnso\Files\app\Contracts\AuthorizesFileAccess;
-use LaravelEnso\Documents\app\Exceptions\DocumentException;
 
 class Document extends Model implements Attachable, AuthorizesFileAccess
 {
@@ -47,7 +47,7 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
             })->intersect($existing);
 
             if ($conflictingFiles->isNotEmpty()) {
-                throw DocumentException::duplicates($conflictingFiles->implode(', '));
+                throw FileException::duplicates($conflictingFiles->implode(', '));
             }
 
             collect($files)->each(function ($file) use ($documents, $documentable) {
