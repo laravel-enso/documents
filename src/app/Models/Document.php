@@ -47,10 +47,7 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
             })->intersect($existing);
 
             if ($conflictingFiles->isNotEmpty()) {
-                throw new DocumentException(__(
-                    'File(s) :files already uploaded for this entity',
-                    ['files' => $conflictingFiles->implode(', ')]
-                ));
+                throw DocumentException::duplicates($conflictingFiles->implode(', '));
             }
 
             collect($files)->each(function ($file) use ($documents, $documentable) {
