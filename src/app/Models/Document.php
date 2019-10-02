@@ -42,7 +42,7 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
             });
 
         DB::transaction(function () use ($documents, $documentable, $files, $existing) {
-            $conflictingFiles = collect($files)->map(function ($file) use ($existing) {
+            $conflictingFiles = collect($files)->map(function ($file) {
                 return $file->getClientOriginalName();
             })->intersect($existing);
 
