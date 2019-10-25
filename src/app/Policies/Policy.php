@@ -34,7 +34,7 @@ class Policy
             && $this->isRecent($document);
     }
 
-    private function ownsDocument(User $user, Document $document)
+    protected function ownsDocument(User $user, Document $document)
     {
         return $user->id === (int) $document->file->created_by;
     }
