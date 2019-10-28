@@ -18,29 +18,9 @@ For live examples and demos, you may visit [laravel-enso.com](https://www.larave
 
 <sup>click on the photo to view a short demo in compatible browsers</sup>
 
-## Installation
+### Installation, Configuration & Usage
 
-Comes pre-installed in Enso.
-
-## Features
-
-- permits the management (upload, download, delete, show) of documents in the application
-- can attach documents to any other model
-- uses [Files](https://github.com/laravel-enso/Files) for file operations
-- uses the [ImageTransformer](https://github.com/laravel-enso/ImageTransformer) package for optimizing 
-the uploaded image files
-- security policies are used to enforce proper user authorization
-- comes with a `Documentable` trait that can be quickly added to the model you want to give this functionality to
-- offers various configuration options, including the option to delete all attached documents 
-to a Documentable entity, when it gets deleted 
-- creates a `Document` model that has a `documentable` morphTo relationship
-- polymorphic relationships are used, which makes it possible to attach documents to any other entity
-- once documents are attached to an entity, you should not be able to delete the entity without deciding what
-you want to do with the associated documents. This is configurable in the options, see below
-
-### Configuration & Usage
-
-Be sure to check out the full documentation for this package available at [docs.laravel-enso.com](https://docs.laravel-enso.com/backend/documents-manager.html)
+Be sure to check out the full documentation for this package available at [docs.laravel-enso.com](https://docs.laravel-enso.com/backend/documents.html)
 
 ### Contributions
 
