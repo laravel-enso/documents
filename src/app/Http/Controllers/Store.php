@@ -11,6 +11,10 @@ class Store extends Controller
 {
     public function __invoke(ValidateDocumentRequest $request, Document $document)
     {
+        $document->fill($request->validated());
+
+        $this->authorize('store', $document);
+
         $documents = $document->store(
             $request->validated(), $request->allFiles()
         );

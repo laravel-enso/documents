@@ -18,6 +18,11 @@ class Policy
         }
     }
 
+    public function store(User $user, Document $document)
+    {
+        return true;
+    }
+
     public function view(User $user, Document $document)
     {
         return $this->ownsDocument($user, $document);
