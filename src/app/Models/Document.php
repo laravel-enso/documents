@@ -14,13 +14,13 @@ use LaravelEnso\Files\app\Contracts\AuthorizesFileAccess;
 
 class Document extends Model implements Attachable, AuthorizesFileAccess
 {
-    use UpdatesOnTouch, HasFile, FilePolicies;
-
-    protected $optimizeImages = true;
+    use FilePolicies, HasFile, UpdatesOnTouch;
 
     protected $fillable = ['documentable_type', 'documentable_id'];
 
     protected $touches = ['documentable'];
+
+    protected $optimizeImages = true;
 
     public function documentable()
     {
