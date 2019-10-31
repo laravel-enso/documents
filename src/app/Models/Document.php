@@ -18,7 +18,7 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
 
     protected $optimizeImages = true;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['documentable_type', 'documentable_id'];
 
     protected $touches = ['documentable'];
 
