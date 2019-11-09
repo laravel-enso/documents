@@ -2,11 +2,11 @@
 
 namespace LaravelEnso\Documents\app\Http\Controllers;
 
-use Illuminate\Routing\Controller;
-use LaravelEnso\Documents\app\Models\Document;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use LaravelEnso\Documents\app\Http\Resources\Document as Resource;
+use Illuminate\Routing\Controller;
 use LaravelEnso\Documents\app\Http\Requests\ValidateDocumentRequest;
+use LaravelEnso\Documents\app\Http\Resources\Document as Resource;
+use LaravelEnso\Documents\app\Models\Document;
 
 class Store extends Controller
 {
