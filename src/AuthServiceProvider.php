@@ -2,9 +2,9 @@
 
 namespace LaravelEnso\Documents;
 
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use LaravelEnso\Documents\app\Models\Document;
 use LaravelEnso\Documents\app\Policies\Policy;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {

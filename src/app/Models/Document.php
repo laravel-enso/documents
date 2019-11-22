@@ -2,21 +2,23 @@
 
 namespace LaravelEnso\Documents\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\DB;
-use LaravelEnso\Files\app\Contracts\Attachable;
-use LaravelEnso\Files\app\Contracts\AuthorizesFileAccess;
-use LaravelEnso\Files\app\Exceptions\FileException;
-use LaravelEnso\Files\app\Traits\FilePolicies;
+use Illuminate\Database\Eloquent\Model;
 use LaravelEnso\Files\app\Traits\HasFile;
+use LaravelEnso\Documents\app\Jobs\OCRJob;
+use LaravelEnso\Files\app\Traits\FilePolicies;
+use LaravelEnso\Files\app\Contracts\Attachable;
+use LaravelEnso\Documents\app\Contracts\Ocrable;
 use LaravelEnso\Helpers\app\Traits\UpdatesOnTouch;
+use LaravelEnso\Files\app\Exceptions\FileException;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use LaravelEnso\Files\app\Contracts\AuthorizesFileAccess;
 
 class Document extends Model implements Attachable, AuthorizesFileAccess
 {
     use FilePolicies, HasFile, UpdatesOnTouch;
 
-    protected $fillable = ['documentable_type', 'documentable_id'];
+    protected $fillable = ['documentable_type', 'documentable_id', 'text'];
 
     protected $touches = ['documentable'];
 
@@ -53,7 +55,7 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
             collect($files)->each(function ($file) use ($documents, $documentable) {
                 $document = $documentable->documents()->create();
                 $document->upload($file);
-                $documents->push($document);
+                $documents->push($document->ocr());
             });
         });
 
@@ -71,6 +73,17 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
         $query->orderByDesc('created_at');
     }
 
+    public function scopeFilter($query, $search)
+    {
+        if (! empty($search)) {
+            $query->where(function ($query) use ($search) {
+                $query->whereHas('file', function ($query) use ($search) {
+                    $query->where('original_name', 'LIKE', '%'.$search.'%');
+                })->orWhere('text', 'LIKE', '%'.$search.'%');
+            });
+        }
+    }
+
     public function getLoggableMorph()
     {
         return config('enso.documents.loggableMorph');
@@ -82,5 +95,20 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
             'width' => config('enso.documents.imageWidth'),
             'height' => config('enso.documents.imageHeight'),
         ];
+    }
+
+    private function ocr()
+    {
+        if ($this->ocrable()) {
+            dispatch(new OCRJob($this));
+        }
+
+        return $this;
+    }
+
+    private function ocrable()
+    {
+        return $this->documentable instanceof Ocrable
+            && $this->file->mime_type === 'application/pdf';
     }
 }
