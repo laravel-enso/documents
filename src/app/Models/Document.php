@@ -2,17 +2,17 @@
 
 namespace LaravelEnso\Documents\app\Models;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use LaravelEnso\Files\app\Traits\HasFile;
-use LaravelEnso\Documents\app\Jobs\OCRJob;
-use LaravelEnso\Files\app\Traits\FilePolicies;
-use LaravelEnso\Files\app\Contracts\Attachable;
-use LaravelEnso\Documents\app\Contracts\Ocrable;
-use LaravelEnso\Helpers\app\Traits\UpdatesOnTouch;
-use LaravelEnso\Files\app\Exceptions\FileException;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\DB;
+use LaravelEnso\Documents\app\Contracts\Ocrable;
+use LaravelEnso\Documents\app\Jobs\OCRJob;
+use LaravelEnso\Files\app\Contracts\Attachable;
 use LaravelEnso\Files\app\Contracts\AuthorizesFileAccess;
+use LaravelEnso\Files\app\Exceptions\FileException;
+use LaravelEnso\Files\app\Traits\FilePolicies;
+use LaravelEnso\Files\app\Traits\HasFile;
+use LaravelEnso\Helpers\app\Traits\UpdatesOnTouch;
 
 class Document extends Model implements Attachable, AuthorizesFileAccess
 {
