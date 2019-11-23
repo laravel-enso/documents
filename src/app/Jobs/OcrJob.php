@@ -2,13 +2,13 @@
 
 namespace LaravelEnso\Documents\app\Jobs;
 
-use LaravelEnso\Ocr\Ocr;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use LaravelEnso\Documents\app\Models\Document;
+use LaravelEnso\Ocr\Ocr;
 
 class OcrJob implements ShouldQueue
 {
@@ -30,7 +30,7 @@ class OcrJob implements ShouldQueue
         $text = (new Ocr($this->docuemnt->file->path()))->text();
 
         $this->docuemnt->update([
-            'text' => preg_replace('/\s+/', ' ', $text)
+            'text' => preg_replace('/\s+/', ' ', $text),
         ]);
     }
 }
