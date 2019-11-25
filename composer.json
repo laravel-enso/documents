@@ -22,6 +22,7 @@
         "laravel-enso/core": "4.6.*",
         "laravel-enso/helpers": "1.14.*",
         "laravel-enso/files": "3.3.*",
+        "laravel-enso/ocr": "0.1.*",
         "laravel-enso/image-transformer": "1.5.*",
         "laravel-enso/migrator": "1.0.*",
         "laravel-enso/track-who": "1.8.*"

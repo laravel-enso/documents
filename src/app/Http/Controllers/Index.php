@@ -14,6 +14,7 @@ class Index extends Controller
         return Resource::collection(
             Document::with('file.createdBy.avatar')
                 ->for($request->validated())
+                ->filter($request->get('query'))
                 ->ordered()
                 ->get()
         );
