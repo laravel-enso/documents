@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\DB;
 use LaravelEnso\Documents\app\Contracts\Ocrable;
-use LaravelEnso\Documents\app\Jobs\OCRJob;
+use LaravelEnso\Documents\app\Jobs\OcrJob;
 use LaravelEnso\Files\app\Contracts\Attachable;
 use LaravelEnso\Files\app\Contracts\AuthorizesFileAccess;
 use LaravelEnso\Files\app\Exceptions\FileException;
@@ -100,7 +100,7 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
     private function ocr()
     {
         if ($this->ocrable()) {
-            dispatch(new OCRJob($this));
+            dispatch(new OcrJob($this));
         }
 
         return $this;
