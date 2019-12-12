@@ -8,28 +8,27 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use LaravelEnso\Documents\app\Models\Document;
-use LaravelEnso\Ocr\Ocr;
 
-class OcrJob implements ShouldQueue
+class Ocr implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $docuemnt;
+    private $document;
 
     public $queue;
 
-    public function __construct(Document $docuemnt)
+    public function __construct(Document $document)
     {
-        $this->docuemnt = $docuemnt;
+        $this->document = $document;
 
         $this->queue = config('enso.documents.queues.ocr');
     }
 
     public function handle()
     {
-        $text = (new Ocr($this->docuemnt->file->path()))->text();
+        $text = (new self($this->document->file->path()))->text();
 
-        $this->docuemnt->update([
+        $this->document->update([
             'text' => preg_replace('/\s+/', ' ', $text),
         ]);
     }

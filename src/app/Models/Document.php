@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\DB;
 use LaravelEnso\Documents\app\Contracts\Ocrable;
-use LaravelEnso\Documents\app\Jobs\OcrJob;
+use LaravelEnso\Documents\app\Jobs\Ocr as OcrJob;
 use LaravelEnso\Files\app\Contracts\Attachable;
 use LaravelEnso\Files\app\Contracts\AuthorizesFileAccess;
-use LaravelEnso\Files\app\Exceptions\FileException;
+use LaravelEnso\Files\app\Exceptions\File;
 use LaravelEnso\Files\app\Traits\FilePolicies;
 use LaravelEnso\Files\app\Traits\HasFile;
 use LaravelEnso\Helpers\app\Traits\UpdatesOnTouch;
@@ -29,6 +29,7 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
         return $this->morphTo();
     }
 
+    //TODO refactor
     public function store(array $request, array $files)
     {
         $documents = collect();
@@ -38,24 +39,14 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
 
         $documentable = $class::query()->find($request['documentable_id']);
 
-        $existing = $documentable->load('documents.file')
-            ->documents->map(function ($document) {
-                return $document->file->original_name;
-            });
+        $this->validateExisting($files, $documentable);
 
-        DB::transaction(function () use ($documents, $documentable, $files, $existing) {
-            $conflictingFiles = collect($files)->map(function ($file) {
-                return $file->getClientOriginalName();
-            })->intersect($existing);
-
-            if ($conflictingFiles->isNotEmpty()) {
-                throw FileException::duplicates($conflictingFiles->implode(', '));
-            }
-
+        DB::transaction(function () use ($documents, $documentable, $files) {
             collect($files)->each(function ($file) use ($documents, $documentable) {
                 $document = $documentable->documents()->create();
                 $document->upload($file);
-                $documents->push($document->ocr());
+                $this->ocr($document);
+                $documents->push($document);
             });
         });
 
@@ -97,18 +88,34 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
         ];
     }
 
-    private function ocr()
+    private function ocr($document)
     {
-        if ($this->ocrable()) {
-            dispatch(new OcrJob($this));
+        if ($this->ocrable($document)) {
+            OcrJob::dispatch($document);
         }
 
         return $this;
     }
 
-    private function ocrable()
+    private function ocrable($document)
     {
-        return $this->documentable instanceof Ocrable
-            && $this->file->mime_type === 'application/pdf';
+        return $document->documentable instanceof Ocrable
+            && $document->file->mime_type === 'application/pdf';
+    }
+
+    private function validateExisting(array $files, $documentable): void
+    {
+        $existing = $documentable->load('documents.file')
+            ->documents->map(function ($document) {
+                return $document->file->original_name;
+            });
+
+        $conflictingFiles = collect($files)->map(function ($file) {
+            return $file->getClientOriginalName();
+        })->intersect($existing);
+
+        if ($conflictingFiles->isNotEmpty()) {
+            throw File::duplicates($conflictingFiles->implode(', '));
+        }
     }
 }
