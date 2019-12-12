@@ -9,7 +9,7 @@ use LaravelEnso\Documents\app\Contracts\Ocrable;
 use LaravelEnso\Documents\app\Jobs\OcrJob;
 use LaravelEnso\Files\app\Contracts\Attachable;
 use LaravelEnso\Files\app\Contracts\AuthorizesFileAccess;
-use LaravelEnso\Files\app\Exceptions\FileException;
+use LaravelEnso\Files\app\Exceptions\File;
 use LaravelEnso\Files\app\Traits\FilePolicies;
 use LaravelEnso\Files\app\Traits\HasFile;
 use LaravelEnso\Helpers\app\Traits\UpdatesOnTouch;
@@ -38,20 +38,9 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
 
         $documentable = $class::query()->find($request['documentable_id']);
 
-        $existing = $documentable->load('documents.file')
-            ->documents->map(function ($document) {
-                return $document->file->original_name;
-            });
+        $this->validateExisting($files, $documentable);
 
-        DB::transaction(function () use ($documents, $documentable, $files, $existing) {
-            $conflictingFiles = collect($files)->map(function ($file) {
-                return $file->getClientOriginalName();
-            })->intersect($existing);
-
-            if ($conflictingFiles->isNotEmpty()) {
-                throw FileException::duplicates($conflictingFiles->implode(', '));
-            }
-
+        DB::transaction(function () use ($documents, $documentable, $files) {
             collect($files)->each(function ($file) use ($documents, $documentable) {
                 $document = $documentable->documents()->create();
                 $document->upload($file);
@@ -97,7 +86,7 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
         ];
     }
 
-    private function ocr()
+    public function ocr()
     {
         if ($this->ocrable()) {
             dispatch(new OcrJob($this));
@@ -110,5 +99,21 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
     {
         return $this->documentable instanceof Ocrable
             && $this->file->mime_type === 'application/pdf';
+    }
+
+    private function validateExisting(array $files, $documentable): void
+    {
+        $existing = $documentable->load('documents.file')
+            ->documents->map(function ($document) {
+                return $document->file->original_name;
+            });
+
+        $conflictingFiles = collect($files)->map(function ($file) {
+            return $file->getClientOriginalName();
+        })->intersect($existing);
+
+        if ($conflictingFiles->isNotEmpty()) {
+            throw File::duplicates($conflictingFiles->implode(', '));
+        }
     }
 }

@@ -14,9 +14,9 @@ class OcrJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $docuemnt;
-
     public $queue;
+
+    private $docuemnt;
 
     public function __construct(Document $docuemnt)
     {
