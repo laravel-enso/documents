@@ -26,7 +26,7 @@ class Ocr implements ShouldQueue
 
     public function handle()
     {
-        $text = (new Ocr($this->document->file->path()))->text();
+        $text = (new self($this->document->file->path()))->text();
 
         $this->document->update([
             'text' => preg_replace('/\s+/', ' ', $text),
