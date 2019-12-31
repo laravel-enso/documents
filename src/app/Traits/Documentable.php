@@ -1,28 +1,17 @@
 <?php
 
-namespace LaravelEnso\Documents\app\Traits;
+namespace LaravelEnso\Documents\App\Traits;
 
-use LaravelEnso\Documents\app\Models\Document;
-use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
+use LaravelEnso\Documents\App\Exceptions\DocumentConflict;
+use LaravelEnso\Documents\App\Models\Document;
 
 trait Documentable
 {
     public static function bootDocumentable()
     {
-        self::deleting(function ($model) {
-            if (config('enso.documents.onDelete') === 'restrict'
-                && $model->documents()->first() !== null) {
-                throw new ConflictHttpException(
-                    __('The entity has attached documents and cannot be deleted')
-                );
-            }
-        });
+        self::deleting(fn ($model) => $model->attemptDocumentableDeletion());
 
-        self::deleted(function ($model) {
-            if (config('enso.documents.onDelete') === 'cascade') {
-                $model->documents()->delete();
-            }
-        });
+        self::deleted(fn ($model) => $model->cascadeDocumentDeletion());
     }
 
     public function document()
@@ -33,5 +22,20 @@ trait Documentable
     public function documents()
     {
         return $this->morphMany(Document::class, 'documentable');
+    }
+
+    private function attemptDocumentableDeletion()
+    {
+        if (config('enso.documents.onDelete') === 'restrict'
+            && $this->documents()->first() !== null) {
+            throw DocumentConflict::delete();
+        }
+    }
+
+    private function cascadeDocumentDeletion()
+    {
+        if (config('enso.documents.onDelete') === 'cascade') {
+            $this->documents()->delete();
+        }
     }
 }

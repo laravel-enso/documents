@@ -2,13 +2,13 @@
 
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
-use LaravelEnso\Core\app\Models\User;
+use LaravelEnso\Core\App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use LaravelEnso\Files\app\Traits\HasFile;
-use LaravelEnso\Files\app\Contracts\Attachable;
+use LaravelEnso\Files\App\Traits\HasFile;
+use LaravelEnso\Files\App\Contracts\Attachable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use LaravelEnso\Documents\app\Traits\Documentable;
+use LaravelEnso\Documents\App\Traits\Documentable;
 
 class DocumentTest extends TestCase
 {

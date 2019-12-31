@@ -1,12 +1,12 @@
 <?php
 
-namespace LaravelEnso\Documents\app\Http\Controllers;
+namespace LaravelEnso\Documents\App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
-use LaravelEnso\Documents\app\Http\Requests\ValidateDocumentRequest;
-use LaravelEnso\Documents\app\Http\Resources\Document as Resource;
-use LaravelEnso\Documents\app\Models\Document;
+use LaravelEnso\Documents\App\Http\Requests\ValidateDocumentRequest;
+use LaravelEnso\Documents\App\Http\Resources\Document as Resource;
+use LaravelEnso\Documents\App\Models\Document;
 
 class Store extends Controller
 {

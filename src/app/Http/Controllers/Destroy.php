@@ -1,10 +1,10 @@
 <?php
 
-namespace LaravelEnso\Documents\app\Http\Controllers;
+namespace LaravelEnso\Documents\App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
-use LaravelEnso\Documents\app\Models\Document;
+use LaravelEnso\Documents\App\Models\Document;
 
 class Destroy extends Controller
 {

@@ -1,22 +1,22 @@
 <?php
 
-namespace LaravelEnso\Documents\app\Jobs;
+namespace LaravelEnso\Documents\App\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use LaravelEnso\Documents\app\Models\Document;
+use LaravelEnso\Documents\App\Models\Document;
 use LaravelEnso\Ocr\Ocr as Service;
 
 class Ocr implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $document;
-
     public $queue;
+
+    private Document $document;
 
     public function __construct(Document $document)
     {

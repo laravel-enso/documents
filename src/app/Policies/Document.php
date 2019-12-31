@@ -1,13 +1,13 @@
 <?php
 
-namespace LaravelEnso\Documents\app\Policies;
+namespace LaravelEnso\Documents\App\Policies;
 
 use Carbon\Carbon;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use LaravelEnso\Core\app\Models\User;
-use LaravelEnso\Documents\app\Models\Document;
+use LaravelEnso\Core\App\Models\User;
+use LaravelEnso\Documents\App\Models\Document as Model;
 
-class Policy
+class Document
 {
     use HandlesAuthorization;
 
@@ -18,35 +18,35 @@ class Policy
         }
     }
 
-    public function store(User $user, Document $document)
+    public function store(User $user, Model $document)
     {
         return true;
     }
 
-    public function view(User $user, Document $document)
+    public function view(User $user, Model $document)
     {
         return $this->ownsDocument($user, $document);
     }
 
-    public function share(User $user, Document $document)
+    public function share(User $user, Model $document)
     {
         return $this->ownsDocument($user, $document);
     }
 
-    public function destroy(User $user, Document $document)
+    public function destroy(User $user, Model $document)
     {
         return $this->ownsDocument($user, $document)
             && $this->isRecent($document);
     }
 
-    protected function ownsDocument(User $user, Document $document)
+    protected function ownsDocument(User $user, Model $document)
     {
         return $user->id === (int) $document->file->created_by;
     }
 
-    private function isRecent(Document $document)
+    private function isRecent(Model $document)
     {
         return $document->created_at->diffInSeconds(Carbon::now())
-            <= config('enso.documents.deletableTimeLimit');
+            <= (int) config('enso.documents.deletableTimeLimit');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace LaravelEnso\Documents;
 
-use LaravelEnso\Documents\app\Models\Document;
+use LaravelEnso\Documents\App\Models\Document;
 use LaravelEnso\Files\FileServiceProvider as ServiceProvider;
 
 class FileServiceProvider extends ServiceProvider

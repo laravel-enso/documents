@@ -19,14 +19,13 @@
         }
     ],
     "require": {
-        "php": ">=7.4.0",
-        "laravel-enso/core": "4.6.*",
-        "laravel-enso/helpers": "1.14.*",
-        "laravel-enso/files": "3.3.*",
-        "laravel-enso/ocr": "0.1.*",
-        "laravel-enso/image-transformer": "1.5.*",
-        "laravel-enso/migrator": "1.0.*",
-        "laravel-enso/track-who": "1.8.*"
+        "laravel-enso/core": "4.7.*",
+        "laravel-enso/helpers": "1.15.*",
+        "laravel-enso/files": "3.4.*",
+        "laravel-enso/ocr": "1.0.*",
+        "laravel-enso/image-transformer": "1.6.*",
+        "laravel-enso/migrator": "1.1.*",
+        "laravel-enso/track-who": "1.9.*"
     },
     "autoload": {
         "psr-4": {
