@@ -106,10 +106,10 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
     private function validateExisting(array $files, $documentable): void
     {
         $existing = $documentable->load('documents.file')
-            ->documents->map(fn($document) => $document->file->original_name);
+            ->documents->map(fn ($document) => $document->file->original_name);
 
         $conflictingFiles = collect($files)
-            ->map(fn($file) => $file->getClientOriginalName())
+            ->map(fn ($file) => $file->getClientOriginalName())
             ->intersect($existing);
 
         if ($conflictingFiles->isNotEmpty()) {
