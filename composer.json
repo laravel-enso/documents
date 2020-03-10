@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "laravel-enso/core": "4.7.*",
+        "laravel-enso/core": "4.8.*",
         "laravel-enso/helpers": "1.15.*",
         "laravel-enso/files": "3.4.*",
         "laravel-enso/ocr": "1.0.*",
