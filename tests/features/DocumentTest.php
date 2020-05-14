@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use LaravelEnso\Core\App\Models\User;
@@ -105,7 +106,7 @@ class DocumentTest extends TestCase
 
     private function cleanUp()
     {
-        Storage::deleteDirectory(config('enso.files.paths.testing'));
+        Storage::deleteDirectory(Config::get('enso.files.testingFolder'));
     }
 
     private function model()

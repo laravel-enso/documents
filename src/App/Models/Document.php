@@ -23,6 +23,8 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
 
     protected $touches = ['documentable'];
 
+    protected $folder = 'files';
+
     protected $optimizeImages = true;
 
     public function documentable()
