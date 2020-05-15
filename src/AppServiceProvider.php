@@ -2,14 +2,26 @@
 
 namespace LaravelEnso\Documents;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
+use LaravelEnso\Documents\App\Models\Document;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function boot()
     {
         $this->load()
+            ->mapMorphs()
             ->publish();
+    }
+
+    private function mapMorphs()
+    {
+        Relation::morphMap([
+            Document::morphMapKey() => Document::class,
+        ]);
+
+        return $this;
     }
 
     private function load()

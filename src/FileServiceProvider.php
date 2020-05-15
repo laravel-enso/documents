@@ -9,7 +9,7 @@ class FileServiceProvider extends ServiceProvider
 {
     public $register = [
         'documents' => [
-            'model' => Document::class,
+            'model' => 'document',
             'order' => 60,
         ],
     ];
