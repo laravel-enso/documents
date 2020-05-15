@@ -13,11 +13,12 @@ use LaravelEnso\Files\App\Contracts\AuthorizesFileAccess;
 use LaravelEnso\Files\App\Exceptions\File;
 use LaravelEnso\Files\App\Traits\FilePolicies;
 use LaravelEnso\Files\App\Traits\HasFile;
+use LaravelEnso\Helpers\App\Traits\CascadesMorphMap;
 use LaravelEnso\Helpers\App\Traits\UpdatesOnTouch;
 
 class Document extends Model implements Attachable, AuthorizesFileAccess
 {
-    use FilePolicies, HasFile, UpdatesOnTouch;
+    use CascadesMorphMap, FilePolicies, HasFile, UpdatesOnTouch;
 
     protected $fillable = ['documentable_type', 'documentable_id', 'text'];
 
