@@ -3,9 +3,18 @@
 namespace LaravelEnso\Documents\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use LaravelEnso\Helpers\App\Contracts\TransformsMorphMap;
+use LaravelEnso\Helpers\App\Traits\TransformMorphMap;
 
-class ValidateDocumentRequest extends FormRequest
+class ValidateDocumentRequest extends FormRequest implements TransformsMorphMap
 {
+    use TransformMorphMap;
+
+    public function morphType(): string
+    {
+        return 'documentable_type';
+    }
+
     public function authorize()
     {
         return true;
