@@ -1,15 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Config;
-use Tests\TestCase;
-use Illuminate\Http\UploadedFile;
-use LaravelEnso\Core\App\Models\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use LaravelEnso\Files\App\Traits\HasFile;
-use LaravelEnso\Files\App\Contracts\Attachable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use LaravelEnso\Documents\App\Traits\Documentable;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
+use LaravelEnso\Core\Models\User;
+use LaravelEnso\Documents\Traits\Documentable;
+use LaravelEnso\Files\Contracts\Attachable;
+use LaravelEnso\Files\Traits\HasFile;
+use Tests\TestCase;
 
 class DocumentTest extends TestCase
 {
@@ -40,7 +40,7 @@ class DocumentTest extends TestCase
     {
         $this->get(route('core.documents.index', [
             'documentable_type' => get_class($this->testModel),
-            'documentable_id' => $this->testModel->id
+            'documentable_id' => $this->testModel->id,
         ], false))->assertStatus(200);
     }
 

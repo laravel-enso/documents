@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelEnso\Documents\App\Traits;
+namespace LaravelEnso\Documents\Traits;
 
-use LaravelEnso\Documents\App\Exceptions\DocumentConflict;
-use LaravelEnso\Documents\App\Models\Document;
+use LaravelEnso\Documents\Exceptions\DocumentConflict;
+use LaravelEnso\Documents\Models\Document;
 
 trait Documentable
 {
@@ -26,8 +26,10 @@ trait Documentable
 
     private function attemptDocumentableDeletion()
     {
-        if (config('enso.documents.onDelete') === 'restrict'
-            && $this->documents()->first() !== null) {
+        if (
+            config('enso.documents.onDelete') === 'restrict'
+            && $this->documents()->first() !== null
+        ) {
             throw DocumentConflict::delete();
         }
     }

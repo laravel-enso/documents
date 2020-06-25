@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelEnso\Documents\App\Http\Requests;
+namespace LaravelEnso\Documents\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use LaravelEnso\Helpers\App\Traits\TransformMorphMap;
+use LaravelEnso\Helpers\Traits\TransformMorphMap;
 
 class ValidateDocumentRequest extends FormRequest
 {

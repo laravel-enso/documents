@@ -1,13 +1,13 @@
 <?php
 
-namespace LaravelEnso\Documents\App\Jobs;
+namespace LaravelEnso\Documents\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use LaravelEnso\Documents\App\Models\Document;
+use LaravelEnso\Documents\Models\Document;
 use LaravelEnso\Ocr\Ocr as Service;
 
 class Ocr implements ShouldQueue

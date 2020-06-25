@@ -1,26 +1,26 @@
 <?php
 
-namespace LaravelEnso\Documents\App\Models;
+namespace LaravelEnso\Documents\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use LaravelEnso\Documents\App\Contracts\Ocrable;
-use LaravelEnso\Documents\App\Jobs\Ocr as Job;
-use LaravelEnso\Files\App\Contracts\Attachable;
-use LaravelEnso\Files\App\Contracts\AuthorizesFileAccess;
-use LaravelEnso\Files\App\Exceptions\File;
-use LaravelEnso\Files\App\Traits\FilePolicies;
-use LaravelEnso\Files\App\Traits\HasFile;
-use LaravelEnso\Helpers\App\Traits\CascadesMorphMap;
-use LaravelEnso\Helpers\App\Traits\UpdatesOnTouch;
+use LaravelEnso\Documents\Contracts\Ocrable;
+use LaravelEnso\Documents\Jobs\Ocr as Job;
+use LaravelEnso\Files\Contracts\Attachable;
+use LaravelEnso\Files\Contracts\AuthorizesFileAccess;
+use LaravelEnso\Files\Exceptions\File;
+use LaravelEnso\Files\Traits\FilePolicies;
+use LaravelEnso\Files\Traits\HasFile;
+use LaravelEnso\Helpers\Traits\CascadesMorphMap;
+use LaravelEnso\Helpers\Traits\UpdatesOnTouch;
 
 class Document extends Model implements Attachable, AuthorizesFileAccess
 {
     use CascadesMorphMap, FilePolicies, HasFile, UpdatesOnTouch;
 
-    protected $fillable = ['documentable_type', 'documentable_id', 'text'];
+    protected $guarded = ['id'];
 
     protected $touches = ['documentable'];
 
@@ -66,9 +66,7 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
         $query->when($search, fn ($query) => $query
             ->where(fn ($query) => $query
                 ->whereHas('file', fn ($file) => $file
-                    ->where('original_name', 'LIKE', '%'.$search.'%')
-                )->orWhere('text', 'LIKE', '%'.$search.'%')
-            ));
+                    ->where('original_name', 'LIKE', '%'.$search.'%'))->orWhere('text', 'LIKE', '%'.$search.'%')));
     }
 
     public function getLoggableMorph()
