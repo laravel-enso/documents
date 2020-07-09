@@ -1,6 +1,6 @@
 # Documents
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/12db635b31fd45feb6b24fde2506e58d)](https://www.codacy.com/gh/laravel-enso/documents?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=laravel-enso/documents&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/12db635b31fd45feb6b24fde2506e58d)](https://www.codacy.com/gh/laravel-enso/documents?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=laravel-enso/documents&amp;utm_campaign=Badge_Grade) 
 [![StyleCI](https://github.styleci.io/repos/85587885/shield?branch=master)](https://github.styleci.io/repos/85587885)
 [![License](https://poser.pugx.org/laravel-enso/datatable/license)](https://packagist.org/packages/laravel-enso/datatable)
 [![Total Downloads](https://poser.pugx.org/laravel-enso/documents/downloads)](https://packagist.org/packages/laravel-enso/documents)
