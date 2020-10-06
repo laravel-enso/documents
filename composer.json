@@ -18,7 +18,7 @@
     }],
     "require": {
         "laravel-enso/core": "^5.0|^6.0",
-        "laravel-enso/helpers": "^2.0|^3.0",
+        "laravel-enso/helpers": "^2.0",
         "laravel-enso/files": "^4.0",
         "laravel-enso/ocr": "1.0.*",
         "laravel-enso/image-transformer": "^2.0",
