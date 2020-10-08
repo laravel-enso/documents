@@ -17,7 +17,7 @@
         "role": "Developer"
     }],
     "require": {
-        "laravel-enso/core": "^5.0",
+        "laravel-enso/core": "^5.0|^6.0",
         "laravel-enso/helpers": "^2.0",
         "laravel-enso/files": "^4.0",
         "laravel-enso/ocr": "1.0.*",

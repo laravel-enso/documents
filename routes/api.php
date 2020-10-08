@@ -1,13 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use LaravelEnso\Documents\Http\Controllers\Destroy;
+use LaravelEnso\Documents\Http\Controllers\Index;
+use LaravelEnso\Documents\Http\Controllers\Store;
 
 Route::middleware(['api', 'auth', 'core'])
     ->prefix('api/core/documents')
     ->as('core.documents.')
-    ->namespace('LaravelEnso\Documents\Http\Controllers')
     ->group(function () {
-        Route::get('', 'Index')->name('index');
-        Route::post('', 'Store')->name('store');
-        Route::delete('{document}', 'Destroy')->name('destroy');
+        Route::get('', Index::class)->name('index');
+        Route::post('', Store::class)->name('store');
+        Route::delete('{document}', Destroy::class)->name('destroy');
     });
