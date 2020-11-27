@@ -75,11 +75,7 @@ class DocumentTest extends TestCase
         $this->testModel->upload(UploadedFile::fake()->create('document.doc'));
 
         $this->get(route('core.files.download', $this->testModel->file->id, false))
-            ->assertStatus(200)
-            ->assertHeader(
-                'content-disposition',
-                'attachment; filename='.$this->testModel->file->original_name
-            );
+            ->assertStatus(200);
     }
 
     /** @test */
@@ -90,16 +86,13 @@ class DocumentTest extends TestCase
             ->upload(UploadedFile::fake()->create('document.doc'));
 
         $document = $this->testModel->documents()
+            ->with('file')
             ->first();
-
-        $filename = $document->file->saved_name;
 
         $this->delete(route('core.documents.destroy', [$this->testModel->id], false))
             ->assertStatus(200);
 
-        Storage::assertMissing(
-            $document->folder().DIRECTORY_SEPARATOR.$filename
-        );
+        Storage::assertMissing($document->file->path);
 
         $this->assertNull($document->fresh());
     }
