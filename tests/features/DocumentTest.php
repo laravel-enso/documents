@@ -63,7 +63,7 @@ class DocumentTest extends TestCase
     /** @test */
     public function can_display_document()
     {
-        $this->testModel->upload(UploadedFile::fake()->create('document.doc'));
+        $this->testModel->file->upload(UploadedFile::fake()->create('document.doc'));
 
         $this->get(route('core.files.show', $this->testModel->file->id, false))
             ->assertStatus(200);
@@ -72,7 +72,7 @@ class DocumentTest extends TestCase
     /** @test */
     public function can_download_document()
     {
-        $this->testModel->upload(UploadedFile::fake()->create('document.doc'));
+        $this->testModel->file->upload(UploadedFile::fake()->create('document.doc'));
 
         $this->get(route('core.files.download', $this->testModel->file->id, false))
             ->assertStatus(200);
@@ -83,7 +83,7 @@ class DocumentTest extends TestCase
     {
         $this->testModel->documents()
             ->create()
-            ->upload(UploadedFile::fake()->create('document.doc'));
+            ->file->upload(UploadedFile::fake()->create('document.doc'));
 
         $document = $this->testModel->documents()
             ->with('file')

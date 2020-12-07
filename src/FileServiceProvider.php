@@ -7,13 +7,11 @@ use LaravelEnso\Files\FileServiceProvider as ServiceProvider;
 
 class FileServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function folders(): array
     {
-        $this->register['documents'] = [
+        return ['documents' => [
             'model' => Document::morphMapKey(),
             'order' => 60,
-        ];
-
-        parent::boot();
+        ]];
     }
 }

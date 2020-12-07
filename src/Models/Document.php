@@ -2,8 +2,10 @@
 
 namespace LaravelEnso\Documents\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use LaravelEnso\Documents\Contracts\Ocrable;
@@ -50,23 +52,19 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
         return $documents;
     }
 
-    public function scopeFor($query, array $params)
+    public function scopeFor(Builder $query, array $params): Builder
     {
-        $query->whereDocumentableId($params['documentable_id'])
+        return $query->whereDocumentableId($params['documentable_id'])
             ->whereDocumentableType($params['documentable_type']);
     }
 
-    public function scopeOrdered($query)
+    public function scopeFilter(Builder $query, ?string $search): Builder
     {
-        $query->orderByDesc('created_at');
-    }
-
-    public function scopeFilter($query, $search)
-    {
-        $query->when($search, fn ($query) => $query
+        return $query->when($search, fn ($query) => $query
             ->where(fn ($query) => $query
                 ->whereHas('file', fn ($file) => $file
-                    ->where('original_name', 'LIKE', '%'.$search.'%'))->orWhere('text', 'LIKE', '%'.$search.'%')));
+                    ->where('original_name', 'LIKE', '%'.$search.'%'))
+                ->orWhere('text', 'LIKE', '%'.$search.'%')));
     }
 
     public function getLoggableMorph()
@@ -111,10 +109,10 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
         }
     }
 
-    private function storeFile($documentable, $file)
+    private function storeFile($documentable, UploadedFile $file)
     {
         $document = $documentable->documents()->create();
-        $document->upload($file);
+        $document->file->upload($file);
         $this->ocr($document);
 
         return $document;

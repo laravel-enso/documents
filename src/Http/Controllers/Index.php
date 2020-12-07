@@ -12,10 +12,10 @@ class Index extends Controller
     public function __invoke(ValidateDocumentRequest $request)
     {
         return Resource::collection(
-            Document::with('file.createdBy.avatar')
+            Document::latest()
+                ->with('file.createdBy.avatar')
                 ->for($request->validated())
                 ->filter($request->get('query'))
-                ->ordered()
                 ->get()
         );
     }
