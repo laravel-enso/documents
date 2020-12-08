@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 use LaravelEnso\Documents\Models\Document;
 use LaravelEnso\Ocr\Ocr as Service;
 
@@ -27,7 +28,8 @@ class Ocr implements ShouldQueue
 
     public function handle()
     {
-        $text = (new Service($this->document->file->path()))->text();
+        $path = Storage::path($this->document->file->path);
+        $text = (new Service($path))->text();
 
         $this->document->update([
             'text' => preg_replace('/\s+/', ' ', $text),
