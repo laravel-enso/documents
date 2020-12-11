@@ -55,9 +55,7 @@ class DocumentTest extends TestCase
 
         $document = $this->testModel->documents()->first();
 
-        Storage::assertExists(
-            $document->folder().DIRECTORY_SEPARATOR.$document->file->saved_name
-        );
+        Storage::assertExists($document->file->path);
     }
 
     /** @test */
