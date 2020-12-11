@@ -55,7 +55,7 @@ class DocumentTest extends TestCase
 
         $document = $this->testModel->documents()->first();
 
-        $this->assertTrue(Storage::exists($document->file->path));
+        Storage::assertExists($document->file->saved_name);
     }
 
     /** @test */
