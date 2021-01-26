@@ -2,7 +2,6 @@
 
 namespace LaravelEnso\Documents\Observers;
 
-use LaravelEnso\Discussions\Exceptions\DiscussionConflict;
 use LaravelEnso\Documents\Exceptions\DocumentConflict;
 
 class Observer

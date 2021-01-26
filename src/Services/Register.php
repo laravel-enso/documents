@@ -2,8 +2,8 @@
 
 namespace LaravelEnso\Documents\Services;
 
-use LaravelEnso\Documents\Observers\Observer;
 use LaravelEnso\Documents\DynamicRelations\Documents;
+use LaravelEnso\Documents\Observers\Observer;
 use LaravelEnso\DynamicMethods\Services\Methods;
 
 class Register
