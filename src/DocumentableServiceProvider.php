@@ -4,8 +4,8 @@ namespace LaravelEnso\Documents;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
-use LaravelEnso\Documents\Observers\Observer;
 use LaravelEnso\Documents\DynamicRelations\Documents;
+use LaravelEnso\Documents\Observers\Observer;
 use LaravelEnso\DynamicMethods\Services\Methods;
 
 class DocumentableServiceProvider extends ServiceProvider
