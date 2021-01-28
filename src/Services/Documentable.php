@@ -6,9 +6,9 @@ use LaravelEnso\Documents\DynamicRelations\Documents;
 use LaravelEnso\Documents\Observers\Observer;
 use LaravelEnso\DynamicMethods\Services\Methods;
 
-class Register
+class Documentable
 {
-    public static function handle(string $model)
+    public static function register(string $model)
     {
         Methods::bind($model, [Documents::class]);
         $model::observe(Observer::class);
