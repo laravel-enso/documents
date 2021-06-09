@@ -15,14 +15,8 @@ class Ocr implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $queue;
-
-    private Document $document;
-
-    public function __construct(Document $document)
+    public function __construct(private Document $document)
     {
-        $this->document = $document;
-
         $this->queue = config('enso.documents.queues.ocr');
     }
 

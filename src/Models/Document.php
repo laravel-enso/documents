@@ -46,7 +46,7 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
 
         $this->validateExisting($files, $documentable);
 
-        DB::transaction(fn () => (new Collection($files))
+        DB::transaction(fn () => Collection::wrap($files)
             ->each(fn ($file) => $documents->push($this->storeFile($documentable, $file))));
 
         return $documents;
@@ -100,7 +100,7 @@ class Document extends Model implements Attachable, AuthorizesFileAccess
         $existing = $documentable->load('documents.file')
             ->documents->map(fn ($document) => $document->file->original_name);
 
-        $conflictingFiles = (new Collection($files))
+        $conflictingFiles = Collection::wrap($files)
             ->map(fn ($file) => $file->getClientOriginalName())
             ->intersect($existing);
 

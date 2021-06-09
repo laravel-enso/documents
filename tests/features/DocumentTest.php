@@ -5,10 +5,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
-use LaravelEnso\Core\Models\User;
 use LaravelEnso\Documents\Traits\Documentable;
 use LaravelEnso\Files\Contracts\Attachable;
 use LaravelEnso\Files\Traits\HasFile;
+use LaravelEnso\Users\Models\User;
 use Tests\TestCase;
 
 class DocumentTest extends TestCase
@@ -20,8 +20,6 @@ class DocumentTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->withoutExceptionHandling();
 
         $this->seed()
             ->actingAs(User::first());
@@ -39,7 +37,7 @@ class DocumentTest extends TestCase
     public function can_get_documents_index()
     {
         $this->get(route('core.documents.index', [
-            'documentable_type' => get_class($this->testModel),
+            'documentable_type' => $this->testModel::class,
             'documentable_id' => $this->testModel->id,
         ], false))->assertStatus(200);
     }
@@ -48,7 +46,7 @@ class DocumentTest extends TestCase
     public function can_upload_document()
     {
         $this->post(route('core.documents.store'), [
-            'documentable_type' => get_class($this->testModel),
+            'documentable_type' => $this->testModel::class,
             'documentable_id' => $this->testModel->id,
             'file' => UploadedFile::fake()->create('document.doc'),
         ]);

@@ -2,6 +2,7 @@
 
 namespace LaravelEnso\Documents\Traits;
 
+use Illuminate\Support\Facades\Config;
 use LaravelEnso\Documents\Exceptions\DocumentConflict;
 use LaravelEnso\Documents\Models\Document;
 
@@ -26,17 +27,17 @@ trait Documentable
 
     private function attemptDocumentableDeletion()
     {
-        if (
-            config('enso.documents.onDelete') === 'restrict'
-            && $this->documents()->first() !== null
-        ) {
+        $shouldRestrict = Config::get('enso.documents.onDelete') === 'restrict'
+            && $this->documents()->exists();
+
+        if ($shouldRestrict) {
             throw DocumentConflict::delete();
         }
     }
 
     private function cascadeDocumentDeletion()
     {
-        if (config('enso.documents.onDelete') === 'cascade') {
+        if (Config::get('enso.documents.onDelete') === 'cascade') {
             $this->documents()->delete();
         }
     }

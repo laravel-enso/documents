@@ -4,8 +4,8 @@ namespace LaravelEnso\Documents\Policies;
 
 use Carbon\Carbon;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use LaravelEnso\Core\Models\User;
 use LaravelEnso\Documents\Models\Document as Model;
+use LaravelEnso\Users\Models\User;
 
 class Document
 {
