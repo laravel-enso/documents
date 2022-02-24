@@ -3,7 +3,6 @@
 namespace LaravelEnso\Documents;
 
 use Illuminate\Support\ServiceProvider;
-use LaravelEnso\Documents\Models\Document;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,8 +10,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->load()
             ->publish();
-
-        Document::morphMap();
     }
 
     private function load()

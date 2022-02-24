@@ -12,9 +12,6 @@ class Document extends JsonResource
         return [
             'id' => $this->id,
             'file' => new File($this->whenLoaded('file')),
-            'isDestroyable' => $this->destroyableBy($request->user()),
-            'isViewable' => $this->viewableBy($request->user()),
-            'isShareable' => $this->shareableBy($request->user()),
             'createdAt' => $this->created_at,
         ];
     }

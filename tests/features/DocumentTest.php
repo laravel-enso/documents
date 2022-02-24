@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use LaravelEnso\Documents\Traits\Documentable;
 use LaravelEnso\Files\Contracts\Attachable;
-use LaravelEnso\Files\Traits\HasFile;
 use LaravelEnso\Users\Models\User;
 use Tests\TestCase;
 
@@ -119,7 +118,7 @@ class DocumentTest extends TestCase
 
 class DocumentTestModel extends Model implements Attachable
 {
-    use HasFile, Documentable;
+    use Documentable;
 
     protected $fillable = ['name'];
 }

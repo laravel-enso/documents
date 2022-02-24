@@ -36,8 +36,7 @@
         "laravel": {
             "providers": [
                 "LaravelEnso\\Documents\\AppServiceProvider",
-                "LaravelEnso\\Documents\\AuthServiceProvider",
-                "LaravelEnso\\Documents\\FileServiceProvider"
+                "LaravelEnso\\Documents\\AuthServiceProvider"
             ],
             "aliases": {}
         }
