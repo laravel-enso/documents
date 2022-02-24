@@ -4,7 +4,7 @@ namespace LaravelEnso\Documents\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
-use LaravelEnso\Documents\Http\Requests\ValidateDocumentRequest;
+use LaravelEnso\Documents\Http\Requests\ValidateDocument;
 use LaravelEnso\Documents\Http\Resources\Document as Resource;
 use LaravelEnso\Documents\Models\Document;
 
@@ -12,7 +12,7 @@ class Store extends Controller
 {
     use AuthorizesRequests;
 
-    public function __invoke(ValidateDocumentRequest $request, Document $document)
+    public function __invoke(ValidateDocument $request, Document $document)
     {
         $document->fill($request->validated());
 

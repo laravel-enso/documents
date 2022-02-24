@@ -3,13 +3,13 @@
 namespace LaravelEnso\Documents\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use LaravelEnso\Documents\Http\Requests\ValidateDocumentRequest;
+use LaravelEnso\Documents\Http\Requests\ValidateDocument;
 use LaravelEnso\Documents\Http\Resources\Document as Resource;
 use LaravelEnso\Documents\Models\Document;
 
 class Index extends Controller
 {
-    public function __invoke(ValidateDocumentRequest $request)
+    public function __invoke(ValidateDocument $request)
     {
         return Resource::collection(
             Document::latest()
