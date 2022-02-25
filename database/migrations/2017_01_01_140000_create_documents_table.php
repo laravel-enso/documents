@@ -14,6 +14,10 @@ class CreateDocumentsTable extends Migration
 
             $table->morphs('documentable');
 
+            $table->unsignedBigInteger('file_id')->nullable();
+            $table->foreign('file_id')->references('id')->on('files')
+                ->onUpdate('restrict')->onDelete('cascade');
+
             $table->longText('text')->nullable();
 
             $table->timestamps();
