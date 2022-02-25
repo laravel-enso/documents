@@ -108,4 +108,10 @@ class Document extends Model implements Attachable, OptimizesImages, ResizesImag
 
         return $document;
     }
+
+    public function delete()
+    {
+        parent::delete();
+        $this->file->delete();
+    }
 }
