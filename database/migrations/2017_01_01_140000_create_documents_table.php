@@ -5,8 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         Schema::create('documents', function (Blueprint $table) {
@@ -16,7 +15,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('file_id')->nullable();
             $table->foreign('file_id')->references('id')->on('files')
-                ->onUpdate('restrict')->onDelete('cascade');
+                ->onUpdate('restrict')->onDelete('restrict');
 
             $table->longText('text')->nullable();
 
