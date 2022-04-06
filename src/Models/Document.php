@@ -52,7 +52,7 @@ class Document extends Model implements
 
     public static function cascadeFileDeletion(File $file): void
     {
-        self::whereFileId($file->id)->get()->delete();
+        self::whereFileId($file->id)->first()->delete();
     }
 
     public function store(array $request, array $files)
