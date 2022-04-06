@@ -14,7 +14,7 @@ return new class extends Migration
 
             $table->morphs('documentable');
 
-            $table->unsignedBigInteger('file_id')->nullable();
+            $table->unsignedBigInteger('file_id')->nullable()->unique();
             $table->foreign('file_id')->references('id')->on('files')
                 ->onUpdate('restrict')->onDelete('restrict');
 
