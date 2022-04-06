@@ -12,12 +12,17 @@ use Illuminate\Support\Facades\DB;
 use LaravelEnso\Documents\Contracts\Ocrable;
 use LaravelEnso\Documents\Jobs\Ocr as Job;
 use LaravelEnso\Files\Contracts\Attachable;
+use LaravelEnso\Files\Contracts\CascadesFileDeletion;
 use LaravelEnso\Files\Contracts\OptimizesImages;
 use LaravelEnso\Files\Contracts\ResizesImages;
 use LaravelEnso\Files\Models\File;
 use LaravelEnso\Helpers\Traits\UpdatesOnTouch;
 
-class Document extends Model implements Attachable, OptimizesImages, ResizesImages
+class Document extends Model implements
+    Attachable,
+    OptimizesImages,
+    ResizesImages,
+    CascadesFileDeletion
 {
     use UpdatesOnTouch;
 
@@ -43,6 +48,11 @@ class Document extends Model implements Attachable, OptimizesImages, ResizesImag
     public function imageHeight(): ?int
     {
         return Config::get('enso.documents.imageHeight');
+    }
+
+    public static function cascadeDeletion(File $file): void
+    {
+        self::whereFileId($file->id)->get()->delete();
     }
 
     public function store(array $request, array $files)
