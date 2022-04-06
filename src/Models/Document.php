@@ -50,7 +50,7 @@ class Document extends Model implements
         return Config::get('enso.documents.imageHeight');
     }
 
-    public static function cascadeDeletion(File $file): void
+    public static function cascadeFileDeletion(File $file): void
     {
         self::whereFileId($file->id)->get()->delete();
     }
