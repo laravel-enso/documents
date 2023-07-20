@@ -13,7 +13,7 @@ class Index extends Controller
     {
         return Resource::collection(
             Document::latest()
-                ->with('file.createdBy.avatar')
+                ->with(['file.createdBy.avatar', 'file.type'])
                 ->for($request->validated())
                 ->filter($request->get('query'))
                 ->get()
