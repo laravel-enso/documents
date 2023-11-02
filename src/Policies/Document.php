@@ -13,9 +13,7 @@ class Document
 
     public function before($user)
     {
-        if ($user->isAdmin() || $user->isSupervisor()) {
-            return true;
-        }
+        return $user->isSuperior();
     }
 
     public function store(User $user, Model $document)
