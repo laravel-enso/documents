@@ -13,7 +13,9 @@ class Document
 
     public function before($user)
     {
-        return $user->isSuperior();
+        if ($user->isSuperior()) {
+            return true;
+        }
     }
 
     public function store(User $user, Model $document)
