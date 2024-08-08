@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "laravel-enso/core": "^9.0",
+        "laravel-enso/core": "^10.0",
         "laravel-enso/helpers": "^3.0",
         "laravel-enso/files": "^5.0",
         "laravel-enso/ocr": "1.0.*",
@@ -38,7 +38,7 @@
                 "LaravelEnso\\Documents\\AppServiceProvider",
                 "LaravelEnso\\Documents\\AuthServiceProvider"
             ],
-            "aliases": {}
+            "aliases": []
         }
     }
 }
