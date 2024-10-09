@@ -4,6 +4,7 @@ namespace LaravelEnso\Documents\Policies;
 
 use Carbon\Carbon;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Config;
 use LaravelEnso\Documents\Models\Document as Model;
 use LaravelEnso\Users\Models\User;
 
@@ -46,7 +47,7 @@ class Document
 
     private function isRecent(Model $document)
     {
-        return $document->created_at->diffInSeconds(Carbon::now())
-            <= (int) config('enso.documents.deletableTimeLimit');
+        return (int) $document->created_at->diffInSeconds(Carbon::now(), true)
+            <= (int) Config::get('enso.documents.deletableTimeLimit');
     }
 }
