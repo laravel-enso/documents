@@ -12,6 +12,7 @@ use LaravelEnso\Files\Contracts\Attachable;
 use LaravelEnso\Files\Models\File;
 use LaravelEnso\Users\Models\User;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class DocumentTest extends TestCase
 {
@@ -37,7 +38,7 @@ class DocumentTest extends TestCase
         parent::tearDown();
     }
 
-    /** @test */
+    #[Test]
     public function can_get_documents_index()
     {
         $this->get(route('core.documents.index', [
@@ -46,7 +47,7 @@ class DocumentTest extends TestCase
         ], false))->assertStatus(200);
     }
 
-    /** @test */
+    #[Test]
     public function can_upload_document()
     {
         $this->post(route('core.documents.store'), [
@@ -62,7 +63,7 @@ class DocumentTest extends TestCase
         Storage::assertExists($document->file->path());
     }
 
-    /** @test */
+    #[Test]
     public function can_display_document()
     {
         $document = $this->testModel->documents()->create();
@@ -75,7 +76,7 @@ class DocumentTest extends TestCase
             ->assertStatus(200);
     }
 
-    /** @test */
+    #[Test]
     public function can_download_document()
     {
         $document = $this->testModel->documents()->create();
@@ -88,7 +89,7 @@ class DocumentTest extends TestCase
             ->assertStatus(200);
     }
 
-    /** @test */
+    #[Test]
     public function can_destroy_document()
     {
         $document = $this->testModel->documents()->create();
