@@ -20,12 +20,13 @@
     ],
     "require": {
         "laravel-enso/core": "^12.0",
-        "laravel-enso/helpers": "^3.0",
         "laravel-enso/files": "^5.0",
-        "laravel-enso/ocr": "1.0.*",
+        "laravel-enso/helpers": "^3.0",
         "laravel-enso/image-transformer": "^2.0",
         "laravel-enso/migrator": "^2.0",
-        "laravel-enso/track-who": "^2.0"
+        "laravel-enso/ocr": "1.0.*",
+        "laravel-enso/track-who": "^2.0",
+        "laravel-enso/users": "^2.0"
     },
     "autoload": {
         "psr-4": {
