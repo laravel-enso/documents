@@ -25,7 +25,7 @@
         "laravel-enso/image-transformer": "^2.5",
         "laravel-enso/migrator": "^2.0",
         "laravel-enso/ocr": "1.0.*",
-        "laravel-enso/track-who": "^2.0",
+        "laravel-enso/track-who": "^3.0",
         "laravel-enso/users": "^2.8"
     },
     "autoload": {
