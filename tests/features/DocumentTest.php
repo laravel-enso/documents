@@ -11,8 +11,8 @@ use LaravelEnso\Documents\Traits\Documentable;
 use LaravelEnso\Files\Contracts\Attachable;
 use LaravelEnso\Files\Models\File;
 use LaravelEnso\Users\Models\User;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class DocumentTest extends TestCase
 {
@@ -43,7 +43,7 @@ class DocumentTest extends TestCase
     {
         $this->get(route('core.documents.index', [
             'documentable_type' => $this->testModel::class,
-            'documentable_id' => $this->testModel->id,
+            'documentable_id'   => $this->testModel->id,
         ], false))->assertStatus(200);
     }
 
@@ -52,8 +52,8 @@ class DocumentTest extends TestCase
     {
         $this->post(route('core.documents.store'), [
             'documentable_type' => $this->testModel::class,
-            'documentable_id' => $this->testModel->id,
-            'file' => UploadedFile::fake()->create('document.doc'),
+            'documentable_id'   => $this->testModel->id,
+            'file'              => UploadedFile::fake()->create('document.doc'),
         ]);
 
         $document = $this->testModel->documents()

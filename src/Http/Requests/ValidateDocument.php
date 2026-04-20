@@ -22,7 +22,7 @@ class ValidateDocument extends FormRequest
     public function rules()
     {
         return [
-            'documentable_id' => 'required',
+            'documentable_id'   => 'required',
             'documentable_type' => 'required',
         ];
     }

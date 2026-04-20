@@ -2,8 +2,7 @@
 
 use LaravelEnso\Migrator\Database\Migration;
 
-return new class extends Migration
-{
+return new class() extends Migration {
     protected array $permissions = [
         ['name' => 'core.documents.store', 'description' => 'Upload documents', 'is_default' => false],
         ['name' => 'core.documents.index', 'description' => 'List documents for documentable', 'is_default' => false],

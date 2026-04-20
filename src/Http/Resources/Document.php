@@ -10,8 +10,8 @@ class Document extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'file' => new File($this->whenLoaded('file')),
+            'id'        => $this->id,
+            'file'      => new File($this->whenLoaded('file')),
             'createdAt' => $this->created_at,
         ];
     }
