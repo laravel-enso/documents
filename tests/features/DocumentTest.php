@@ -17,7 +17,8 @@ use Tests\TestCase;
 
 class DocumentTest extends TestCase
 {
-    use EnsuresTestingFolder, RefreshDatabase;
+    use EnsuresTestingFolder;
+    use RefreshDatabase;
 
     private DocumentTestModel $testModel;
     private string $testFolder;
