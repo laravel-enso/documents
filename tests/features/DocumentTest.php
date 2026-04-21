@@ -10,13 +10,14 @@ use Illuminate\Support\Facades\Storage;
 use LaravelEnso\Documents\Traits\Documentable;
 use LaravelEnso\Files\Contracts\Attachable;
 use LaravelEnso\Files\Models\File;
+use LaravelEnso\Helpers\Traits\EnsuresTestingFolder;
 use LaravelEnso\Users\Models\User;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class DocumentTest extends TestCase
 {
-    use RefreshDatabase;
+    use EnsuresTestingFolder, RefreshDatabase;
 
     private DocumentTestModel $testModel;
     private string $testFolder;
@@ -24,6 +25,8 @@ class DocumentTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->ensureTestingFolder();
 
         $this->seed()
             ->actingAs(User::first());
